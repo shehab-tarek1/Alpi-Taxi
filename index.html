@@ -12,11 +12,12 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" id="appleTouchIcon" href="https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_192,q_auto,f_auto/v1786716325/ecuwdts2f0797fnddg4z.png">
 
+    <!-- Tailwind CSS Local -->
+    <link rel="stylesheet" href="./tailwind.min.css">
+
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
-<link rel="stylesheet" href="./tailwind.min.css">
 
     <style>
         :root {
@@ -143,7 +144,7 @@
         .input-wrapper.active { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.15); }
         .input-icon { width: 16px; height: 16px; fill: #94a3b8; margin-right: 8px; flex-shrink: 0; }
 
-        /* حقول البحث الذكية */
+        /* Searchable inputs */
         .searchable-input {
             width: 100%; border: none; outline: none; font-size: 0.9rem; background: transparent;
             color: var(--text-main); font-weight: 500;
@@ -184,7 +185,7 @@
         }
         .booking-btn:hover { background: var(--primary-hover); transform: translateY(-2px); }
 
-        /* 🌟 قسم النبذة التعريفية الأنيق (About / Intro) */
+        /* Intro / About */
         .about-section {
             padding: 1.2rem 5% 0.5rem;
             text-align: center;
@@ -262,7 +263,6 @@
             border: var(--border-silver); box-shadow: var(--shadow-silver); backdrop-filter: blur(4px); z-index: 2; font-size: 0.85rem;
         }
 
-        /* زر المشاركة السادة في أقصى اليسار فوق الصورة */
         .card-share-btn {
             position: absolute;
             top: 10px;
@@ -377,7 +377,7 @@
     <!-- Hero Section -->
     <div class="hero"></div>
 
-    <!-- Booking Card (مع حقول بحث ذكية) -->
+    <!-- Booking Card -->
     <div class="booking-card" id="bookingCard">
         <div class="booking-form">
             <!-- Locations Searchable Inputs -->
@@ -388,9 +388,9 @@
                         <svg class="input-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                         <input type="text" id="pickupInput" class="searchable-input" placeholder="Ort suchen oder eingeben..." autocomplete="off">
                         <svg class="select-arrow" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
-                        
+
                         <div class="custom-options" id="pickupOptions">
-                            <div class="custom-optgroup">Deutschland (Metropolen)</div>
+                            <div class="custom-optgroup" data-i18n="optgroup_de_metro">Deutschland (Metropolen)</div>
                             <div class="custom-option">München Zentrum</div>
                             <div class="custom-option">Frankfurt am Main</div>
                             <div class="custom-option">Berlin Zentrum</div>
@@ -400,7 +400,7 @@
                             <div class="custom-option">Nürnberg</div>
                             <div class="custom-option">Leipzig / Dresden</div>
 
-                            <div class="custom-optgroup">Deutschland (Tourismus & Alpen)</div>
+                            <div class="custom-optgroup" data-i18n="optgroup_de_tourism">Deutschland (Tourismus & Alpen)</div>
                             <div class="custom-option">Garmisch-Partenkirchen (Zugspitze)</div>
                             <div class="custom-option">Füssen (Schloss Neuschwanstein)</div>
                             <div class="custom-option">Berchtesgaden & Königssee</div>
@@ -411,13 +411,13 @@
                             <div class="custom-option">Chiemsee & Herrenchiemsee</div>
                             <div class="custom-option">Oberstdorf (Allgäu)</div>
 
-                            <div class="custom-optgroup">Flughäfen (Deutschland)</div>
+                            <div class="custom-optgroup" data-i18n="optgroup_de_airports">Flughäfen (Deutschland)</div>
                             <div class="custom-option">München Flughafen (MUC)</div>
                             <div class="custom-option">Frankfurt Flughafen (FRA)</div>
                             <div class="custom-option">Stuttgart Flughafen (STR)</div>
                             <div class="custom-option">Nürnberg Flughafen (NUE)</div>
 
-                            <div class="custom-optgroup">Österreich & Alpenregion</div>
+                            <div class="custom-optgroup" data-i18n="optgroup_at_alps">Österreich & Alpenregion</div>
                             <div class="custom-option">Innsbruck Zentrum</div>
                             <div class="custom-option">Innsbruck Hauptbahnhof</div>
                             <div class="custom-option">Innsbruck Flughafen (INN)</div>
@@ -437,9 +437,9 @@
                         <svg class="input-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                         <input type="text" id="dropoffInput" class="searchable-input" placeholder="Ort suchen oder eingeben..." autocomplete="off">
                         <svg class="select-arrow" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
-                        
+
                         <div class="custom-options" id="dropoffOptions">
-                            <div class="custom-optgroup">Deutschland (Metropolen)</div>
+                            <div class="custom-optgroup" data-i18n="optgroup_de_metro">Deutschland (Metropolen)</div>
                             <div class="custom-option">München Zentrum</div>
                             <div class="custom-option">Frankfurt am Main</div>
                             <div class="custom-option">Berlin Zentrum</div>
@@ -449,7 +449,7 @@
                             <div class="custom-option">Nürnberg</div>
                             <div class="custom-option">Leipzig / Dresden</div>
 
-                            <div class="custom-optgroup">Deutschland (Tourismus & Alpen)</div>
+                            <div class="custom-optgroup" data-i18n="optgroup_de_tourism">Deutschland (Tourismus & Alpen)</div>
                             <div class="custom-option">Garmisch-Partenkirchen (Zugspitze)</div>
                             <div class="custom-option">Füssen (Schloss Neuschwanstein)</div>
                             <div class="custom-option">Berchtesgaden & Königssee</div>
@@ -460,13 +460,13 @@
                             <div class="custom-option">Chiemsee & Herrenchiemsee</div>
                             <div class="custom-option">Oberstdorf (Allgäu)</div>
 
-                            <div class="custom-optgroup">Flughäfen (Deutschland)</div>
+                            <div class="custom-optgroup" data-i18n="optgroup_de_airports">Flughäfen (Deutschland)</div>
                             <div class="custom-option">München Flughafen (MUC)</div>
                             <div class="custom-option">Frankfurt Flughafen (FRA)</div>
                             <div class="custom-option">Stuttgart Flughafen (STR)</div>
                             <div class="custom-option">Nürnberg Flughafen (NUE)</div>
 
-                            <div class="custom-optgroup">Österreich & Alpenregion</div>
+                            <div class="custom-optgroup" data-i18n="optgroup_at_alps">Österreich & Alpenregion</div>
                             <div class="custom-option">Innsbruck Zentrum</div>
                             <div class="custom-option">Innsbruck Hauptbahnhof</div>
                             <div class="custom-option">Innsbruck Flughafen (INN)</div>
@@ -537,7 +537,7 @@
         </div>
     </div>
 
-    <!-- 🌟 قسم النبذة التعريفية الأنيق (About / Intro) -->
+    <!-- Intro / About Section -->
     <div class="about-section">
         <h2 class="about-title" data-i18n="about_title">Taxi AlpGo</h2>
         <p class="about-text" data-i18n="about_text">Taxi AlpGo steht für zuverlässige, komfortable und sichere Transfers in Innsbruck und der Alpenregion.</p>
@@ -591,15 +591,12 @@
         <p data-i18n="footer_text">Dein zuverlässiger Partner für Taxi & Limousinen-Service in Innsbruck.</p>
         <p class="footer-vat" data-i18n="vat_inc">* Alle Preise inkl. 10% MwSt.</p>
 
-        <!-- روابط التواصل: الهاتف والإيميل في نفس الحاوية بتصميم أنيق -->
         <div style="display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap; margin-top:6px;">
-            <!-- رقم الهاتف -->
             <a href="tel:+436763356300" class="footer-phone" style="margin-top:0;">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                 +43 676 3356300
             </a>
 
-            <!-- الإيميل الجديد -->
             <a href="mailto:taxi_alpgo@yahoo.com" class="footer-phone" style="margin-top:0;">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                 taxi_alpgo@yahoo.com
@@ -630,8 +627,12 @@
         const db = firebase.firestore();
 
         let currentLang = 'DE';
+        
+        // ذاكرة تخزين لحظية للبيانات القادمة من فيربس لترجمتها فوراً عند تغيير اللغة
+        let cachedVehiclesDocs = [];
+        let cachedDestinationsDocs = [];
 
-        // 2. Searchable Combobox Logic (بحث ذكي بالفلترة أو كتابة عنوان حر)
+        // 2. Searchable Combobox Logic
         function setupSearchableDropdowns() {
             const wrappers = [
                 { wrapper: document.getElementById('pickupWrapper'), input: document.getElementById('pickupInput'), options: document.getElementById('pickupOptions') },
@@ -641,13 +642,11 @@
             wrappers.forEach(({ wrapper, input, options }) => {
                 if(!wrapper || !input || !options) return;
 
-                // فتح القائمة عند التركيز على الحقل
                 input.addEventListener('focus', () => {
                     document.querySelectorAll('.custom-dropdown-wrapper').forEach(dw => dw.classList.remove('active'));
                     wrapper.classList.add('active');
                 });
 
-                // فلترة الخيارات لحظياً أثناء الكتابة
                 input.addEventListener('input', () => {
                     const query = input.value.toLowerCase().trim();
                     wrapper.classList.add('active');
@@ -659,7 +658,6 @@
                     });
                 });
 
-                // اختيار عنصر من القائمة
                 options.querySelectorAll('.custom-option').forEach(option => {
                     option.addEventListener('click', (e) => {
                         e.stopPropagation();
@@ -721,7 +719,7 @@
             }
         }
 
-        // 4. مشاركة الرابط فقط دون نصوص مكررة لتوليد بطاقة المعاينة
+        // 4. دالة المشاركة الذكية للرابط
         async function shareCustomItem(type, id) {
             const shareUrl = `${window.location.origin}/api/share?type=${type}&id=${encodeURIComponent(id)}`;
 
@@ -736,7 +734,7 @@
             }
         }
 
-        // 5. إرسال بيانات الحجز باللغة الألمانية فقط لخدمة العملاء
+        // 5. إرسال بيانات الحجز للواتساب بحسب اللغة الحالية للمستخدم
         function sendBookingToWhatsApp() {
             const pickup = document.getElementById('pickupInput').value.trim();
             const dropoff = document.getElementById('dropoffInput').value.trim();
@@ -746,34 +744,68 @@
             const pax = document.getElementById('paxValue').innerText;
 
             if(!pickup || !dropoff) {
-                alert(currentLang === 'DE' ? "Bitte geben Sie Abholort und Zielort ein!" : "Please enter pickup and destination!");
+                alert(currentLang === 'DE' ? "Bitte geben Sie Abholort und Zielort ein!" : (currentLang === 'EN' ? "Please enter pickup and destination!" : "Voer ophaal- en bestemmingslocatie in!"));
                 return;
             }
 
-            const msg = `🚖 *Neue Buchungsanfrage - Taxi AlpGo*\n\n` +
-                        `📍 *Abholort:* ${pickup}\n` +
-                        `🏁 *Zielort:* ${dropoff}\n` +
-                        `📅 *Datum:* ${date || "Nicht angegeben"}\n` +
-                        `⏰ *Uhrzeit:* ${time || "Nicht angegeben"}\n` +
-                        `🚗 *Fahrzeug:* ${car}\n` +
-                        `👥 *Personen:* ${pax}\n\n` +
-                        `Bitte bestätigen Sie die Verfügbarkeit und den Preis.`;
+            let msg = "";
+            if(currentLang === 'DE') {
+                msg = `🚖 *Neue Buchungsanfrage - Taxi AlpGo*\n\n` +
+                      `📍 *Abholort:* ${pickup}\n` +
+                      `🏁 *Zielort:* ${dropoff}\n` +
+                      `📅 *Datum:* ${date || "Nicht angegeben"}\n` +
+                      `⏰ *Uhrzeit:* ${time || "Nicht angegeben"}\n` +
+                      `🚗 *Fahrzeug:* ${car}\n` +
+                      `👥 *Personen:* ${pax}\n\n` +
+                      `Bitte bestätigen Sie die Verfügbarkeit und den Preis.`;
+            } else if(currentLang === 'EN') {
+                msg = `🚖 *New Booking Request - Taxi AlpGo*\n\n` +
+                      `📍 *Pickup Location:* ${pickup}\n` +
+                      `🏁 *Destination:* ${dropoff}\n` +
+                      `📅 *Date:* ${date || "Not specified"}\n` +
+                      `⏰ *Time:* ${time || "Not specified"}\n` +
+                      `🚗 *Vehicle:* ${car}\n` +
+                      `👥 *Passengers:* ${pax}\n\n` +
+                      `Please confirm availability and price.`;
+            } else {
+                msg = `🚖 *Nieuwe Boekingsaanvraag - Taxi AlpGo*\n\n` +
+                      `📍 *Ophaallocatie:* ${pickup}\n` +
+                      `🏁 *Bestemming:* ${dropoff}\n` +
+                      `📅 *Datum:* ${date || "Niet opgegeven"}\n` +
+                      `⏰ *Tijd:* ${time || "Niet opgegeven"}\n` +
+                      `🚗 *Voertuig:* ${car}\n` +
+                      `👥 *Passagiers:* ${pax}\n\n` +
+                      `Bevestig alstublieft de beschikbaarheid en de prijs.`;
+            }
 
             window.open(`https://wa.me/436763356300?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
-        // 6. طلب تأجير سيارة بالألمانية فقط
+        // 6. طلب تأجير سيارة بحسب اللغة الحالية للمستخدم
         function rentVehicle(carName) {
-            const msg = `Hallo Taxi AlpGo, ich interessiere mich für die Anmietung des Fahrzeugs: *${carName}*. Bitte um weitere Informationen.`;
+            let msg = "";
+            if (currentLang === 'DE') {
+                msg = `Hallo Taxi AlpGo, ich interessiere mich für die Anmietung des Fahrzeugs: *${carName}*. Bitte um weitere Informationen.`;
+            } else if (currentLang === 'EN') {
+                msg = `Hello Taxi AlpGo, I am interested in renting the vehicle: *${carName}*. Please provide more information.`;
+            } else {
+                msg = `Hallo Taxi AlpGo, ik ben geïnteresseerd in het huren van het voertuig: *${carName}*. Kunt u mij meer informatie sturen?`;
+            }
             window.open(`https://wa.me/436763356300?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
-        // 7. Translations
+        // 7. قاموس الترجمة الشامل لكافة أجزاء الموقع
         const translations = {
             DE: {
                 hero_title: "Premium Taxi & Limousinenservice in Innsbruck",
                 hero_sub: "Günstige und zuverlässige Transfers, Flughafenshuttles und Sightseeing-Touren für Ihren perfekten Aufenthalt.",
                 pickup_label: "Abholort", dropoff_label: "Zielort",
+                pickup_placeholder: "Ort suchen oder eingeben...",
+                dropoff_placeholder: "Ort suchen oder eingeben...",
+                optgroup_de_metro: "Deutschland (Metropolen)",
+                optgroup_de_tourism: "Deutschland (Tourismus & Alpen)",
+                optgroup_de_airports: "Flughäfen (Deutschland)",
+                optgroup_at_alps: "Österreich & Alpenregion",
                 date_label: "Datum", time_label: "Uhrzeit", car_label: "Fahrzeug", pax_label: "Personen",
                 book_btn: "Jetzt Buchen", quick_book: "Buchen", rent_btn: "Mieten",
                 about_title: "Taxi AlpGo",
@@ -785,12 +817,19 @@
                 srv_4_title: "Chauffeur", srv_4_desc: "Mieten Sie einen Wagen flexibel nach Stunden.",
                 fleet_title: "Unsere Flotte", fleet_desc: "Geräumig, sicher und komfortabel für Gruppen.",
                 dest_title: "Beliebte Ziele & Preise", vat_inc: "* Alle Preise inkl. 10% MwSt.",
-                footer_text: "Dein zuverlässiger Partner für Taxi & Limousinen-Service in Innsbruck."
+                footer_text: "Dein zuverlässiger Partner für Taxi & Limousinen-Service in Innsbruck.",
+                pax_suffix: "Passagiere"
             },
             EN: {
                 hero_title: "Premium Taxi & Limousine Service in Innsbruck",
                 hero_sub: "Affordable and reliable transfers, airport shuttles, and sightseeing tours for your perfect stay.",
                 pickup_label: "Pickup Location", dropoff_label: "Destination",
+                pickup_placeholder: "Search or enter location...",
+                dropoff_placeholder: "Search or enter location...",
+                optgroup_de_metro: "Germany (Metropolises)",
+                optgroup_de_tourism: "Germany (Tourism & Alps)",
+                optgroup_de_airports: "Airports (Germany)",
+                optgroup_at_alps: "Austria & Alpine Region",
                 date_label: "Date", time_label: "Time", car_label: "Vehicle", pax_label: "Passengers",
                 book_btn: "Book Now", quick_book: "Book", rent_btn: "Rent",
                 about_title: "Taxi AlpGo",
@@ -802,12 +841,19 @@
                 srv_4_title: "Chauffeur", srv_4_desc: "Rent a car flexibly by the hour.",
                 fleet_title: "Our Fleet", fleet_desc: "Spacious, safe, and comfortable for groups.",
                 dest_title: "Popular Destinations & Prices", vat_inc: "* All prices include 10% VAT.",
-                footer_text: "Your reliable partner for Taxi & Limousine service in Innsbruck."
+                footer_text: "Your reliable partner for Taxi & Limousine service in Innsbruck.",
+                pax_suffix: "Passengers"
             },
             NL: {
                 hero_title: "Premium Taxi & Limousineservice in Innsbruck",
                 hero_sub: "Betaalbare en betrouwbare transfers, luchthavenshuttles en sightseeingtours voor uw perfecte verblijf.",
                 pickup_label: "Ophaallocatie", dropoff_label: "Bestemming",
+                pickup_placeholder: "Zoek of voer locatie in...",
+                dropoff_placeholder: "Zoek of voer locatie in...",
+                optgroup_de_metro: "Duitsland (Metropolen)",
+                optgroup_de_tourism: "Duitsland (Toerisme & Alpen)",
+                optgroup_de_airports: "Luchthavens (Duitsland)",
+                optgroup_at_alps: "Oostenrijk & Alpenregio",
                 date_label: "Datum", time_label: "Tijd", car_label: "Voertuig", pax_label: "Passagiers",
                 book_btn: "Boek Nu", quick_book: "Boek", rent_btn: "Huren",
                 about_title: "Taxi AlpGo",
@@ -819,7 +865,8 @@
                 srv_4_title: "Chauffeur", srv_4_desc: "Huur flexibel een auto per uur.",
                 fleet_title: "Ons Wagenpark", fleet_desc: "Ruim, veilig en comfortabel voor groepen.",
                 dest_title: "Populaire Bestemmingen & Prijzen", vat_inc: "* Alle prijzen zijn inclusief 10% btw.",
-                footer_text: "Uw betrouwbare partner voor Taxi & Limousineservice in Innsbruck."
+                footer_text: "Uw betrouwbare partner voor Taxi & Limousineservice in Innsbruck.",
+                pax_suffix: "Passagiers"
             }
         };
 
@@ -840,53 +887,46 @@
             };
         });
 
+        // 🌟 دالة تطبيق الترجمة اللحظية الشاملة لجميع أجزاء الموقع
         function applyTranslations(lang) {
+            // 1. ترجمة جميع النصوص وعناوين المجموعات ذات data-i18n
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const k = el.getAttribute('data-i18n');
-                if(translations[lang][k]) el.innerText = translations[lang][k];
+                if(translations[lang] && translations[lang][k]) {
+                    el.innerText = translations[lang][k];
+                }
             });
+
+            // 2. ترجمة نصوص البحث الإرشادية داخل الحقول
+            const pInput = document.getElementById('pickupInput');
+            const dInput = document.getElementById('dropoffInput');
+            if(pInput) pInput.placeholder = translations[lang].pickup_placeholder;
+            if(dInput) dInput.placeholder = translations[lang].dropoff_placeholder;
+
+            // 3. إعادة رسم بطاقات السيارات والرحلات بلغة Firebase المختارة فوراً
+            renderVehicles();
+            renderDestinations();
         }
 
-        // 8. Live Realtime Listeners (بدون كاش قديم ومزامنة حية 100%)
+        // 8. دوال رسم بطاقات Firebase باللغة النشطة فوراً من الذاكرة
 
-        // إعدادات الهوية والكوفر
-        db.collection("settings").doc("general").onSnapshot({ includeMetadataChanges: false }, doc => {
-            if (doc.exists) {
-                const d = doc.data();
-                if (d.siteName) {
-                    document.querySelectorAll('.site-name-text').forEach(el => el.innerText = d.siteName);
-                }
-                if (d.logoUrl) {
-                    document.querySelectorAll('.site-logo').forEach(el => el.src = d.logoUrl);
-                    const appleIcon = document.getElementById('appleTouchIcon');
-                    if (appleIcon) appleIcon.href = d.logoUrl;
-                }
-                if (d.heroBgUrl) {
-                    const hero = document.querySelector('.hero');
-                    if (hero) hero.style.backgroundImage = `url('${d.heroBgUrl}')`;
-                }
-            }
-        });
-
-        // أسطول السيارات المباشر
-        db.collection("vehicles").onSnapshot({ includeMetadataChanges: false }, snapshot => {
+        function renderVehicles() {
             const container = document.getElementById('fleetContainer');
             container.innerHTML = "";
-            if (snapshot.empty) {
+            if (!cachedVehiclesDocs || cachedVehiclesDocs.length === 0) {
                 container.innerHTML = `<p style="text-align:center; grid-column:1/-1; color:gray;">Keine Fahrzeuge verfügbar.</p>`;
                 return;
             }
-            snapshot.forEach(doc => {
-                const data = doc.data();
+            cachedVehiclesDocs.forEach(({ id, data }) => {
                 const title = data.name || "Mercedes";
+                // استدعاء الوصف المترجم من فيربس بحسب اللغة النشطة
                 const desc = data[`desc_${currentLang.toLowerCase()}`] || data.desc_de || data.desc || "";
                 const pax = data.pax || 8;
                 const img = data.imageUrl || "https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716414/bl2wzjvwiuocspelj562.png";
 
                 container.innerHTML += `
                     <div class="fleet-card">
-                        <!-- زر المشاركة في أقصى اليسار فوق صورة السيارة -->
-                        <button class="card-share-btn" title="Fahrzeug teilen" onclick="shareCustomItem('vehicle', '${doc.id}')">
+                        <button class="card-share-btn" title="Fahrzeug teilen" onclick="shareCustomItem('vehicle', '${id}')">
                             <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
                         </button>
                         <img src="${img}" alt="${title}" loading="lazy">
@@ -894,7 +934,7 @@
                             <h3>${title}</h3>
                             <p>${desc}</p>
                             <div class="fleet-footer-row">
-                                <span class="fleet-meta">Max. ${pax} ${currentLang === 'DE' ? 'Passagiere' : (currentLang === 'EN' ? 'Passengers' : 'Passagiers')}</span>
+                                <span class="fleet-meta">Max. ${pax} ${translations[currentLang].pax_suffix}</span>
                                 <button class="fleet-rent-btn" onclick="rentVehicle('${title}')">
                                     <span>${translations[currentLang].rent_btn}</span>
                                 </button>
@@ -903,18 +943,17 @@
                     </div>
                 `;
             });
-        });
+        }
 
-        // الرحلات المباشرة
-        db.collection("destinations").onSnapshot({ includeMetadataChanges: false }, snapshot => {
+        function renderDestinations() {
             const container = document.getElementById('destinationsContainer');
             container.innerHTML = "";
-            if (snapshot.empty) {
+            if (!cachedDestinationsDocs || cachedDestinationsDocs.length === 0) {
                 container.innerHTML = `<p style="text-align:center; grid-column:1/-1; padding:20px; color:gray;">Keine Routen gefunden.</p>`;
                 return;
             }
-            snapshot.forEach(doc => {
-                const data = doc.data();
+            cachedDestinationsDocs.forEach(({ id, data }) => {
+                // استدعاء العنوان والوصف المترجم من فيربس بحسب اللغة النشطة
                 const title = data[`title_${currentLang.toLowerCase()}`] || data.title_de || data.title;
                 const desc = data[`desc_${currentLang.toLowerCase()}`] || data.desc_de || data.desc || "";
                 const from = data.from || "Innsbruck";
@@ -925,8 +964,7 @@
                 const card = document.createElement('div');
                 card.className = "dest-card";
                 card.innerHTML = `
-                    <!-- زر المشاركة في أقصى اليسار فوق الصورة -->
-                    <button class="card-share-btn" title="Route teilen" onclick="shareCustomItem('dest', '${doc.id}')">
+                    <button class="card-share-btn" title="Route teilen" onclick="shareCustomItem('dest', '${id}')">
                         <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
                     </button>
                     <div class="dest-price">€${price}</div>
@@ -949,9 +987,42 @@
                 `;
                 container.appendChild(card);
             });
+        }
+
+        // 9. الاستماع المباشر لقاعدة البيانات مع تحديث الذاكرة ورسم البطاقات
+
+        // إعدادات الهوية والكوفر
+        db.collection("settings").doc("general").onSnapshot({ includeMetadataChanges: false }, doc => {
+            if (doc.exists) {
+                const d = doc.data();
+                if (d.siteName) {
+                    document.querySelectorAll('.site-name-text').forEach(el => el.innerText = d.siteName);
+                }
+                if (d.logoUrl) {
+                    document.querySelectorAll('.site-logo').forEach(el => el.src = d.logoUrl);
+                    const appleIcon = document.getElementById('appleTouchIcon');
+                    if (appleIcon) appleIcon.href = d.logoUrl;
+                }
+                if (d.heroBgUrl) {
+                    const hero = document.querySelector('.hero');
+                    if (hero) hero.style.backgroundImage = `url('${d.heroBgUrl}')`;
+                }
+            }
         });
 
-        // 9. Service Worker (PWA)
+        // سيارات الأسطول
+        db.collection("vehicles").onSnapshot({ includeMetadataChanges: false }, snapshot => {
+            cachedVehiclesDocs = snapshot.docs.map(doc => ({ id: doc.id, data: doc.data() }));
+            renderVehicles();
+        });
+
+        // الرحلات والوجهات
+        db.collection("destinations").onSnapshot({ includeMetadataChanges: false }, snapshot => {
+            cachedDestinationsDocs = snapshot.docs.map(doc => ({ id: doc.id, data: doc.data() }));
+            renderDestinations();
+        });
+
+        // 10. Service Worker (PWA)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js')
