@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alpi Taxi | Premium Transfer & Limousinenservice Innsbruck</title>
     
-    <!-- ربط ملفات PWA والـ Manifest لـ Vercel والهواتف -->
+    <!-- PWA & Mobile Meta -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#d97706">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_192,q_auto,f_auto/v1786716325/ecuwdts2f0797fnddg4z.png">
+    <link rel="apple-touch-icon" id="appleTouchIcon" href="https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_192,q_auto,f_auto/v1786716325/ecuwdts2f0797fnddg4z.png">
 
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -42,12 +42,12 @@
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
 
-        h1 { font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.1; font-weight: 700; margin-bottom: 1rem; }
+        h1 { font-size: clamp(1.8rem, 4.5vw, 3.2rem); line-height: 1.15; font-weight: 700; margin-bottom: 1rem; }
         
         h2 { 
-            font-size: clamp(1.75rem, 4vw, 2.5rem); 
+            font-size: clamp(1.6rem, 3.8vw, 2.3rem); 
             font-weight: 700; 
-            margin-bottom: 2rem; 
+            margin-bottom: 1.8rem; 
             text-align: center;
             position: relative;
             padding-bottom: 8px;
@@ -59,34 +59,34 @@
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 55px;
-            height: 3.5px;
+            width: 50px;
+            height: 3px;
             background: linear-gradient(90deg, var(--primary) 0%, #fbbf24 100%);
             border-radius: 10px;
             box-shadow: 0 1px 4px rgba(217, 119, 6, 0.3);
         }
 
-        h3 { font-size: 1.15rem; font-weight: 600; margin-bottom: 0.5rem; }
-        p { font-size: 1rem; color: var(--text-light); }
+        h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.4rem; }
+        p { font-size: 0.95rem; color: var(--text-light); }
 
         /* Header */
         header {
             position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.88);
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             border-bottom: var(--border-silver); 
             box-shadow: var(--shadow-silver);
             border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-            padding: 0.6rem 5%; 
+            padding: 0.55rem 5%; 
             display: flex; justify-content: space-between; align-items: center;
         }
-        .logo { font-size: 1.4rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
-        .site-logo { width: 38px; height: 38px; border-radius: 50%; object-fit: contain; background-color: #ffffff; padding: 2px; border: var(--border); }
+        .logo { font-size: 1.35rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+        .site-logo { width: 36px; height: 36px; border-radius: 50%; object-fit: contain; background-color: #ffffff; padding: 2px; border: var(--border); }
         
         .lang-container { position: relative; }
         .lang-btn {
             background: var(--surface); border: var(--border-silver); box-shadow: var(--shadow-silver);
-            border-radius: 50px; padding: 6px 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.9rem;
+            border-radius: 50px; padding: 5px 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.88rem;
             transition: var(--transition);
         }
         .lang-btn:hover { background: #f1f5f9; }
@@ -97,298 +97,193 @@
             transition: var(--transition); z-index: 100;
         }
         .lang-dropdown.show { opacity: 1; visibility: visible; transform: translateY(0); }
-        .lang-option { padding: 10px 20px; cursor: pointer; font-weight: 500; font-size: 0.9rem; transition: background 0.2s; }
+        .lang-option { padding: 8px 18px; cursor: pointer; font-weight: 500; font-size: 0.88rem; transition: background 0.2s; }
         .lang-option:hover { background: #f1f5f9; }
 
-        /* Hero Section */
+        /* Hero Section (ديناميكي الخلفية) */
         .hero {
-            max-width: 1400px; margin: 90px auto 0; width: 92%;
+            max-width: 1400px; margin: 85px auto 0; width: 92%;
             background: url('https://images.pexels.com/photos/1370603/pexels-photo-1370603.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') center/cover no-repeat;
             border-radius: var(--radius-lg); overflow: hidden; position: relative;
-            display: flex; align-items: center; justify-content: center; min-height: 60vh;
-            border: var(--border-silver); box-shadow: var(--shadow);
+            display: flex; align-items: center; justify-content: center; min-height: 56vh;
+            border: var(--border-silver); box-shadow: var(--shadow); transition: background-image 0.5s ease;
         }
-        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.3)); }
-        .hero-content { position: relative; z-index: 2; text-align: left; color: white; padding: 3rem; width: 100%; max-width: 800px; margin-right: auto; }
-        .hero-content p { color: #f1f5f9; font-size: 1.1rem; margin-bottom: 2rem; }
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.35)); }
+        .hero-content { position: relative; z-index: 2; text-align: left; color: white; padding: 2.5rem; width: 100%; max-width: 800px; margin-right: auto; }
+        .hero-content p { color: #f1f5f9; font-size: 1.05rem; margin-bottom: 1.8rem; }
 
         /* Booking Card */
         .booking-card {
             background: linear-gradient(rgba(255,255,255,0.95), rgba(255,255,255,0.95)), 
                         url('https://images.pexels.com/photos/112674/pexels-photo-112674.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') center/cover;
-            max-width: 900px; margin: 20px auto 60px; position: relative; z-index: 10;
-            border-radius: var(--radius-md); padding: 2rem; 
+            max-width: 900px; margin: 20px auto 50px; position: relative; z-index: 10;
+            border-radius: var(--radius-md); padding: 1.8rem; 
             border: var(--border-silver); box-shadow: var(--shadow-hover);
             transition: box-shadow 0.4s ease, border-color 0.4s ease;
         }
-        .booking-form { display: flex; flex-direction: column; gap: 1rem; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .booking-form { display: flex; flex-direction: column; gap: 0.9rem; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
         .input-group { position: relative; width: 100%; display: flex; flex-direction: column; min-width: 0; }
-        .input-group label { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem; color: var(--text-main); }
+        .input-group label { font-size: 0.82rem; font-weight: 600; margin-bottom: 0.35rem; color: var(--text-main); }
         
         .input-wrapper { 
             display: flex; align-items: center; background: var(--surface); 
             border: var(--border-silver); box-shadow: var(--shadow-silver); 
-            border-radius: var(--radius-sm); padding: 0.7rem 1rem; transition: var(--transition); 
+            border-radius: var(--radius-sm); padding: 0.65rem 0.9rem; transition: var(--transition); 
             position: relative; cursor: pointer; min-width: 0;
         }
         .input-wrapper.active { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.15); }
-        
-        .input-icon { width: 18px; height: 18px; fill: #94a3b8; margin-right: 10px; flex-shrink: 0; }
+        .input-icon { width: 17px; height: 17px; fill: #94a3b8; margin-right: 8px; flex-shrink: 0; }
         
         .custom-select-trigger {
             display: flex; justify-content: space-between; align-items: center; width: 100%;
-            min-width: 0; font-size: 0.95rem; color: var(--text-main); user-select: none;
+            min-width: 0; font-size: 0.92rem; color: var(--text-main); user-select: none;
         }
         
-        .selected-value {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            flex: 1;
-            min-width: 0;
-            display: block;
-        }
-
-        .select-arrow { width: 12px; height: 12px; fill: #94a3b8; transition: transform 0.3s; flex-shrink: 0; margin-left: 6px; }
+        .selected-value { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; min-width: 0; display: block; }
+        .select-arrow { width: 11px; height: 11px; fill: #94a3b8; transition: transform 0.3s; flex-shrink: 0; margin-left: 6px; }
         .input-wrapper.active .select-arrow { transform: rotate(180deg); }
         
         .custom-options {
             position: absolute; top: calc(100% + 5px); left: 0; right: 0;
             background: var(--surface); border: var(--border-silver); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
             border-radius: var(--radius-sm); z-index: 500;
-            max-height: 250px; overflow-y: auto;
+            max-height: 240px; overflow-y: auto;
             opacity: 0; visibility: hidden; transform: translateY(-10px); transition: var(--transition);
         }
         .input-wrapper.active .custom-options { opacity: 1; visibility: visible; transform: translateY(0); }
         
-        .custom-optgroup { background: #f1f5f9; padding: 6px 12px; font-size: 0.75rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; position: sticky; top: 0; }
-        .custom-option { padding: 9px 12px; font-size: 0.9rem; color: var(--text-main); cursor: pointer; transition: background 0.2s; border-bottom: 1px solid #f8fafc; }
+        .custom-optgroup { background: #f1f5f9; padding: 5px 10px; font-size: 0.75rem; font-weight: 800; color: var(--primary); text-transform: uppercase; position: sticky; top: 0; }
+        .custom-option { padding: 8px 10px; font-size: 0.88rem; color: var(--text-main); cursor: pointer; transition: background 0.2s; border-bottom: 1px solid #f8fafc; }
         .custom-option:last-child { border-bottom: none; }
         .custom-option:hover { background: #fffbeb; color: var(--primary); font-weight: 600; }
 
         input[type="date"], input[type="time"] { 
-            width: 100%; border: none; outline: none; font-size: 0.95rem; background: transparent; 
+            width: 100%; border: none; outline: none; font-size: 0.92rem; background: transparent; 
             color: var(--text-main); cursor: pointer;
         }
         
         .booking-btn {
-            background: var(--primary); color: white; border: none; padding: 1rem 2rem; border-radius: var(--radius-sm);
-            font-size: 1.05rem; font-weight: 700; cursor: pointer; transition: var(--transition); border: var(--border-silver);
-            margin-top: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px;
+            background: var(--primary); color: white; border: none; padding: 0.9rem 1.8rem; border-radius: var(--radius-sm);
+            font-size: 1rem; font-weight: 700; cursor: pointer; transition: var(--transition); border: var(--border-silver);
+            margin-top: 0.4rem; text-transform: uppercase; letter-spacing: 0.5px;
         }
         .booking-btn:hover { background: var(--primary-hover); transform: translateY(-2px); }
 
         /* Sections */
-        section { padding: 4rem 5%; max-width: 1400px; margin: 0 auto; }
+        section { padding: 3.5rem 5%; max-width: 1400px; margin: 0 auto; }
 
         /* Services Grid */
-        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.9rem; }
         .service-card {
-            background: var(--surface); padding: 1.5rem 1rem; border-radius: var(--radius-md);
+            background: var(--surface); padding: 1.3rem 0.9rem; border-radius: var(--radius-md);
             border: var(--border-silver); box-shadow: var(--shadow-silver); transition: var(--transition);
             text-align: center; display: flex; flex-direction: column; align-items: center;
         }
-        .service-card:hover { transform: translateY(-5px); }
-        .service-icon { width: 45px; height: 45px; margin: 0 auto 1rem; background: #fffbeb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); }
-        .service-icon svg { width: 20px; height: 20px; fill: currentColor; }
-        .service-card h3 { font-size: 1.05rem; }
-        .service-card p { font-size: 0.85rem; line-height: 1.4; }
+        .service-card:hover { transform: translateY(-4px); }
+        .service-icon { width: 42px; height: 42px; margin: 0 auto 0.8rem; background: #fffbeb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); }
+        .service-icon svg { width: 19px; height: 19px; fill: currentColor; }
+        .service-card h3 { font-size: 0.98rem; }
+        .service-card p { font-size: 0.82rem; line-height: 1.35; }
 
-        /* Fleet Grid */
-        .fleet-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
-        .fleet-card { background: var(--surface); border-radius: var(--radius-md); overflow: hidden; border: var(--border-silver); box-shadow: var(--shadow-silver); transition: var(--transition); animation: fadeIn 0.4s ease; }
-        .fleet-card img { width: 100%; height: 250px; object-fit: cover; }
-        .fleet-info { padding: 1.5rem; border-top: var(--border-silver); background: var(--surface); }
+        /* Fleet Grid (Desktop) */
+        .fleet-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.8rem; }
+        .fleet-card { background: var(--surface); border-radius: var(--radius-md); overflow: hidden; border: var(--border-silver); box-shadow: var(--shadow-silver); transition: var(--transition); }
+        .fleet-card img { width: 100%; height: 230px; object-fit: cover; }
+        .fleet-info { padding: 1.2rem; border-top: var(--border-silver); background: var(--surface); }
         
-        .fleet-footer-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 1rem;
-            gap: 8px;
-        }
-
-        .fleet-meta { 
-            display: inline-block; 
-            background: #f1f5f9; 
-            padding: 4px 12px; 
-            border-radius: 50px; 
-            font-size: 0.85rem; 
-            font-weight: 600; 
-            border: var(--border-silver); 
-            color: var(--text-main); 
-        }
+        .fleet-footer-row { display: flex; align-items: center; justify-content: space-between; margin-top: 0.8rem; gap: 8px; }
+        .fleet-meta { display: inline-block; background: #f1f5f9; padding: 3px 10px; border-radius: 50px; font-size: 0.8rem; font-weight: 600; border: var(--border-silver); color: var(--text-main); }
 
         .fleet-rent-btn {
-            background: #fffbeb;
-            color: var(--primary);
-            border: 0.5px solid var(--primary);
-            padding: 5px 14px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-            white-space: nowrap;
-            flex-shrink: 0;
-            box-shadow: 0 1px 3px rgba(217, 119, 6, 0.15);
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
+            background: #fffbeb; color: var(--primary); border: 0.5px solid var(--primary);
+            padding: 4px 12px; border-radius: 50px; font-size: 0.78rem; font-weight: 700;
+            cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0;
+            box-shadow: 0 1px 3px rgba(217, 119, 6, 0.15); display: inline-flex; align-items: center; gap: 4px;
         }
+        .fleet-rent-btn:hover { background: var(--primary); color: #ffffff; transform: translateY(-1px); }
 
-        .fleet-rent-btn:hover {
-            background: var(--primary);
-            color: #ffffff;
-            transform: translateY(-1px);
-            box-shadow: 0 3px 8px rgba(217, 119, 6, 0.3);
-        }
-
-        /* Destinations Grid */
-        .dest-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-        .dest-card { background: var(--surface); border-radius: var(--radius-md); overflow: hidden; border: var(--border-silver); box-shadow: var(--shadow-silver); position: relative; transition: var(--transition); display: flex; flex-direction: column; animation: fadeIn 0.5s ease; }
-        .dest-card:hover { transform: translateY(-4px); }
-        .dest-card img { width: 100%; height: 210px; object-fit: cover; }
-        .dest-price { position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.95); padding: 6px 14px; border-radius: 50px; font-weight: 700; color: var(--primary); border: var(--border-silver); box-shadow: var(--shadow-silver); backdrop-filter: blur(4px); z-index: 2; }
+        /* Destinations Grid (Desktop) */
+        .dest-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.4rem; }
+        .dest-card { background: var(--surface); border-radius: var(--radius-md); overflow: hidden; border: var(--border-silver); box-shadow: var(--shadow-silver); position: relative; transition: var(--transition); display: flex; flex-direction: column; }
+        .dest-card:hover { transform: translateY(-3px); }
+        .dest-card img { width: 100%; height: 200px; object-fit: cover; }
         
-        .dest-info { padding: 1.4rem; border-top: var(--border-silver); background: var(--surface); flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .dest-price { 
+            position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.95);
+            padding: 4px 12px; border-radius: 50px; font-weight: 800; color: var(--primary);
+            border: var(--border-silver); box-shadow: var(--shadow-silver); backdrop-filter: blur(4px); z-index: 2; font-size: 0.88rem;
+        }
         
-        .dest-header-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 0.3rem;
-        }
-
-        .dest-header-row h3 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 0;
-            flex: 1;
-        }
+        .dest-info { padding: 1.2rem; border-top: var(--border-silver); background: var(--surface); flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .dest-header-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 0.2rem; }
+        .dest-header-row h3 { font-size: 1.05rem; font-weight: 700; color: var(--text-main); margin-bottom: 0; flex: 1; }
 
         .dest-book-btn {
-            background: #fffbeb;
-            color: var(--primary);
-            border: 0.5px solid var(--primary);
-            padding: 5px 14px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-            white-space: nowrap;
-            flex-shrink: 0;
-            box-shadow: 0 1px 3px rgba(217, 119, 6, 0.15);
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
+            background: #fffbeb; color: var(--primary); border: 0.5px solid var(--primary);
+            padding: 4px 12px; border-radius: 50px; font-size: 0.78rem; font-weight: 700;
+            cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0;
+            box-shadow: 0 1px 3px rgba(217, 119, 6, 0.15); display: inline-flex; align-items: center; gap: 4px;
         }
+        .dest-book-btn:hover { background: var(--primary); color: #ffffff; transform: translateY(-1px); }
 
-        .dest-book-btn:hover {
-            background: var(--primary);
-            color: #ffffff;
-            transform: translateY(-1px);
-            box-shadow: 0 3px 8px rgba(217, 119, 6, 0.3);
-        }
-
-        .dest-detail-text {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            line-height: 1.45;
-            margin-top: 0.5rem;
-            margin-bottom: 0.8rem;
-        }
+        .dest-detail-text { font-size: 0.82rem; color: var(--text-light); line-height: 1.4; margin: 0.4rem 0 0.7rem; }
 
         .route-badge-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-            background: #f8fafc;
-            padding: 8px 12px;
-            border-radius: var(--radius-sm);
-            border: var(--border-silver);
+            display: flex; align-items: center; justify-content: space-between; gap: 6px;
+            background: #f8fafc; padding: 6px 10px; border-radius: var(--radius-sm); border: var(--border-silver);
         }
+        .route-pill { font-size: 0.78rem; font-weight: 600; color: var(--text-light); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 45%; }
+        .route-pill.dest-target { color: var(--text-main); font-weight: 700; }
+        .route-arrow { display: flex; align-items: center; color: var(--primary); flex-shrink: 0; }
+        .route-arrow svg { width: 15px; height: 15px; }
 
-        .route-pill {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-light);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 45%;
-        }
-
-        .route-pill.dest-target {
-            color: var(--text-main);
-            font-weight: 700;
-        }
-
-        .route-arrow {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            flex-shrink: 0;
-        }
-
-        .route-arrow svg { width: 16px; height: 16px; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .loader-spinner {
-            display: none; text-align: center; padding: 20px; font-weight: bold; color: var(--primary);
-        }
-
-        /* Footer */
+        /* Footer (الطبقة السوداء الضبابية الفخمة) */
         footer {
-            background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.85)), url('https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716753/hj9i0elyweeojw1jlahn.png') center/cover no-repeat;
-            color: #ffffff; max-width: 92%; margin: 2rem auto; border-radius: var(--radius-lg); text-align: center; border: var(--border-silver); box-shadow: var(--shadow-silver); position: relative; overflow: hidden;
+            background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.92)), 
+                        url('https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716753/hj9i0elyweeojw1jlahn.png') center/cover no-repeat;
+            color: #ffffff; max-width: 92%; margin: 2rem auto; border-radius: var(--radius-lg); text-align: center;
+            border: var(--border-silver); box-shadow: var(--shadow-silver); position: relative; overflow: hidden;
             aspect-ratio: 16 / 9; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1.2rem 5%;
         }
-        .footer-logo { display: inline-flex; align-items: center; gap: 10px; font-size: 1.5rem; font-weight: 800; margin-bottom: 0.3rem; color: #ffffff;}
-        footer p { color: #f8fafc; font-weight: 400; font-size: 0.88rem;}
-        
-        .footer-vat {
-            font-size: 0.78rem;
-            color: #cbd5e1;
-            margin-top: 4px;
-            font-style: italic;
-        }
-
-        .footer-phone { font-size: 1.05rem; font-weight: bold; margin-top: 8px; color: var(--primary); display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.1); padding: 6px 14px; border-radius: 50px; border: var(--border-silver); backdrop-filter: blur(4px);}
+        .footer-logo { display: inline-flex; align-items: center; gap: 8px; font-size: 1.35rem; font-weight: 800; margin-bottom: 0.25rem; color: #ffffff;}
+        footer p { color: #f8fafc; font-weight: 400; font-size: 0.85rem;}
+        .footer-vat { font-size: 0.75rem; color: #cbd5e1; margin-top: 3px; font-style: italic; }
+        .footer-phone { font-size: 1rem; font-weight: bold; margin-top: 6px; color: var(--primary); display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 50px; border: var(--border-silver); backdrop-filter: blur(4px);}
 
         /* WhatsApp Floating Button */
         .whatsapp-btn {
             position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white;
-            width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
             box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3); z-index: 1000; transition: var(--transition); border: 2px solid #ffffff;
         }
         .whatsapp-btn:hover { transform: scale(1.05); }
-        .whatsapp-btn svg { width: 26px; height: 26px; fill: white; }
+        .whatsapp-btn svg { width: 24px; height: 24px; fill: white; }
 
+        /* 📱 Mobile Specific Enhancements (تصغير الأحجام لتناسب الهاتف بامتياز) */
         @media (max-width: 768px) {
-            .form-row.locations { grid-template-columns: 1fr; gap: 1rem; }
-            .form-row.split { grid-template-columns: 1fr 1fr; gap: 0.8rem; }
-            .booking-card { margin: 20px 5% 20px; width: 90%; padding: 1.5rem; }
-            .hero { min-height: 50vh; margin-top: 80px; }
-            .hero-content { padding: 2rem; }
-            section { padding: 2rem 5%; }
-            .dest-grid { grid-template-columns: 1fr; }
+            .form-row.locations { grid-template-columns: 1fr; gap: 0.8rem; }
+            .form-row.split { grid-template-columns: 1fr 1fr; gap: 0.7rem; }
+            .booking-card { margin: 15px 4% 15px; width: 92%; padding: 1.2rem; }
+            .hero { min-height: 48vh; margin-top: 75px; }
+            .hero-content { padding: 1.5rem; }
+            section { padding: 1.8rem 4%; }
+            
+            /* تقليص أحجام البطاقات في الهاتف */
+            .dest-grid { grid-template-columns: 1fr; gap: 1rem; }
+            .dest-card img { height: 165px; } /* تصغير ارتفاع صورة الرحلة */
+            .fleet-card img { height: 175px; } /* تصغير ارتفاع صورة السيارة */
+            .dest-info, .fleet-info { padding: 0.9rem; } /* تقليل الحشوة */
+            .dest-header-row h3 { font-size: 0.95rem; }
+            .dest-detail-text { font-size: 0.78rem; margin: 0.3rem 0 0.6rem; }
+            .route-badge-container { padding: 5px 8px; font-size: 0.72rem; }
+            
             footer { aspect-ratio: 16 / 9; padding: 0.8rem; }
             .footer-logo { font-size: 1.15rem; }
-            .site-logo { width: 32px; height: 32px; }
-            footer p { font-size: 0.78rem; }
-            .footer-vat { font-size: 0.7rem; }
-            .footer-phone { font-size: 0.95rem; margin-top: 4px; padding: 5px 10px;}
-            input[type="date"], input[type="time"], .custom-select-trigger { font-size: 0.85rem; }
-            .route-pill { font-size: 0.78rem; }
-            .dest-header-row h3 { font-size: 1rem; }
+            .site-logo { width: 30px; height: 30px; }
+            footer p { font-size: 0.75rem; }
+            .footer-phone { font-size: 0.9rem; margin-top: 3px; padding: 4px 10px; }
+            input[type="date"], input[type="time"], .custom-select-trigger { font-size: 0.82rem; }
         }
     </style>
 </head>
@@ -397,7 +292,8 @@
     <!-- Header -->
     <header>
         <a href="#" class="logo">
-            <img src="https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716325/ecuwdts2f0797fnddg4z.png" alt="Alpi Taxi Logo" class="site-logo" loading="lazy"> Alpi Taxi
+            <img src="https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716325/ecuwdts2f0797fnddg4z.png" alt="Alpi Taxi Logo" class="site-logo" loading="lazy">
+            <span class="site-name-text">Alpi Taxi</span>
         </a>
         <div class="lang-container">
             <button class="lang-btn" id="langToggle">
@@ -423,9 +319,8 @@
     <!-- Booking Card -->
     <div class="booking-card" id="bookingCard">
         <div class="booking-form">
-            <!-- Row 1: Locations -->
+            <!-- Locations -->
             <div class="form-row locations">
-                <!-- Abholort (Pickup) -->
                 <div class="input-group">
                     <label data-i18n="pickup_label">Abholort</label>
                     <div class="input-wrapper custom-dropdown-wrapper" id="pickupWrapper">
@@ -476,7 +371,6 @@
                     </div>
                 </div>
                 
-                <!-- Zielort (Dropoff) -->
                 <div class="input-group">
                     <label data-i18n="dropoff_label">Zielort</label>
                     <div class="input-wrapper custom-dropdown-wrapper" id="dropoffWrapper">
@@ -528,7 +422,7 @@
                 </div>
             </div>
 
-            <!-- Row 2: Date & Time -->
+            <!-- Date & Time -->
             <div class="form-row split">
                 <div class="input-group">
                     <label data-i18n="date_label">Datum</label>
@@ -546,7 +440,7 @@
                 </div>
             </div>
 
-            <!-- Row 3: Car & Passengers -->
+            <!-- Vehicle & Pax -->
             <div class="form-row split">
                 <div class="input-group">
                     <label data-i18n="car_label">Fahrzeug</label>
@@ -580,7 +474,6 @@
                 </div>
             </div>
 
-            <!-- Button Row -->
             <button class="booking-btn" onclick="sendBookingToWhatsApp()" data-i18n="book_btn">Jetzt Buchen</button>
         </div>
     </div>
@@ -612,30 +505,25 @@
         </div>
     </section>
 
-    <!-- Fleet Section (ديناميكي من فايربيس) -->
+    <!-- Fleet Section (Live Realtime Firestore) -->
     <section>
         <h2 data-i18n="fleet_title">Unsere Flotte</h2>
         <div class="fleet-grid" id="fleetContainer"></div>
     </section>
 
-    <!-- Destinations & Prices (تحميل دفعات لا نهائي) -->
+    <!-- Destinations & Prices (Live Realtime Firestore) -->
     <section>
         <h2 data-i18n="dest_title">Beliebte Ziele & Preise</h2>
         <div class="dest-grid" id="destinationsContainer"></div>
-        
-        <!-- مستشعر النزول لتحميل المزيد تلقائياً -->
-        <div id="infiniteScrollTrigger" style="height: 30px; margin-top: 10px;"></div>
-        <div class="loader-spinner" id="infiniteLoader">⏳ Weitere Routen werden geladen...</div>
     </section>
 
     <!-- Footer -->
     <footer>
         <div class="footer-logo">
-            <img src="https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716325/ecuwdts2f0797fnddg4z.png" alt="Alpi Taxi Logo" class="site-logo" loading="lazy"> Alpi Taxi
+            <img src="https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716325/ecuwdts2f0797fnddg4z.png" alt="Alpi Taxi Logo" class="site-logo" loading="lazy">
+            <span class="site-name-text">Alpi Taxi</span>
         </div>
         <p data-i18n="footer_text">Dein zuverlässiger Partner für Taxi & Limousinen-Service in Innsbruck.</p>
-        
-        <!-- نص الضريبة الوحيد المعتمد في الفوتر -->
         <p class="footer-vat" data-i18n="vat_inc">* Alle Preise inkl. 10% MwSt.</p>
         
         <a href="tel:+436763356300" class="footer-phone">
@@ -650,7 +538,7 @@
         <svg viewBox="0 0 24 24"><path d="M12.031 2C6.486 2 2 6.485 2 12.031c0 1.764.444 3.491 1.285 5.04L2 22l5.064-1.258c1.498.775 3.167 1.184 4.887 1.184h.001c5.545 0 10.031-4.485 10.031-10.031S17.577 2 12.031 2zm0 18.261c-1.488 0-2.946-.386-4.225-1.116l-.303-.173-3.136.779.839-3.003-.196-.302c-.812-1.253-1.24-2.709-1.24-4.226 0-4.629 3.766-8.395 8.396-8.395s8.395 3.766 8.395 8.395-3.766 8.395-8.395 8.395zm4.61-6.29c-.252-.126-1.492-.736-1.724-.82-.232-.084-.401-.126-.57.126-.169.252-.653.82-.8.988-.148.169-.296.19-.548.064-.252-.126-1.065-.392-2.027-1.25-.748-.668-1.254-1.494-1.402-1.746-.148-.252-.016-.388.11-.514.113-.113.252-.294.378-.441.126-.148.169-.252.252-.421.084-.169.042-.316-.021-.442-.063-.126-.57-1.373-.781-1.88-.205-.494-.413-.427-.57-.435-.148-.008-.316-.008-.485-.008-.169 0-.443.063-.675.316-.232.252-.886.865-.886 2.108 0 1.243.907 2.446 1.034 2.614.126.169 1.782 2.721 4.315 3.814.603.26 1.073.415 1.44.532.605.191 1.156.163 1.593.099.493-.073 1.492-.61 1.703-1.199.211-.59.211-1.095.148-1.199-.064-.105-.233-.169-.485-.295z"/></svg>
     </a>
 
-    <!-- Frontend Logic -->
+    <!-- Frontend Live Logic -->
     <script>
         // 1. Firebase Initializing
         const firebaseConfig = {
@@ -777,7 +665,7 @@
             window.open(`https://wa.me/436763356300?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
-        // 6. Translations Object
+        // 6. Translations
         const translations = {
             DE: {
                 hero_title: "Premium Taxi & Limousinenservice in Innsbruck",
@@ -791,7 +679,6 @@
                 srv_3_title: "Hochzeiten", srv_3_desc: "Eleganz für Ihre besonderen Momente.",
                 srv_4_title: "Chauffeur", srv_4_desc: "Mieten Sie einen Wagen flexibel nach Stunden.",
                 fleet_title: "Unsere Flotte", fleet_desc: "Geräumig, sicher und komfortabel für Gruppen.",
-                pax_8: "Max. 8 Passagiere", pax_7: "Max. 7 Passagiere",
                 dest_title: "Beliebte Ziele & Preise", vat_inc: "* Alle Preise inkl. 10% MwSt.",
                 footer_text: "Dein zuverlässiger Partner für Taxi & Limousinen-Service in Innsbruck."
             },
@@ -807,7 +694,6 @@
                 srv_3_title: "Weddings", srv_3_desc: "Elegance for your special moments.",
                 srv_4_title: "Chauffeur", srv_4_desc: "Rent a car flexibly by the hour.",
                 fleet_title: "Our Fleet", fleet_desc: "Spacious, safe, and comfortable for groups.",
-                pax_8: "Max 8 Passengers", pax_7: "Max 7 Passengers",
                 dest_title: "Popular Destinations & Prices", vat_inc: "* All prices include 10% VAT.",
                 footer_text: "Your reliable partner for Taxi & Limousine service in Innsbruck."
             },
@@ -823,7 +709,6 @@
                 srv_3_title: "Bruiloften", srv_3_desc: "Elegantie voor uw speciale momenten.",
                 srv_4_title: "Chauffeur", srv_4_desc: "Huur flexibel een auto per uur.",
                 fleet_title: "Ons Wagenpark", fleet_desc: "Ruim, veilig en comfortabel voor groepen.",
-                pax_8: "Max 8 Passagiers", pax_7: "Max 7 Passagiers",
                 dest_title: "Populaire Bestemmingen & Prijzen", vat_inc: "* Alle prijzen zijn inclusief 10% btw.",
                 footer_text: "Uw betrouwbare partner voor Taxi & Limousineservice in Innsbruck."
             }
@@ -851,151 +736,107 @@
                 const k = el.getAttribute('data-i18n');
                 if(translations[lang][k]) el.innerText = translations[lang][k];
             });
-            loadFleetData();
-            resetAndReloadDestinations();
         }
 
-        // 7. Dynamic Fleet Loading (من فايربيس)
-        function loadFleetData() {
-            db.collection("vehicles").get().then(snapshot => {
-                const container = document.getElementById('fleetContainer');
-                container.innerHTML = "";
-                if(snapshot.empty) {
-                    container.innerHTML = `<p style="text-align:center; grid-column:1/-1;">Keine Fahrzeuge verfügbar.</p>`;
-                    return;
+        // 7. Live Realtime Listeners (المزامنة اللحظية بدون إعادة تحميل)
+        
+        // أ) إعدادات الهوية وخلفية الكوفر (Realtime Settings)
+        db.collection("settings").doc("general").onSnapshot(doc => {
+            if (doc.exists) {
+                const d = doc.data();
+                if (d.siteName) {
+                    document.querySelectorAll('.site-name-text').forEach(el => el.innerText = d.siteName);
                 }
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    const title = data.name || "Mercedes";
-                    const desc = data[`desc_${currentLang.toLowerCase()}`] || data.desc_de || data.desc || "";
-                    const pax = data.pax || 8;
-                    const img = data.imageUrl || "https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716414/bl2wzjvwiuocspelj562.png";
-                    
-                    container.innerHTML += `
-                        <div class="fleet-card">
-                            <img src="${img}" alt="${title}" loading="lazy">
-                            <div class="fleet-info">
-                                <h3>${title}</h3>
-                                <p>${desc}</p>
-                                <div class="fleet-footer-row">
-                                    <span class="fleet-meta">Max. ${pax} ${currentLang === 'DE' ? 'Passagiere' : (currentLang === 'EN' ? 'Passengers' : 'Passagiers')}</span>
-                                    <button class="fleet-rent-btn" onclick="rentVehicle('${title}')">
-                                        <span>${translations[currentLang].rent_btn}</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-            }).catch(() => {
-                document.getElementById('fleetContainer').innerHTML = `<p style="text-align:center; grid-column:1/-1;">Fehler beim Laden der Flotte.</p>`;
-            });
-        }
-
-        // 8. Infinite Scroll & Batched Loading for Destinations (تم حل مشكلة المساحة الفارغة)
-        const BATCH_SIZE = 4;
-        let lastVisibleDoc = null;
-        let isFetching = false;
-        let hasMoreDocs = true;
-
-        function resetAndReloadDestinations() {
-            lastVisibleDoc = null;
-            hasMoreDocs = true;
-            document.getElementById('destinationsContainer').innerHTML = "";
-            loadNextDestinationsBatch();
-        }
-
-        function loadNextDestinationsBatch() {
-            if (isFetching || !hasMoreDocs) return;
-            isFetching = true;
-            document.getElementById('infiniteLoader').style.display = "block";
-
-            let query = db.collection("destinations").limit(BATCH_SIZE);
-            if (lastVisibleDoc) {
-                query = query.startAfter(lastVisibleDoc);
+                if (d.logoUrl) {
+                    document.querySelectorAll('.site-logo').forEach(el => el.src = d.logoUrl);
+                }
+                if (d.heroBgUrl) {
+                    const hero = document.querySelector('.hero');
+                    if (hero) hero.style.backgroundImage = `url('${d.heroBgUrl}')`;
+                }
             }
+        });
 
-            query.get().then(snapshot => {
-                isFetching = false;
-                document.getElementById('infiniteLoader').style.display = "none";
-
-                const container = document.getElementById('destinationsContainer');
-
-                // مسح أي عناصر أو فراغات في التحميل الأولي فور وصول البيانات
-                if (!lastVisibleDoc) {
-                    container.innerHTML = "";
-                }
-
-                if (snapshot.empty) {
-                    hasMoreDocs = false;
-                    if (!lastVisibleDoc) {
-                        container.innerHTML = `<p style="text-align:center; grid-column:1/-1; padding:20px;">Keine Routen gefunden.</p>`;
-                    }
-                    return;
-                }
-
-                lastVisibleDoc = snapshot.docs[snapshot.docs.length - 1];
-                if (snapshot.docs.length < BATCH_SIZE) {
-                    hasMoreDocs = false;
-                }
-
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    const title = data[`title_${currentLang.toLowerCase()}`] || data.title_de || data.title;
-                    const desc = data[`desc_${currentLang.toLowerCase()}`] || data.desc_de || data.desc || "";
-                    const from = data.from || "Innsbruck";
-                    const to = data.to || "Zielort";
-                    const price = data.price || 100;
-                    const img = data.imageUrl || "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=600&q=80";
-
-                    const card = document.createElement('div');
-                    card.className = "dest-card";
-                    card.innerHTML = `
-                        <div class="dest-price">€${price}</div>
+        // ب) أسطول السيارات المباشر (Realtime Fleet)
+        db.collection("vehicles").onSnapshot(snapshot => {
+            const container = document.getElementById('fleetContainer');
+            container.innerHTML = "";
+            if (snapshot.empty) {
+                container.innerHTML = `<p style="text-align:center; grid-column:1/-1; color:gray;">Keine Fahrzeuge verfügbar.</p>`;
+                return;
+            }
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const title = data.name || "Mercedes";
+                const desc = data[`desc_${currentLang.toLowerCase()}`] || data.desc_de || data.desc || "";
+                const pax = data.pax || 8;
+                const img = data.imageUrl || "https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716414/bl2wzjvwiuocspelj562.png";
+                
+                container.innerHTML += `
+                    <div class="fleet-card">
                         <img src="${img}" alt="${title}" loading="lazy">
-                        <div class="dest-info">
-                            <div class="dest-header-row">
-                                <h3>${title}</h3>
-                                <button class="dest-book-btn" onclick="selectRoute('${from}', '${to}')">
-                                    <span>${translations[currentLang].quick_book}</span>
+                        <div class="fleet-info">
+                            <h3>${title}</h3>
+                            <p>${desc}</p>
+                            <div class="fleet-footer-row">
+                                <span class="fleet-meta">Max. ${pax} ${currentLang === 'DE' ? 'Passagiere' : (currentLang === 'EN' ? 'Passengers' : 'Passagiers')}</span>
+                                <button class="fleet-rent-btn" onclick="rentVehicle('${title}')">
+                                    <span>${translations[currentLang].rent_btn}</span>
                                 </button>
                             </div>
-                            <p class="dest-detail-text">${desc}</p>
-                            <div class="route-badge-container">
-                                <span class="route-pill" title="${from}">${from}</span>
-                                <span class="route-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                                <span class="route-pill dest-target" title="${to}">${to}</span>
-                            </div>
                         </div>
-                    `;
-                    container.appendChild(card);
-                });
-            }).catch(err => {
-                isFetching = false;
-                document.getElementById('infiniteLoader').style.display = "none";
-                console.error("Error loading destinations:", err);
+                    </div>
+                `;
             });
-        }
+        });
 
-        // مستشعر النزول في الصفحة
-        const observer = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting && hasMoreDocs) {
-                loadNextDestinationsBatch();
+        // ج) الرحلات والوجهات المباشرة (Realtime Destinations)
+        db.collection("destinations").onSnapshot(snapshot => {
+            const container = document.getElementById('destinationsContainer');
+            container.innerHTML = "";
+            if (snapshot.empty) {
+                container.innerHTML = `<p style="text-align:center; grid-column:1/-1; padding:20px; color:gray;">Keine Routen gefunden.</p>`;
+                return;
             }
-        }, { threshold: 0.1 });
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const title = data[`title_${currentLang.toLowerCase()}`] || data.title_de || data.title;
+                const desc = data[`desc_${currentLang.toLowerCase()}`] || data.desc_de || data.desc || "";
+                const from = data.from || "Innsbruck";
+                const to = data.to || "Zielort";
+                const price = data.price || 100;
+                const img = data.imageUrl || "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=600&q=80";
 
-        observer.observe(document.getElementById('infiniteScrollTrigger'));
+                const card = document.createElement('div');
+                card.className = "dest-card";
+                card.innerHTML = `
+                    <div class="dest-price">€${price}</div>
+                    <img src="${img}" alt="${title}" loading="lazy">
+                    <div class="dest-info">
+                        <div class="dest-header-row">
+                            <h3>${title}</h3>
+                            <button class="dest-book-btn" onclick="selectRoute('${from}', '${to}')">
+                                <span>${translations[currentLang].quick_book}</span>
+                            </button>
+                        </div>
+                        <p class="dest-detail-text">${desc}</p>
+                        <div class="route-badge-container">
+                            <span class="route-pill" title="${from}">${from}</span>
+                            <span class="route-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                            <span class="route-pill dest-target" title="${to}">${to}</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        });
 
-        // البدء بجلب البيانات
-        loadFleetData();
-        loadNextDestinationsBatch();
-
-        // 9. Service Worker Registration (PWA)
+        // 8. Service Worker (PWA)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js')
                     .then(reg => console.log('✅ PWA Active:', reg.scope))
-                    .catch(err => console.log('❌ PWA Registration Failed:', err));
+                    .catch(err => console.log('❌ PWA Failed:', err));
             });
         }
     </script>
