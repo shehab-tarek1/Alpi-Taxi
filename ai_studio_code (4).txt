@@ -1,0 +1,27 @@
+{
+  "name": "Alpi Taxi | Premium Transfer Innsbruck",
+  "short_name": "Alpi Taxi",
+  "description": "Premium Taxi & Limousinenservice in Innsbruck, Österreich und Deutschland.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#d97706",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "de",
+  "categories": ["travel", "transportation", "business"],
+  "icons": [
+    {
+      "src": "https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_192,q_auto,f_auto/v1786716325/ecuwdts2f0797fnddg4z.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_512,q_auto,f_auto/v1786716325/ecuwdts2f0797fnddg4z.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
