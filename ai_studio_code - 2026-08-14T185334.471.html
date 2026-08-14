@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alpi Taxi | Admin Dashboard</title>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <style>
+        :root {
+            --primary: #d97706;
+            --primary-hover: #b45309;
+            --bg-color: #f8fafc;
+            --surface: #ffffff;
+            --text-main: #0f172a;
+            --text-light: #64748b;
+            --border-silver: 0.5px solid #c0c0c0;
+            --shadow-silver: 0 2px 10px rgba(192, 192, 192, 0.35);
+            --radius-md: 16px;
+            --radius-sm: 8px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; padding: 20px; }
+
+        .admin-header {
+            max-width: 1200px; margin: 0 auto 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--surface); padding: 1rem 2rem; border-radius: var(--radius-md);
+            border: var(--border-silver); box-shadow: var(--shadow-silver);
+        }
+        .logo { font-size: 1.3rem; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+        .site-logo { width: 38px; height: 38px; border-radius: 50%; object-fit: contain; }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        /* Login Box */
+        .auth-card {
+            max-width: 420px; margin: 80px auto; background: var(--surface);
+            padding: 2.5rem; border-radius: var(--radius-md); border: var(--border-silver);
+            box-shadow: var(--shadow-silver); text-align: center;
+        }
+        .auth-card h2 { margin-bottom: 1.5rem; }
+
+        .form-group { margin-bottom: 1rem; text-align: left; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 10px; border: var(--border-silver); border-radius: var(--radius-sm);
+            font-size: 0.95rem; outline: none;
+        }
+
+        .btn {
+            background: var(--primary); color: white; border: none; padding: 10px 18px;
+            border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; transition: 0.3s;
+        }
+        .btn:hover { background: var(--primary-hover); }
+        .btn-danger { background: #ef4444; }
+        .btn-danger:hover { background: #dc2626; }
+        .btn-success { background: #10b981; }
+        .btn-success:hover { background: #059669; }
+
+        /* Dashboard Tabs & Cards */
+        .dash-card {
+            background: var(--surface); padding: 2rem; border-radius: var(--radius-md);
+            border: var(--border-silver); box-shadow: var(--shadow-silver); margin-bottom: 2rem;
+        }
+        .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px;}
+
+        .grid-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .item-box {
+            border: var(--border-silver); border-radius: var(--radius-sm); padding: 1rem;
+            display: flex; flex-direction: column; justify-content: space-between; background: #f8fafc;
+        }
+        .item-box img { width: 100%; height: 160px; object-fit: cover; border-radius: 4px; margin-bottom: 10px; }
+        .item-actions { display: flex; gap: 8px; margin-top: 10px; }
+
+        #dashboardView { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="admin-header">
+        <div class="logo">
+            <img src="https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716325/ecuwdts2f0797fnddg4z.png" alt="Logo" class="site-logo">
+            Alpi Taxi Control Panel
+        </div>
+        <button id="logoutBtn" class="btn btn-danger" style="display:none;" onclick="logout()">Logout</button>
+    </div>
+
+    <!-- Login Card -->
+    <div class="container" id="loginView">
+        <div class="auth-card">
+            <h2>Admin Login</h2>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="loginEmail" placeholder="admin@alpitaxi.com" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="loginPassword" placeholder="••••••••" required>
+            </div>
+            <button class="btn" style="width: 100%;" onclick="login()">Anmelden</button>
+            <p id="errorMsg" style="color:red; font-size:0.85rem; margin-top:10px;"></p>
+        </div>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div class="container" id="dashboardView">
+        
+        <!-- Action Bar with Seed Button -->
+        <div class="dash-card" style="background: #fffbeb; border-color: var(--primary);">
+            <div class="dash-header">
+                <div>
+                    <h3>Initialisierung & Demo-Daten</h3>
+                    <p style="font-size: 0.85rem; color: #92400e;">Drücken Sie hier, um alle Standard-Fahrzeuge und Reisedestinationen in Ihre Firebase-Datenbank einzupflegen.</p>
+                </div>
+                <button class="btn btn-success" onclick="seedInitialData()">📥 Demo-Daten in Firebase importieren</button>
+            </div>
+        </div>
+
+        <!-- Vehicles Management -->
+        <div class="dash-card">
+            <div class="dash-header">
+                <h2>Fahrzeugflotte verwalten</h2>
+                <button class="btn" onclick="openVehicleModal()">+ Neues Fahrzeug</button>
+            </div>
+            <div class="grid-list" id="adminFleetList"></div>
+        </div>
+
+        <!-- Destinations Management -->
+        <div class="dash-card">
+            <div class="dash-header">
+                <h2>Reiseziele & Preise verwalten</h2>
+                <button class="btn" onclick="openDestModal()">+ Neues Reiseziel</button>
+            </div>
+            <div class="grid-list" id="adminDestList"></div>
+        </div>
+
+    </div>
+
+    <!-- Firebase Script -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDFPkLo38na2qyc2TFu1jz1Fv3JN8QPvP0",
+            authDomain: "alpi-taxi.firebaseapp.com",
+            projectId: "alpi-taxi",
+            storageBucket: "alpi-taxi.firebasestorage.app",
+            messagingSenderId: "888640544054",
+            appId: "1:888640544054:web:ad4975463f4b29fb682797",
+            measurementId: "G-7SERGDFG8D"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        auth.onAuthStateChanged(user => {
+            if(user) {
+                document.getElementById('loginView').style.display = "none";
+                document.getElementById('dashboardView').style.display = "block";
+                document.getElementById('logoutBtn').style.display = "block";
+                loadAdminData();
+            } else {
+                document.getElementById('loginView').style.display = "block";
+                document.getElementById('dashboardView').style.display = "none";
+                document.getElementById('logoutBtn').style.display = "none";
+            }
+        });
+
+        function login() {
+            const e = document.getElementById('loginEmail').value;
+            const p = document.getElementById('loginPassword').value;
+            auth.signInWithEmailAndPassword(e, p).catch(err => {
+                document.getElementById('errorMsg').innerText = err.message;
+            });
+        }
+
+        function logout() { auth.signOut(); }
+
+        // Fetch & Render Admin Data
+        function loadAdminData() {
+            // Fleet
+            db.collection("vehicles").onSnapshot(snap => {
+                const list = document.getElementById('adminFleetList');
+                list.innerHTML = "";
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    list.innerHTML += `
+                        <div class="item-box">
+                            <img src="${d.imageUrl}">
+                            <h4>${d.name}</h4>
+                            <p style="font-size:0.85rem; color:gray;">Max. ${d.pax} Passagiere</p>
+                            <p style="font-size:0.85rem;">${d.desc_de || ''}</p>
+                            <div class="item-actions">
+                                <button class="btn btn-danger" style="flex:1;" onclick="deleteItem('vehicles', '${doc.id}')">Löschen</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+
+            // Destinations
+            db.collection("destinations").onSnapshot(snap => {
+                const list = document.getElementById('adminDestList');
+                list.innerHTML = "";
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    list.innerHTML += `
+                        <div class="item-box">
+                            <img src="${d.imageUrl}">
+                            <h4>${d.title_de} - <strong style="color:var(--primary);">€${d.price}</strong></h4>
+                            <p style="font-size:0.8rem; color:gray;">${d.from} ➔ ${d.to}</p>
+                            <div class="item-actions">
+                                <button class="btn btn-danger" style="flex:1;" onclick="deleteItem('destinations', '${doc.id}')">Löschen</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+        }
+
+        function deleteItem(col, id) {
+            if(confirm("Möchten Sie dieses Element wirklich löschen?")) {
+                db.collection(col).doc(id).delete();
+            }
+        }
+
+        // SEED INITIAL DEMO DATA (سحب وإضافة البيانات التجريبية)
+        function seedInitialData() {
+            if(!confirm("Möchten Sie die Demo-Daten in Firebase einfügen?")) return;
+
+            // Seed Vehicles
+            const demoCars = [
+                {
+                    name: "Mercedes Vito",
+                    pax: 8,
+                    imageUrl: "https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716414/bl2wzjvwiuocspelj562.png",
+                    desc_de: "Geräumig, sicher und komfortabel für Gruppen.",
+                    desc_en: "Spacious, safe, and comfortable for groups.",
+                    desc_nl: "Ruim, veilig en comfortabel voor groepen."
+                },
+                {
+                    name: "Mercedes V Klasse",
+                    pax: 7,
+                    imageUrl: "https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716372/yuprjfnexjrfqwszemfo.png",
+                    desc_de: "Premium Van für höchste Ansprüche und Beinfreiheit.",
+                    desc_en: "Premium van for highest demands and legroom.",
+                    desc_nl: "Premium bestelwagen voor de hoogste eisen."
+                }
+            ];
+            demoCars.forEach(car => db.collection("vehicles").add(car));
+
+            // Seed Destinations
+            const demoDest = [
+                {
+                    title_de: "Flughafen- & Bahnhofstransfer",
+                    title_en: "Airport & Station Transfer",
+                    title_nl: "Luchthaven- & Stationstransfer",
+                    desc_de: "Direkte und pünktliche Verbindung über die Alpengrenze hinweg.",
+                    desc_en: "Direct and punctual cross-border transfer across the Alps.",
+                    desc_nl: "Directe en stipt overschrijdende transfer over de Alpen.",
+                    from: "Innsbruck Hauptbahnhof", to: "Bozen Flughafen", price: 290,
+                    imageUrl: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=600&q=80"
+                },
+                {
+                    title_de: "Südtirol Komfort-Transfer",
+                    title_en: "South Tyrol Comfort Transfer",
+                    title_nl: "Zuid-Tirol Comfort Transfer",
+                    desc_de: "Entspannte Fahrt von Zentrum zu Zentrum.",
+                    desc_en: "Relaxed center-to-center ride.",
+                    desc_nl: "Ontspannen rit van centrum tot centrum.",
+                    from: "Innsbruck Zentrum", to: "Bozen / Südtirol", price: 285,
+                    imageUrl: "https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=600&q=80"
+                },
+                {
+                    title_de: "Panoramafahrt Meran",
+                    title_en: "Scenic Ride to Merano",
+                    title_nl: "Panoramarit Merano",
+                    desc_de: "Malerische Alpenstrecke über den alpinen Jaufenpass.",
+                    desc_en: "Picturesque alpine route via the scenic Jaufen Pass.",
+                    desc_nl: "Pitorreske alpenroute via de Jaufenpas.",
+                    from: "Innsbruck Hauptbahnhof", to: "Meran", price: 280,
+                    imageUrl: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80"
+                },
+                {
+                    title_de: "Direktes Ski-Shuttle Kühtai",
+                    title_en: "Direct Ski Shuttle",
+                    title_nl: "Directe Ski Shuttle",
+                    desc_de: "Sicherer Transport für Wintersportler inklusive Skiausrüstung.",
+                    desc_en: "Safe transport for winter sports enthusiasts.",
+                    desc_nl: "Veilig vervoer voor wintersporters.",
+                    from: "Innsbruck Flughafen", to: "Kühtai", price: 105,
+                    imageUrl: "https://images.unsplash.com/photo-1551524559-8af4e6624178?auto=format&fit=crop&w=600&q=80"
+                },
+                {
+                    title_de: "Grenzüberschreitende Fahrt Garmisch",
+                    title_en: "Cross-Border Ride",
+                    title_nl: "Grensoverschrijdende Rit",
+                    desc_de: "Zügiger Transfer zur Zugspitz-Region.",
+                    desc_en: "Swift cross-border ride to the Zugspitze region.",
+                    desc_nl: "Snelle grensoverschrijdende transfer.",
+                    from: "Innsbruck Zentrum", to: "Garmisch-Partenkirchen", price: 160,
+                    imageUrl: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=600&q=80"
+                },
+                {
+                    title_de: "Express Flughafen München",
+                    title_en: "Express Airport Transfer",
+                    title_nl: "Express Luchthaventransfer",
+                    desc_de: "Exklusiver Door-to-Door Service zum Flughafen München.",
+                    desc_en: "Exclusive door-to-door shuttle to Munich International Airport.",
+                    desc_nl: "Exclusieve door-to-door service naar München Airport.",
+                    from: "Innsbruck Zentrum", to: "München Flughafen", price: 450,
+                    imageUrl: "https://images.unsplash.com/photo-1530521954074-e64f6810b32d?auto=format&fit=crop&w=600&q=80"
+                }
+            ];
+            demoDest.forEach(dest => db.collection("destinations").add(dest));
+
+            alert("✅ Die Demo-Daten wurden erfolgreich in Ihre Firebase-Datenbank importiert!");
+        }
+
+        // Add Vehicle Prompt
+        function openVehicleModal() {
+            const name = prompt("Fahrzeugname (z.B. Mercedes E-Klasse):");
+            if(!name) return;
+            const pax = prompt("Maximale Passagiere:", "4");
+            const img = prompt("Bild-URL (Cloudinary / Pexels):", "https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&w=600&q=80");
+            const desc_de = prompt("Beschreibung (Deutsch):", "Luxuriöse Limousine für Geschäftsreisen.");
+            const desc_en = prompt("Beschreibung (Englisch):", "Luxury limousine for business travel.");
+            const desc_nl = prompt("Beschreibung (Niederländisch):", "Luxe limousine voor zakenreizen.");
+
+            db.collection("vehicles").add({
+                name, pax: parseInt(pax), imageUrl: img, desc_de, desc_en, desc_nl
+            }).then(() => alert("Fahrzeug hinzugefügt!"));
+        }
+
+        // Add Destination Prompt
+        function openDestModal() {
+            const title_de = prompt("Titel der Reise (Deutsch):", "St. Anton Ski Transfer");
+            if(!title_de) return;
+            const title_en = prompt("Titel (Englisch):", "St. Anton Ski Transfer");
+            const title_nl = prompt("Titel (Niederländisch):", "St. Anton Ski Transfer");
+            const from = prompt("Abholort (z.B. Innsbruck Hbf):", "Innsbruck Hbf");
+            const to = prompt("Zielort (z.B. St. Anton):", "St. Anton");
+            const price = prompt("Preis in Euro (€):", "220");
+            const imageUrl = prompt("Bild URL:", "https://images.unsplash.com/photo-1551524559-8af4e6624178?auto=format&fit=crop&w=600&q=80");
+            const desc_de = prompt("Beschreibung (Deutsch):", "Direkttransfer ins Skigebiet.");
+            const desc_en = prompt("Beschreibung (Englisch):", "Direct transfer to the ski resort.");
+            const desc_nl = prompt("Beschreibung (Niederländisch):", "Directe transfer naar het skigebied.");
+
+            db.collection("destinations").add({
+                title_de, title_en, title_nl, from, to, price: parseInt(price), imageUrl, desc_de, desc_en, desc_nl
+            }).then(() => alert("Reiseziel hinzugefügt!"));
+        }
+    </script>
+</body>
+</html>
