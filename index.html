@@ -3,8 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alpi Taxi | Premium Transfer & Limousinenservice</title>
+    <title>Alpi Taxi | Premium Transfer & Limousinenservice Innsbruck</title>
     
+    <!-- ربط ملفات PWA والـ Manifest لـ Vercel والهواتف -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#d97706">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_192,q_auto,f_auto/v1786716325/ecuwdts2f0797fnddg4z.png">
+
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
@@ -190,7 +197,7 @@
 
         /* Fleet Grid */
         .fleet-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
-        .fleet-card { background: var(--surface); border-radius: var(--radius-md); overflow: hidden; border: var(--border-silver); box-shadow: var(--shadow-silver); transition: var(--transition); }
+        .fleet-card { background: var(--surface); border-radius: var(--radius-md); overflow: hidden; border: var(--border-silver); box-shadow: var(--shadow-silver); transition: var(--transition); animation: fadeIn 0.4s ease; }
         .fleet-card img { width: 100%; height: 250px; object-fit: cover; }
         .fleet-info { padding: 1.5rem; border-top: var(--border-silver); background: var(--surface); }
         
@@ -240,7 +247,7 @@
 
         /* Destinations Grid */
         .dest-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-        .dest-card { background: var(--surface); border-radius: var(--radius-md); overflow: hidden; border: var(--border-silver); box-shadow: var(--shadow-silver); position: relative; transition: var(--transition); display: flex; flex-direction: column; }
+        .dest-card { background: var(--surface); border-radius: var(--radius-md); overflow: hidden; border: var(--border-silver); box-shadow: var(--shadow-silver); position: relative; transition: var(--transition); display: flex; flex-direction: column; animation: fadeIn 0.5s ease; }
         .dest-card:hover { transform: translateY(-4px); }
         .dest-card img { width: 100%; height: 210px; object-fit: cover; }
         .dest-price { position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.95); padding: 6px 14px; border-radius: 50px; font-weight: 700; color: var(--primary); border: var(--border-silver); box-shadow: var(--shadow-silver); backdrop-filter: blur(4px); z-index: 2; }
@@ -332,6 +339,12 @@
 
         .route-arrow svg { width: 16px; height: 16px; }
 
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .loader-spinner {
+            display: none; text-align: center; padding: 20px; font-weight: bold; color: var(--primary);
+        }
+
         /* Footer */
         footer {
             background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.85)), url('https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716753/hj9i0elyweeojw1jlahn.png') center/cover no-repeat;
@@ -422,7 +435,6 @@
                             <svg class="select-arrow" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
                         </div>
                         <div class="custom-options" id="pickupOptions">
-                            <!-- قائمة مدن ألمانيا والسياحة والنمسا -->
                             <div class="custom-optgroup">Deutschland (Metropolen)</div>
                             <div class="custom-option">München Zentrum</div>
                             <div class="custom-option">Frankfurt am Main</div>
@@ -568,7 +580,7 @@
                 </div>
             </div>
 
-            <!-- Button Row (يرسل البيانات للواتساب) -->
+            <!-- Button Row -->
             <button class="booking-btn" onclick="sendBookingToWhatsApp()" data-i18n="book_btn">Jetzt Buchen</button>
         </div>
     </div>
@@ -600,155 +612,20 @@
         </div>
     </section>
 
-    <!-- Fleet Section -->
+    <!-- Fleet Section (ديناميكي من فايربيس) -->
     <section>
         <h2 data-i18n="fleet_title">Unsere Flotte</h2>
-        <div class="fleet-grid" id="fleetContainer">
-            <!-- تحميل افتراضي ويتحدث ديناميكياً من فيربس -->
-            <div class="fleet-card">
-                <img src="https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716414/bl2wzjvwiuocspelj562.png" alt="Mercedes Vito" loading="lazy">
-                <div class="fleet-info">
-                    <h3>Mercedes Vito</h3>
-                    <p data-i18n="fleet_desc">Geräumig, sicher und komfortabel für Gruppen.</p>
-                    <div class="fleet-footer-row">
-                        <span class="fleet-meta" data-i18n="pax_8">Max. 8 Passagiere</span>
-                        <button class="fleet-rent-btn" onclick="rentVehicle('Mercedes Vito')">
-                            <span data-i18n="rent_btn">Mieten</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="fleet-card">
-                <img src="https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716372/yuprjfnexjrfqwszemfo.png" alt="Mercedes V Klasse" loading="lazy">
-                <div class="fleet-info">
-                    <h3>Mercedes V Klasse</h3>
-                    <p data-i18n="fleet_desc_premium">Premium Van für höchste Ansprüche und Beinfreiheit.</p>
-                    <div class="fleet-footer-row">
-                        <span class="fleet-meta" data-i18n="pax_7">Max. 7 Passagiere</span>
-                        <button class="fleet-rent-btn" onclick="rentVehicle('Mercedes V Klasse')">
-                            <span data-i18n="rent_btn">Mieten</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="fleet-grid" id="fleetContainer"></div>
     </section>
 
-    <!-- Destinations & Prices -->
+    <!-- Destinations & Prices (تحميل دفعات لا نهائي) -->
     <section>
         <h2 data-i18n="dest_title">Beliebte Ziele & Preise</h2>
-        <div class="dest-grid" id="destinationsContainer">
-            <!-- يتم سحب الوجهات من فيربس مع وجود الاحتياطي التالي -->
-            <div class="dest-card">
-                <div class="dest-price">€290</div>
-                <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=600&q=80" alt="Flughafen" loading="lazy">
-                <div class="dest-info">
-                    <div class="dest-header-row">
-                        <h3 data-i18n="dest_1_title">Flughafen- & Bahnhofstransfer</h3>
-                        <button class="dest-book-btn" onclick="selectRoute('Innsbruck Hauptbahnhof', 'Bozen Flughafen')">
-                            <span data-i18n="quick_book">Buchen</span>
-                        </button>
-                    </div>
-                    <p class="dest-detail-text" data-i18n="dest_1_desc">Direkte und pünktliche Verbindung über die Alpengrenze hinweg mit bequemem Gepäckservice.</p>
-                    <div class="route-badge-container">
-                        <span class="route-pill" title="Innsbruck Hauptbahnhof">Innsbruck Hbf</span>
-                        <span class="route-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                        <span class="route-pill dest-target" title="Bozen Flughafen / Hbf">Bozen Flughafen</span>
-                    </div>
-                </div>
-            </div>
-            <div class="dest-card">
-                <div class="dest-price">€285</div>
-                <img src="https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=600&q=80" alt="Südtirol" loading="lazy">
-                <div class="dest-info">
-                    <div class="dest-header-row">
-                        <h3 data-i18n="dest_2_title">Südtirol Komfort-Transfer</h3>
-                        <button class="dest-book-btn" onclick="selectRoute('Innsbruck Zentrum', 'Bozen / Südtirol')">
-                            <span data-i18n="quick_book">Buchen</span>
-                        </button>
-                    </div>
-                    <p class="dest-detail-text" data-i18n="dest_2_desc">Entspannte Fahrt von Zentrum zu Zentrum – perfekt für Urlaubsausflüge oder Geschäftsreisen.</p>
-                    <div class="route-badge-container">
-                        <span class="route-pill" title="Innsbruck Zentrum">Innsbruck Zentrum</span>
-                        <span class="route-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                        <span class="route-pill dest-target" title="Bozen / Südtirol">Bozen / Südtirol</span>
-                    </div>
-                </div>
-            </div>
-            <div class="dest-card">
-                <div class="dest-price">€280</div>
-                <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80" alt="Meran Jaufenpass" loading="lazy">
-                <div class="dest-info">
-                    <div class="dest-header-row">
-                        <h3 data-i18n="dest_3_title">Panoramafahrt Meran</h3>
-                        <button class="dest-book-btn" onclick="selectRoute('Innsbruck Hauptbahnhof', 'Meran')">
-                            <span data-i18n="quick_book">Buchen</span>
-                        </button>
-                    </div>
-                    <p class="dest-detail-text" data-i18n="dest_3_desc">Malerische Alpenstrecke über den alpinen Jaufenpass direkt in die Kurstadt Meran.</p>
-                    <div class="route-badge-container">
-                        <span class="route-pill" title="Innsbruck Hauptbahnhof">Innsbruck Hbf</span>
-                        <span class="route-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                        <span class="route-pill dest-target" title="Meran über Jaufenpass">Meran</span>
-                    </div>
-                </div>
-            </div>
-            <div class="dest-card">
-                <div class="dest-price">€105</div>
-                <img src="https://images.unsplash.com/photo-1551524559-8af4e6624178?auto=format&fit=crop&w=600&q=80" alt="Kühtai" loading="lazy">
-                <div class="dest-info">
-                    <div class="dest-header-row">
-                        <h3 data-i18n="dest_4_title">Direktes Ski-Shuttle</h3>
-                        <button class="dest-book-btn" onclick="selectRoute('Innsbruck Flughafen', 'Kühtai')">
-                            <span data-i18n="quick_book">Buchen</span>
-                        </button>
-                    </div>
-                    <p class="dest-detail-text" data-i18n="dest_4_desc">Sicherer Transport für Wintersportler inklusive Skiausrüstung zum hochgelegenen Skigebiet Kühtai.</p>
-                    <div class="route-badge-container">
-                        <span class="route-pill" title="Innsbruck Flughafen / Hbf">Innsbruck Flughafen</span>
-                        <span class="route-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                        <span class="route-pill dest-target" title="Kühtai Ski Resort">Kühtai</span>
-                    </div>
-                </div>
-            </div>
-            <div class="dest-card">
-                <div class="dest-price">€160</div>
-                <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=600&q=80" alt="Garmisch" loading="lazy">
-                <div class="dest-info">
-                    <div class="dest-header-row">
-                        <h3 data-i18n="dest_5_title">Grenzüberschreitende Fahrt</h3>
-                        <button class="dest-book-btn" onclick="selectRoute('Innsbruck Zentrum', 'Garmisch-Partenkirchen')">
-                            <span data-i18n="quick_book">Buchen</span>
-                        </button>
-                    </div>
-                    <p class="dest-detail-text" data-i18n="dest_5_desc">Zügiger grenzüberschreitender Transfer zur Zugspitz-Region und nach Garmisch-Partenkirchen.</p>
-                    <div class="route-badge-container">
-                        <span class="route-pill" title="Innsbruck Zentrum">Innsbruck Zentrum</span>
-                        <span class="route-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                        <span class="route-pill dest-target" title="Garmisch-Partenkirchen">Garmisch</span>
-                    </div>
-                </div>
-            </div>
-            <div class="dest-card">
-                <div class="dest-price">€450</div>
-                <img src="https://images.unsplash.com/photo-1530521954074-e64f6810b32d?auto=format&fit=crop&w=600&q=80" alt="München" loading="lazy">
-                <div class="dest-info">
-                    <div class="dest-header-row">
-                        <h3 data-i18n="dest_6_title">Express Flughafen-Transfer</h3>
-                        <button class="dest-book-btn" onclick="selectRoute('Innsbruck Zentrum', 'München Flughafen')">
-                            <span data-i18n="quick_book">Buchen</span>
-                        </button>
-                    </div>
-                    <p class="dest-detail-text" data-i18n="dest_6_desc">Exklusiver Door-to-Door Service zum internationalen Flughafen München ohne Umsteigen.</p>
-                    <div class="route-badge-container">
-                        <span class="route-pill" title="Innsbruck Zentrum">Innsbruck Zentrum</span>
-                        <span class="route-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                        <span class="route-pill dest-target" title="München Flughafen">München</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <p style="text-align:center; font-size: 0.85rem; margin-top: 2rem;" data-i18n="vat_inc">* Alle Preise inkl. 10% MwSt.</p>
+        <div class="dest-grid" id="destinationsContainer"></div>
+        
+        <!-- مستشعر النزول لتحميل المزيد تلقائياً -->
+        <div id="infiniteScrollTrigger" style="height: 30px; margin-top: 10px;"></div>
+        <div class="loader-spinner" id="infiniteLoader">⏳ Weitere Routen werden geladen...</div>
     </section>
 
     <!-- Footer -->
@@ -757,6 +634,8 @@
             <img src="https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716325/ecuwdts2f0797fnddg4z.png" alt="Alpi Taxi Logo" class="site-logo" loading="lazy"> Alpi Taxi
         </div>
         <p data-i18n="footer_text">Dein zuverlässiger Partner für Taxi & Limousinen-Service in Innsbruck.</p>
+        
+        <!-- نص الضريبة الوحيد المعتمد في الفوتر -->
         <p class="footer-vat" data-i18n="vat_inc">* Alle Preise inkl. 10% MwSt.</p>
         
         <a href="tel:+436763356300" class="footer-phone">
@@ -771,7 +650,7 @@
         <svg viewBox="0 0 24 24"><path d="M12.031 2C6.486 2 2 6.485 2 12.031c0 1.764.444 3.491 1.285 5.04L2 22l5.064-1.258c1.498.775 3.167 1.184 4.887 1.184h.001c5.545 0 10.031-4.485 10.031-10.031S17.577 2 12.031 2zm0 18.261c-1.488 0-2.946-.386-4.225-1.116l-.303-.173-3.136.779.839-3.003-.196-.302c-.812-1.253-1.24-2.709-1.24-4.226 0-4.629 3.766-8.395 8.396-8.395s8.395 3.766 8.395 8.395-3.766 8.395-8.395 8.395zm4.61-6.29c-.252-.126-1.492-.736-1.724-.82-.232-.084-.401-.126-.57.126-.169.252-.653.82-.8.988-.148.169-.296.19-.548.064-.252-.126-1.065-.392-2.027-1.25-.748-.668-1.254-1.494-1.402-1.746-.148-.252-.016-.388.11-.514.113-.113.252-.294.378-.441.126-.148.169-.252.252-.421.084-.169.042-.316-.021-.442-.063-.126-.57-1.373-.781-1.88-.205-.494-.413-.427-.57-.435-.148-.008-.316-.008-.485-.008-.169 0-.443.063-.675.316-.232.252-.886.865-.886 2.108 0 1.243.907 2.446 1.034 2.614.126.169 1.782 2.721 4.315 3.814.603.26 1.073.415 1.44.532.605.191 1.156.163 1.593.099.493-.073 1.492-.61 1.703-1.199.211-.59.211-1.095.148-1.199-.064-.105-.233-.169-.485-.295z"/></svg>
     </a>
 
-    <!-- Frontend Script Logic -->
+    <!-- Frontend Logic -->
     <script>
         // 1. Firebase Initializing
         const firebaseConfig = {
@@ -788,25 +667,24 @@
 
         let currentLang = 'DE';
 
-        // 2. Custom Dropdown Logic
+        // 2. Dropdown Logic
         function setupDropdowns() {
-            const customDropdowns = document.querySelectorAll('.custom-dropdown-wrapper');
-            customDropdowns.forEach(wrapper => {
+            document.querySelectorAll('.custom-dropdown-wrapper').forEach(wrapper => {
                 const trigger = wrapper.querySelector('.custom-select-trigger');
                 const options = wrapper.querySelectorAll('.custom-option');
                 const selectedValue = wrapper.querySelector('.selected-value');
 
-                trigger.onclick = function(e) {
+                trigger.onclick = (e) => {
                     e.stopPropagation();
-                    customDropdowns.forEach(dw => { if(dw !== wrapper) dw.classList.remove('active'); });
+                    document.querySelectorAll('.custom-dropdown-wrapper').forEach(dw => { if(dw !== wrapper) dw.classList.remove('active'); });
                     wrapper.classList.toggle('active');
                 };
 
                 options.forEach(option => {
-                    option.onclick = function(e) {
+                    option.onclick = (e) => {
                         e.stopPropagation();
-                        selectedValue.innerText = this.innerText;
-                        selectedValue.title = this.innerText;
+                        selectedValue.innerText = option.innerText;
+                        selectedValue.title = option.innerText;
                         selectedValue.style.color = "var(--text-main)";
                         wrapper.classList.remove('active');
                     };
@@ -815,7 +693,7 @@
         }
         setupDropdowns();
 
-        document.addEventListener('click', function() {
+        document.addEventListener('click', () => {
             document.querySelectorAll('.custom-dropdown-wrapper').forEach(w => w.classList.remove('active'));
         });
 
@@ -886,7 +764,7 @@
             window.open(`https://wa.me/436763356300?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
-        // 5. Rent Car Specific WhatsApp
+        // 5. Rent Vehicle via WhatsApp
         function rentVehicle(carName) {
             let msg = "";
             if (currentLang === 'DE') {
@@ -899,7 +777,7 @@
             window.open(`https://wa.me/436763356300?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
-        // 6. Translations Engine
+        // 6. Translations Object
         const translations = {
             DE: {
                 hero_title: "Premium Taxi & Limousinenservice in Innsbruck",
@@ -913,15 +791,8 @@
                 srv_3_title: "Hochzeiten", srv_3_desc: "Eleganz für Ihre besonderen Momente.",
                 srv_4_title: "Chauffeur", srv_4_desc: "Mieten Sie einen Wagen flexibel nach Stunden.",
                 fleet_title: "Unsere Flotte", fleet_desc: "Geräumig, sicher und komfortabel für Gruppen.",
-                fleet_desc_premium: "Premium Van für höchste Ansprüche und Beinfreiheit.",
                 pax_8: "Max. 8 Passagiere", pax_7: "Max. 7 Passagiere",
                 dest_title: "Beliebte Ziele & Preise", vat_inc: "* Alle Preise inkl. 10% MwSt.",
-                dest_1_title: "Flughafen- & Bahnhofstransfer", dest_1_desc: "Direkte und pünktliche Verbindung über die Alpengrenze hinweg mit bequemem Gepäckservice.",
-                dest_2_title: "Südtirol Komfort-Transfer", dest_2_desc: "Entspannte Fahrt von Zentrum zu Zentrum – perfekt für Urlaubsausflüge oder Geschäftsreisen.",
-                dest_3_title: "Panoramafahrt Meran", dest_3_desc: "Malerische Alpenstrecke über den alpinen Jaufenpass direkt in die Kurstadt Meran.",
-                dest_4_title: "Direktes Ski-Shuttle", dest_4_desc: "Sicherer Transport für Wintersportler inklusive Skiausrüstung zum hochgelegenen Skigebiet Kühtai.",
-                dest_5_title: "Grenzüberschreitende Fahrt", dest_5_desc: "Zügiger grenzüberschreitender Transfer zur Zugspitz-Region und nach Garmisch-Partenkirchen.",
-                dest_6_title: "Express Flughafen-Transfer", dest_6_desc: "Exklusiver Door-to-Door Service zum internationalen Flughafen München ohne Umsteigen.",
                 footer_text: "Dein zuverlässiger Partner für Taxi & Limousinen-Service in Innsbruck."
             },
             EN: {
@@ -936,15 +807,8 @@
                 srv_3_title: "Weddings", srv_3_desc: "Elegance for your special moments.",
                 srv_4_title: "Chauffeur", srv_4_desc: "Rent a car flexibly by the hour.",
                 fleet_title: "Our Fleet", fleet_desc: "Spacious, safe, and comfortable for groups.",
-                fleet_desc_premium: "Premium van for highest demands and legroom.",
                 pax_8: "Max 8 Passengers", pax_7: "Max 7 Passengers",
                 dest_title: "Popular Destinations & Prices", vat_inc: "* All prices include 10% VAT.",
-                dest_1_title: "Airport & Station Transfer", dest_1_desc: "Direct and punctual cross-border transfer across the Alps with comfortable luggage service.",
-                dest_2_title: "South Tyrol Comfort Transfer", dest_2_desc: "Relaxed center-to-center ride – ideal for leisure trips or business travel.",
-                dest_3_title: "Scenic Ride to Merano", dest_3_desc: "Picturesque alpine route via the scenic Jaufen Pass directly to the spa town of Merano.",
-                dest_4_title: "Direct Ski Shuttle", dest_4_desc: "Safe transport for winter sports enthusiasts including ski gear to high-altitude Kühtai Resort.",
-                dest_5_title: "Cross-Border Ride", dest_5_desc: "Swift cross-border ride to the Zugspitze region and Garmisch-Partenkirchen.",
-                dest_6_title: "Express Airport Transfer", dest_6_desc: "Exclusive door-to-door shuttle to Munich International Airport with no hassle.",
                 footer_text: "Your reliable partner for Taxi & Limousine service in Innsbruck."
             },
             NL: {
@@ -959,15 +823,8 @@
                 srv_3_title: "Bruiloften", srv_3_desc: "Elegantie voor uw speciale momenten.",
                 srv_4_title: "Chauffeur", srv_4_desc: "Huur flexibel een auto per uur.",
                 fleet_title: "Ons Wagenpark", fleet_desc: "Ruim, veilig en comfortabel voor groepen.",
-                fleet_desc_premium: "Premium bestelwagen voor de hoogste eisen en beenruimte.",
                 pax_8: "Max 8 Passagiers", pax_7: "Max 7 Passagiers",
                 dest_title: "Populaire Bestemmingen & Prijzen", vat_inc: "* Alle prijzen zijn inclusief 10% btw.",
-                dest_1_title: "Luchthaven- & Stationstransfer", dest_1_desc: "Directe en stipt overschrijdende transfer over de Alpen met comfortabele bagageservice.",
-                dest_2_title: "Zuid-Tirol Comfort Transfer", dest_2_desc: "Ontspannen rit van centrum tot centrum – ideaal voor vakantie of zakenreizen.",
-                dest_3_title: "Panoramarit Merano", dest_3_desc: "Pitorreske alpenroute via de Jaufenpas rechtstreeks naar het kuuroord Merano.",
-                dest_4_title: "Directe Ski Shuttle", dest_4_desc: "Veilig vervoer voor wintersporters inclusief ski-uitrusting naar het skigebied Kühtai.",
-                dest_5_title: "Grensoverschrijdende Rit", dest_5_desc: "Snelle grensoverschrijdende transfer naar de Zugspitze-regio en Garmisch-Partenkirchen.",
-                dest_6_title: "Express Luchthaventransfer", dest_6_desc: "Exclusieve door-to-door service naar de internationale luchthaven van München.",
                 footer_text: "Uw betrouwbare partner voor Taxi & Limousineservice in Innsbruck."
             }
         };
@@ -994,84 +851,153 @@
                 const k = el.getAttribute('data-i18n');
                 if(translations[lang][k]) el.innerText = translations[lang][k];
             });
-            // Update Firestore Dynamic Cards if present
-            loadFirestoreData();
+            loadFleetData();
+            resetAndReloadDestinations();
         }
 
-        // 7. Load Firestore Data (Realtime Dynamic Cards)
-        function loadFirestoreData() {
-            // Load Vehicles
+        // 7. Dynamic Fleet Loading (من فايربيس)
+        function loadFleetData() {
             db.collection("vehicles").get().then(snapshot => {
-                if(!snapshot.empty) {
-                    const container = document.getElementById('fleetContainer');
-                    container.innerHTML = "";
-                    snapshot.forEach(doc => {
-                        const data = doc.data();
-                        const title = data.name || "Mercedes";
-                        const desc = data[`desc_${currentLang.toLowerCase()}`] || data.desc_de || data.desc || "";
-                        const pax = data.pax || 8;
-                        const img = data.imageUrl || "https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716414/bl2wzjvwiuocspelj562.png";
-                        
-                        container.innerHTML += `
-                            <div class="fleet-card">
-                                <img src="${img}" alt="${title}" loading="lazy">
-                                <div class="fleet-info">
-                                    <h3>${title}</h3>
-                                    <p>${desc}</p>
-                                    <div class="fleet-footer-row">
-                                        <span class="fleet-meta">Max. ${pax} ${currentLang === 'DE' ? 'Passagiere' : (currentLang === 'EN' ? 'Passengers' : 'Passagiers')}</span>
-                                        <button class="fleet-rent-btn" onclick="rentVehicle('${title}')">
-                                            <span>${translations[currentLang].rent_btn}</span>
-                                        </button>
-                                    </div>
+                const container = document.getElementById('fleetContainer');
+                container.innerHTML = "";
+                if(snapshot.empty) {
+                    container.innerHTML = `<p style="text-align:center; grid-column:1/-1;">Keine Fahrzeuge verfügbar.</p>`;
+                    return;
+                }
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const title = data.name || "Mercedes";
+                    const desc = data[`desc_${currentLang.toLowerCase()}`] || data.desc_de || data.desc || "";
+                    const pax = data.pax || 8;
+                    const img = data.imageUrl || "https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716414/bl2wzjvwiuocspelj562.png";
+                    
+                    container.innerHTML += `
+                        <div class="fleet-card">
+                            <img src="${img}" alt="${title}" loading="lazy">
+                            <div class="fleet-info">
+                                <h3>${title}</h3>
+                                <p>${desc}</p>
+                                <div class="fleet-footer-row">
+                                    <span class="fleet-meta">Max. ${pax} ${currentLang === 'DE' ? 'Passagiere' : (currentLang === 'EN' ? 'Passengers' : 'Passagiers')}</span>
+                                    <button class="fleet-rent-btn" onclick="rentVehicle('${title}')">
+                                        <span>${translations[currentLang].rent_btn}</span>
+                                    </button>
                                 </div>
                             </div>
-                        `;
-                    });
-                }
-            }).catch(e => console.log("Using static fallback for fleet"));
-
-            // Load Destinations
-            db.collection("destinations").get().then(snapshot => {
-                if(!snapshot.empty) {
-                    const container = document.getElementById('destinationsContainer');
-                    container.innerHTML = "";
-                    snapshot.forEach(doc => {
-                        const data = doc.data();
-                        const title = data[`title_${currentLang.toLowerCase()}`] || data.title_de || data.title;
-                        const desc = data[`desc_${currentLang.toLowerCase()}`] || data.desc_de || data.desc;
-                        const from = data.from || "Innsbruck";
-                        const to = data.to || "Zielort";
-                        const price = data.price || 100;
-                        const img = data.imageUrl || "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=600&q=80";
-
-                        container.innerHTML += `
-                            <div class="dest-card">
-                                <div class="dest-price">€${price}</div>
-                                <img src="${img}" alt="${title}" loading="lazy">
-                                <div class="dest-info">
-                                    <div class="dest-header-row">
-                                        <h3>${title}</h3>
-                                        <button class="dest-book-btn" onclick="selectRoute('${from}', '${to}')">
-                                            <span>${translations[currentLang].quick_book}</span>
-                                        </button>
-                                    </div>
-                                    <p class="dest-detail-text">${desc}</p>
-                                    <div class="route-badge-container">
-                                        <span class="route-pill" title="${from}">${from}</span>
-                                        <span class="route-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                                        <span class="route-pill dest-target" title="${to}">${to}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                    });
-                }
-            }).catch(e => console.log("Using static fallback for destinations"));
+                        </div>
+                    `;
+                });
+            }).catch(() => {
+                document.getElementById('fleetContainer').innerHTML = `<p style="text-align:center; grid-column:1/-1;">Fehler beim Laden der Flotte.</p>`;
+            });
         }
 
-        // Trigger on load
-        loadFirestoreData();
+        // 8. Infinite Scroll & Batched Loading for Destinations (تم حل مشكلة المساحة الفارغة)
+        const BATCH_SIZE = 4;
+        let lastVisibleDoc = null;
+        let isFetching = false;
+        let hasMoreDocs = true;
+
+        function resetAndReloadDestinations() {
+            lastVisibleDoc = null;
+            hasMoreDocs = true;
+            document.getElementById('destinationsContainer').innerHTML = "";
+            loadNextDestinationsBatch();
+        }
+
+        function loadNextDestinationsBatch() {
+            if (isFetching || !hasMoreDocs) return;
+            isFetching = true;
+            document.getElementById('infiniteLoader').style.display = "block";
+
+            let query = db.collection("destinations").limit(BATCH_SIZE);
+            if (lastVisibleDoc) {
+                query = query.startAfter(lastVisibleDoc);
+            }
+
+            query.get().then(snapshot => {
+                isFetching = false;
+                document.getElementById('infiniteLoader').style.display = "none";
+
+                const container = document.getElementById('destinationsContainer');
+
+                // مسح أي عناصر أو فراغات في التحميل الأولي فور وصول البيانات
+                if (!lastVisibleDoc) {
+                    container.innerHTML = "";
+                }
+
+                if (snapshot.empty) {
+                    hasMoreDocs = false;
+                    if (!lastVisibleDoc) {
+                        container.innerHTML = `<p style="text-align:center; grid-column:1/-1; padding:20px;">Keine Routen gefunden.</p>`;
+                    }
+                    return;
+                }
+
+                lastVisibleDoc = snapshot.docs[snapshot.docs.length - 1];
+                if (snapshot.docs.length < BATCH_SIZE) {
+                    hasMoreDocs = false;
+                }
+
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const title = data[`title_${currentLang.toLowerCase()}`] || data.title_de || data.title;
+                    const desc = data[`desc_${currentLang.toLowerCase()}`] || data.desc_de || data.desc || "";
+                    const from = data.from || "Innsbruck";
+                    const to = data.to || "Zielort";
+                    const price = data.price || 100;
+                    const img = data.imageUrl || "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=600&q=80";
+
+                    const card = document.createElement('div');
+                    card.className = "dest-card";
+                    card.innerHTML = `
+                        <div class="dest-price">€${price}</div>
+                        <img src="${img}" alt="${title}" loading="lazy">
+                        <div class="dest-info">
+                            <div class="dest-header-row">
+                                <h3>${title}</h3>
+                                <button class="dest-book-btn" onclick="selectRoute('${from}', '${to}')">
+                                    <span>${translations[currentLang].quick_book}</span>
+                                </button>
+                            </div>
+                            <p class="dest-detail-text">${desc}</p>
+                            <div class="route-badge-container">
+                                <span class="route-pill" title="${from}">${from}</span>
+                                <span class="route-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                                <span class="route-pill dest-target" title="${to}">${to}</span>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            }).catch(err => {
+                isFetching = false;
+                document.getElementById('infiniteLoader').style.display = "none";
+                console.error("Error loading destinations:", err);
+            });
+        }
+
+        // مستشعر النزول في الصفحة
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && hasMoreDocs) {
+                loadNextDestinationsBatch();
+            }
+        }, { threshold: 0.1 });
+
+        observer.observe(document.getElementById('infiniteScrollTrigger'));
+
+        // البدء بجلب البيانات
+        loadFleetData();
+        loadNextDestinationsBatch();
+
+        // 9. Service Worker Registration (PWA)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('✅ PWA Active:', reg.scope))
+                    .catch(err => console.log('❌ PWA Registration Failed:', err));
+            });
+        }
     </script>
 </body>
 </html>
