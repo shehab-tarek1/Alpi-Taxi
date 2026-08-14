@@ -2,9 +2,9 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Taxi AlpGo | Premium Transfer & Limousinenservice Innsbruck</title>
-    
+
     <!-- PWA & Mobile Meta -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#d97706">
@@ -32,27 +32,30 @@
             --radius-sm: 8px;
             --radius-md: 16px;
             --radius-lg: 24px;
-            --transition: all 0.3s ease;
+            --transition: all 0.25s ease;
         }
 
         html { scroll-behavior: smooth; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
+        body { 
+            background-color: var(--bg-color); color: var(--text-main); line-height: 1.5; 
+            overflow-x: hidden; width: 100%; -webkit-font-smoothing: antialiased; 
+        }
         img { max-width: 100%; display: block; object-fit: cover; }
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
 
         h1 { font-size: clamp(1.8rem, 4.5vw, 3.2rem); line-height: 1.15; font-weight: 700; margin-bottom: 1rem; }
-        
+
         h2 { 
-            font-size: clamp(1.6rem, 3.8vw, 2.3rem); 
+            font-size: clamp(1.5rem, 3.6vw, 2.2rem); 
             font-weight: 700; 
             margin-bottom: 1.8rem; 
             text-align: center;
             position: relative;
             padding-bottom: 8px;
         }
-        
+
         h2::after {
             content: '';
             position: absolute;
@@ -66,13 +69,13 @@
             box-shadow: 0 1px 4px rgba(217, 119, 6, 0.3);
         }
 
-        h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.4rem; }
-        p { font-size: 0.95rem; color: var(--text-light); }
+        h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.35rem; }
+        p { font-size: 0.92rem; color: var(--text-light); }
 
         /* Header */
         header {
             position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-            background: rgba(255, 255, 255, 0.88);
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             border-bottom: var(--border-silver); 
             box-shadow: var(--shadow-silver);
@@ -82,11 +85,11 @@
         }
         .logo { font-size: 1.35rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
         .site-logo { width: 36px; height: 36px; border-radius: 50%; object-fit: contain; background-color: #ffffff; padding: 2px; border: var(--border); }
-        
+
         .lang-container { position: relative; }
         .lang-btn {
             background: var(--surface); border: var(--border-silver); box-shadow: var(--shadow-silver);
-            border-radius: 50px; padding: 5px 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.88rem;
+            border-radius: 50px; padding: 5px 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem;
             transition: var(--transition);
         }
         .lang-btn:hover { background: #f1f5f9; }
@@ -97,149 +100,175 @@
             transition: var(--transition); z-index: 100;
         }
         .lang-dropdown.show { opacity: 1; visibility: visible; transform: translateY(0); }
-        .lang-option { padding: 8px 18px; cursor: pointer; font-weight: 500; font-size: 0.88rem; transition: background 0.2s; }
+        .lang-option { padding: 8px 18px; cursor: pointer; font-weight: 500; font-size: 0.85rem; transition: background 0.2s; }
         .lang-option:hover { background: #f1f5f9; }
 
         /* Hero Section */
-.hero {
-    max-width: 1400px;
-    margin: 85px auto 0;
-    width: 92%;
-
-    background: url('https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_1000,q_auto,f_auto/v1786738438/lpvcfoqx38rsydftoeht.jpg') center / cover no-repeat;
-
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    position: relative;
-
-    aspect-ratio: 16 / 9;
-
-    border: none;
-    box-shadow: none;
-}       
+        .hero {
+            max-width: 1400px;
+            margin: 80px auto 0;
+            width: 92%;
+            background: url('https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_1000,q_auto,f_auto/v1786738438/lpvcfoqx38rsydftoeht.jpg') center / cover no-repeat;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 16 / 9;
+            border: none;
+            box-shadow: none;
+            transition: background-image 0.4s ease;
+        }       
 
         /* Booking Card */
         .booking-card {
             background: linear-gradient(rgba(255,255,255,0.95), rgba(255,255,255,0.95)), 
                         url('https://images.pexels.com/photos/112674/pexels-photo-112674.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') center/cover;
-            max-width: 900px; margin: 20px auto 50px; position: relative; z-index: 10;
-            border-radius: var(--radius-md); padding: 1.8rem; 
+            max-width: 900px; margin: 15px auto 25px; position: relative; z-index: 10;
+            border-radius: var(--radius-md); padding: 1.5rem; 
             border: var(--border-silver); box-shadow: var(--shadow-hover);
-            transition: box-shadow 0.4s ease, border-color 0.4s ease;
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
         }
-        .booking-form { display: flex; flex-direction: column; gap: 0.9rem; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+        .booking-form { display: flex; flex-direction: column; gap: 0.85rem; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
         .input-group { position: relative; width: 100%; display: flex; flex-direction: column; min-width: 0; }
-        .input-group label { font-size: 0.82rem; font-weight: 600; margin-bottom: 0.35rem; color: var(--text-main); }
-        
+        .input-group label { font-size: 0.8rem; font-weight: 600; margin-bottom: 0.3rem; color: var(--text-main); }
+
         .input-wrapper { 
             display: flex; align-items: center; background: var(--surface); 
             border: var(--border-silver); box-shadow: var(--shadow-silver); 
-            border-radius: var(--radius-sm); padding: 0.65rem 0.9rem; transition: var(--transition); 
+            border-radius: var(--radius-sm); padding: 0.6rem 0.85rem; transition: var(--transition); 
             position: relative; cursor: pointer; min-width: 0;
         }
         .input-wrapper.active { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.15); }
-        .input-icon { width: 17px; height: 17px; fill: #94a3b8; margin-right: 8px; flex-shrink: 0; }
-        
+        .input-icon { width: 16px; height: 16px; fill: #94a3b8; margin-right: 8px; flex-shrink: 0; }
+
+        /* حقول البحث الذكية */
+        .searchable-input {
+            width: 100%; border: none; outline: none; font-size: 0.9rem; background: transparent;
+            color: var(--text-main); font-weight: 500;
+        }
+
         .custom-select-trigger {
             display: flex; justify-content: space-between; align-items: center; width: 100%;
-            min-width: 0; font-size: 0.92rem; color: var(--text-main); user-select: none;
+            min-width: 0; font-size: 0.9rem; color: var(--text-main); user-select: none;
         }
-        
+
         .selected-value { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; min-width: 0; display: block; }
-        .select-arrow { width: 11px; height: 11px; fill: #94a3b8; transition: transform 0.3s; flex-shrink: 0; margin-left: 6px; }
+        .select-arrow { width: 11px; height: 11px; fill: #94a3b8; transition: transform 0.25s; flex-shrink: 0; margin-left: 6px; }
         .input-wrapper.active .select-arrow { transform: rotate(180deg); }
-        
+
         .custom-options {
-            position: absolute; top: calc(100% + 5px); left: 0; right: 0;
+            position: absolute; top: calc(100% + 4px); left: 0; right: 0;
             background: var(--surface); border: var(--border-silver); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
             border-radius: var(--radius-sm); z-index: 500;
-            max-height: 240px; overflow-y: auto;
-            opacity: 0; visibility: hidden; transform: translateY(-10px); transition: var(--transition);
+            max-height: 220px; overflow-y: auto;
+            opacity: 0; visibility: hidden; transform: translateY(-8px); transition: var(--transition);
         }
         .input-wrapper.active .custom-options { opacity: 1; visibility: visible; transform: translateY(0); }
-        
-        .custom-optgroup { background: #f1f5f9; padding: 5px 10px; font-size: 0.75rem; font-weight: 800; color: var(--primary); text-transform: uppercase; position: sticky; top: 0; }
-        .custom-option { padding: 8px 10px; font-size: 0.88rem; color: var(--text-main); cursor: pointer; transition: background 0.2s; border-bottom: 1px solid #f8fafc; }
+
+        .custom-optgroup { background: #f1f5f9; padding: 5px 10px; font-size: 0.72rem; font-weight: 800; color: var(--primary); text-transform: uppercase; position: sticky; top: 0; }
+        .custom-option { padding: 8px 10px; font-size: 0.85rem; color: var(--text-main); cursor: pointer; transition: background 0.15s; border-bottom: 1px solid #f8fafc; }
         .custom-option:last-child { border-bottom: none; }
         .custom-option:hover { background: #fffbeb; color: var(--primary); font-weight: 600; }
 
         input[type="date"], input[type="time"] { 
-            width: 100%; border: none; outline: none; font-size: 0.92rem; background: transparent; 
+            width: 100%; border: none; outline: none; font-size: 0.88rem; background: transparent; 
             color: var(--text-main); cursor: pointer;
         }
-        
+
         .booking-btn {
-            background: var(--primary); color: white; border: none; padding: 0.9rem 1.8rem; border-radius: var(--radius-sm);
-            font-size: 1rem; font-weight: 700; cursor: pointer; transition: var(--transition); border: var(--border-silver);
-            margin-top: 0.4rem; text-transform: uppercase; letter-spacing: 0.5px;
+            background: var(--primary); color: white; border: none; padding: 0.85rem 1.5rem; border-radius: var(--radius-sm);
+            font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: var(--transition); border: var(--border-silver);
+            margin-top: 0.25rem; text-transform: uppercase; letter-spacing: 0.5px;
         }
         .booking-btn:hover { background: var(--primary-hover); transform: translateY(-2px); }
 
+        /* 🌟 قسم النبذة التعريفية الأنيق (About / Intro) */
+        .about-section {
+            padding: 1.2rem 5% 0.5rem;
+            text-align: center;
+            max-width: 820px;
+            margin: 0 auto;
+        }
+        .about-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 0.4rem;
+            padding-bottom: 4px;
+            color: var(--text-main);
+        }
+        .about-title::after {
+            width: 35px;
+            height: 2.5px;
+        }
+        .about-text {
+            font-size: 0.92rem;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
         /* Sections */
-        section { padding: 3.5rem 5%; max-width: 1400px; margin: 0 auto; }
+        section { padding: 2.5rem 5%; max-width: 1400px; margin: 0 auto; }
 
         /* Services Grid */
-        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.9rem; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); gap: 0.85rem; }
         .service-card {
-            background: var(--surface); padding: 1.3rem 0.9rem; border-radius: var(--radius-md);
+            background: var(--surface); padding: 1.2rem 0.8rem; border-radius: var(--radius-md);
             border: var(--border-silver); box-shadow: var(--shadow-silver); transition: var(--transition);
             text-align: center; display: flex; flex-direction: column; align-items: center;
         }
-        .service-card:hover { transform: translateY(-4px); }
-        .service-icon { width: 42px; height: 42px; margin: 0 auto 0.8rem; background: #fffbeb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); }
-        .service-icon svg { width: 19px; height: 19px; fill: currentColor; }
-        .service-card h3 { font-size: 0.98rem; }
-        .service-card p { font-size: 0.82rem; line-height: 1.35; }
+        .service-card:hover { transform: translateY(-3px); }
+        .service-icon { width: 38px; height: 38px; margin: 0 auto 0.6rem; background: #fffbeb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); }
+        .service-icon svg { width: 18px; height: 18px; fill: currentColor; }
+        .service-card h3 { font-size: 0.92rem; }
+        .service-card p { font-size: 0.78rem; line-height: 1.35; }
 
         /* Fleet Grid */
-        .fleet-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.8rem; }
+        .fleet-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
         .fleet-card { 
             background: var(--surface); border-radius: var(--radius-md); overflow: hidden; 
             border: var(--border-silver); box-shadow: var(--shadow-silver); transition: var(--transition);
             position: relative; 
         }
-        .fleet-card img { width: 100%; height: 230px; object-fit: cover; }
-        .fleet-info { padding: 1.2rem; border-top: var(--border-silver); background: var(--surface); }
-        
-        .fleet-footer-row { display: flex; align-items: center; justify-content: space-between; margin-top: 0.8rem; gap: 8px; }
-        .fleet-meta { display: inline-block; background: #f1f5f9; padding: 3px 10px; border-radius: 50px; font-size: 0.8rem; font-weight: 600; border: var(--border-silver); color: var(--text-main); }
+        .fleet-card img { width: 100%; height: 210px; object-fit: cover; }
+        .fleet-info { padding: 1.1rem; border-top: var(--border-silver); background: var(--surface); }
+
+        .fleet-footer-row { display: flex; align-items: center; justify-content: space-between; margin-top: 0.7rem; gap: 8px; }
+        .fleet-meta { display: inline-block; background: #f1f5f9; padding: 3px 9px; border-radius: 50px; font-size: 0.78rem; font-weight: 600; border: var(--border-silver); color: var(--text-main); }
 
         .fleet-rent-btn {
             background: #fffbeb; color: var(--primary); border: 0.5px solid var(--primary);
-            padding: 4px 12px; border-radius: 50px; font-size: 0.78rem; font-weight: 700;
+            padding: 4px 11px; border-radius: 50px; font-size: 0.75rem; font-weight: 700;
             cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0;
             box-shadow: 0 1px 3px rgba(217, 119, 6, 0.15); display: inline-flex; align-items: center; gap: 4px;
         }
-        .fleet-rent-btn:hover { background: var(--primary); color: #ffffff; transform: translateY(-1px); }
+        .fleet-rent-btn:hover { background: var(--primary); color: #ffffff; }
 
         /* Destinations Grid */
-        .dest-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.4rem; }
+        .dest-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.2rem; }
         .dest-card { 
             background: var(--surface); border-radius: var(--radius-md); overflow: hidden; 
             border: var(--border-silver); box-shadow: var(--shadow-silver); 
             position: relative; transition: var(--transition); display: flex; flex-direction: column; 
         }
         .dest-card:hover { transform: translateY(-3px); }
-        .dest-card img { width: 100%; height: 200px; object-fit: cover; }
-        
-        /* السعر في أقصى اليمين */
+        .dest-card img { width: 100%; height: 190px; object-fit: cover; }
+
         .dest-price { 
-            position: absolute; top: 12px; right: 12px; 
+            position: absolute; top: 10px; right: 10px; 
             background: rgba(255,255,255,0.95);
-            padding: 4px 12px; border-radius: 50px; font-weight: 800; color: var(--primary);
-            border: var(--border-silver); box-shadow: var(--shadow-silver); backdrop-filter: blur(4px); z-index: 2; font-size: 0.88rem;
+            padding: 4px 10px; border-radius: 50px; font-weight: 800; color: var(--primary);
+            border: var(--border-silver); box-shadow: var(--shadow-silver); backdrop-filter: blur(4px); z-index: 2; font-size: 0.85rem;
         }
 
         /* زر المشاركة السادة في أقصى اليسار فوق الصورة */
         .card-share-btn {
             position: absolute;
-            top: 12px;
-            left: 12px; /* أقصى اليسار */
+            top: 10px;
+            left: 10px;
             background: rgba(255, 255, 255, 0.88);
             border: var(--border-silver);
             backdrop-filter: blur(4px);
-            width: 30px; height: 30px;
+            width: 28px; height: 28px;
             border-radius: 50%;
             display: inline-flex; align-items: center; justify-content: center;
             cursor: pointer; color: var(--text-main);
@@ -248,30 +277,30 @@
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
         }
         .card-share-btn:hover { color: var(--primary); transform: scale(1.1); background: #ffffff; }
-        .card-share-btn svg { width: 14px; height: 14px; fill: currentColor; }
-        
-        .dest-info { padding: 1.2rem; border-top: var(--border-silver); background: var(--surface); flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .card-share-btn svg { width: 13px; height: 13px; fill: currentColor; }
+
+        .dest-info { padding: 1.1rem; border-top: var(--border-silver); background: var(--surface); flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
         .dest-header-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 0.2rem; }
-        .dest-header-row h3 { font-size: 1.05rem; font-weight: 700; color: var(--text-main); margin-bottom: 0; flex: 1; }
+        .dest-header-row h3 { font-size: 1rem; font-weight: 700; color: var(--text-main); margin-bottom: 0; flex: 1; }
 
         .dest-book-btn {
             background: #fffbeb; color: var(--primary); border: 0.5px solid var(--primary);
-            padding: 4px 12px; border-radius: 50px; font-size: 0.78rem; font-weight: 700;
+            padding: 4px 11px; border-radius: 50px; font-size: 0.75rem; font-weight: 700;
             cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0;
             box-shadow: 0 1px 3px rgba(217, 119, 6, 0.15); display: inline-flex; align-items: center; gap: 4px;
         }
-        .dest-book-btn:hover { background: var(--primary); color: #ffffff; transform: translateY(-1px); }
+        .dest-book-btn:hover { background: var(--primary); color: #ffffff; }
 
-        .dest-detail-text { font-size: 0.82rem; color: var(--text-light); line-height: 1.4; margin: 0.4rem 0 0.7rem; }
+        .dest-detail-text { font-size: 0.8rem; color: var(--text-light); line-height: 1.4; margin: 0.35rem 0 0.6rem; }
 
         .route-badge-container {
             display: flex; align-items: center; justify-content: space-between; gap: 6px;
-            background: #f8fafc; padding: 6px 10px; border-radius: var(--radius-sm); border: var(--border-silver);
+            background: #f8fafc; padding: 5px 8px; border-radius: var(--radius-sm); border: var(--border-silver);
         }
-        .route-pill { font-size: 0.78rem; font-weight: 600; color: var(--text-light); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 45%; }
+        .route-pill { font-size: 0.75rem; font-weight: 600; color: var(--text-light); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 45%; }
         .route-pill.dest-target { color: var(--text-main); font-weight: 700; }
         .route-arrow { display: flex; align-items: center; color: var(--primary); flex-shrink: 0; }
-        .route-arrow svg { width: 15px; height: 15px; }
+        .route-arrow svg { width: 14px; height: 14px; }
 
         /* Footer */
         footer {
@@ -279,12 +308,12 @@
                         url('https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_1000,q_auto,f_auto/v1786738438/lpvcfoqx38rsydftoeht.jpg') center/cover no-repeat;
             color: #ffffff; max-width: 92%; margin: 2rem auto; border-radius: var(--radius-lg); text-align: center;
             border: var(--border-silver); box-shadow: var(--shadow-silver); position: relative; overflow: hidden;
-            aspect-ratio: 16 / 9; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1.2rem 5%;
+            aspect-ratio: 16 / 9; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1rem 5%;
         }
-        .footer-logo { display: inline-flex; align-items: center; gap: 8px; font-size: 1.35rem; font-weight: 800; margin-bottom: 0.25rem; color: #ffffff;}
-        footer p { color: #f8fafc; font-weight: 400; font-size: 0.85rem;}
-        .footer-vat { font-size: 0.75rem; color: #cbd5e1; margin-top: 3px; font-style: italic; }
-        .footer-phone { font-size: 1rem; font-weight: bold; margin-top: 6px; color: var(--primary); display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 50px; border: var(--border-silver); backdrop-filter: blur(4px);}
+        .footer-logo { display: inline-flex; align-items: center; gap: 8px; font-size: 1.25rem; font-weight: 800; margin-bottom: 0.2rem; color: #ffffff;}
+        footer p { color: #f8fafc; font-weight: 400; font-size: 0.82rem;}
+        .footer-vat { font-size: 0.72rem; color: #cbd5e1; margin-top: 3px; font-style: italic; }
+        .footer-phone { font-size: 0.95rem; font-weight: bold; margin-top: 5px; color: var(--primary); display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 50px; border: var(--border-silver); backdrop-filter: blur(4px);}
 
         /* WhatsApp Floating Button */
         .whatsapp-btn {
@@ -296,101 +325,31 @@
         .whatsapp-btn svg { width: 24px; height: 24px; fill: white; }
 
         /* Mobile specific enhancements */
-@media (max-width: 768px) {
+        @media (max-width: 768px) {
+            .form-row.locations { grid-template-columns: 1fr; gap: 0.75rem; }
+            .form-row.split { grid-template-columns: 1fr 1fr; gap: 0.65rem; }
+            .booking-card { margin: 12px 4% 15px; width: 92%; padding: 1.1rem; }
+            .hero { aspect-ratio: 16 / 9; min-height: 0; margin-top: 70px; width: 92%; }
+            section { padding: 1.5rem 4%; }
+            
+            .about-section { padding: 0.8rem 4% 0.3rem; }
+            .about-title { font-size: 1.1rem; }
+            .about-text { font-size: 0.82rem; }
 
-    .form-row.locations {
-        grid-template-columns: 1fr;
-        gap: 0.8rem;
-    }
+            .dest-grid { grid-template-columns: 1fr; gap: 0.9rem; }
+            .dest-card img { height: 160px; }
+            .fleet-card img { height: 170px; }
+            .dest-info, .fleet-info { padding: 0.85rem; }
+            .dest-header-row h3 { font-size: 0.92rem; }
+            .dest-detail-text { font-size: 0.76rem; margin: 0.25rem 0 0.5rem; }
 
-    .form-row.split {
-        grid-template-columns: 1fr 1fr;
-        gap: 0.7rem;
-    }
-
-    .booking-card {
-        margin: 15px 4% 15px;
-        width: 92%;
-        padding: 1.2rem;
-    }
-
-    /* Hero */
-    .hero {
-        aspect-ratio: 16 / 9;
-        min-height: 0;
-        margin-top: 75px;
-        width: 92%;
-    }
-
-    section {
-        padding: 1.8rem 4%;
-    }
-
-    /* Destinations */
-    .dest-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-
-    .dest-card img {
-        height: 165px;
-    }
-
-    .fleet-card img {
-        height: 175px;
-    }
-
-    .dest-info,
-    .fleet-info {
-        padding: 0.9rem;
-    }
-
-    .dest-header-row h3 {
-        font-size: 0.95rem;
-    }
-
-    .dest-detail-text {
-        font-size: 0.78rem;
-        margin: 0.3rem 0 0.6rem;
-    }
-
-    .route-badge-container {
-        padding: 5px 8px;
-        font-size: 0.72rem;
-    }
-
-    /* Footer */
-    footer {
-        aspect-ratio: 16 / 9;
-        padding: 0.8rem;
-    }
-
-    .footer-logo {
-        font-size: 1.15rem;
-    }
-
-    .site-logo {
-        width: 30px;
-        height: 30px;
-    }
-
-    footer p {
-        font-size: 0.75rem;
-    }
-
-    .footer-phone {
-        font-size: 0.9rem;
-        margin-top: 3px;
-        padding: 4px 10px;
-    }
-
-    /* Form */
-    input[type="date"],
-    input[type="time"],
-    .custom-select-trigger {
-        font-size: 0.82rem;
-    }
-}
+            footer { aspect-ratio: 16 / 9; padding: 0.75rem; }
+            .footer-logo { font-size: 1.1rem; }
+            .site-logo { width: 28px; height: 28px; }
+            footer p { font-size: 0.72rem; }
+            .footer-phone { font-size: 0.88rem; margin-top: 2px; padding: 4px 10px; }
+            input[type="date"], input[type="time"], .searchable-input { font-size: 0.82rem; }
+        }
     </style>
 </head>
 <body>
@@ -414,21 +373,20 @@
     </header>
 
     <!-- Hero Section -->
-<div class="hero"></div>
+    <div class="hero"></div>
 
-    <!-- Booking Card -->
+    <!-- Booking Card (مع حقول بحث ذكية) -->
     <div class="booking-card" id="bookingCard">
         <div class="booking-form">
-            <!-- Locations -->
+            <!-- Locations Searchable Inputs -->
             <div class="form-row locations">
                 <div class="input-group">
                     <label data-i18n="pickup_label">Abholort</label>
                     <div class="input-wrapper custom-dropdown-wrapper" id="pickupWrapper">
                         <svg class="input-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                        <div class="custom-select-trigger">
-                            <span class="selected-value" id="pickupValue" data-i18n="select_loc">Ort wählen...</span>
-                            <svg class="select-arrow" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
-                        </div>
+                        <input type="text" id="pickupInput" class="searchable-input" placeholder="Ort suchen oder eingeben..." autocomplete="off">
+                        <svg class="select-arrow" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                        
                         <div class="custom-options" id="pickupOptions">
                             <div class="custom-optgroup">Deutschland (Metropolen)</div>
                             <div class="custom-option">München Zentrum</div>
@@ -470,15 +428,14 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="input-group">
                     <label data-i18n="dropoff_label">Zielort</label>
                     <div class="input-wrapper custom-dropdown-wrapper" id="dropoffWrapper">
                         <svg class="input-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                        <div class="custom-select-trigger">
-                            <span class="selected-value" id="dropoffValue" data-i18n="select_loc">Ort wählen...</span>
-                            <svg class="select-arrow" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
-                        </div>
+                        <input type="text" id="dropoffInput" class="searchable-input" placeholder="Ort suchen oder eingeben..." autocomplete="off">
+                        <svg class="select-arrow" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                        
                         <div class="custom-options" id="dropoffOptions">
                             <div class="custom-optgroup">Deutschland (Metropolen)</div>
                             <div class="custom-option">München Zentrum</div>
@@ -578,6 +535,12 @@
         </div>
     </div>
 
+    <!-- 🌟 قسم النبذة التعريفية الأنيق (About / Intro) -->
+    <div class="about-section">
+        <h2 class="about-title" data-i18n="about_title">Taxi AlpGo</h2>
+        <p class="about-text" data-i18n="about_text">Taxi AlpGo steht für zuverlässige, komfortable und sichere Transfers in Innsbruck und der Alpenregion.</p>
+    </div>
+
     <!-- Services Section -->
     <section>
         <h2 data-i18n="services_title">Unsere Dienstleistungen</h2>
@@ -625,12 +588,23 @@
         </div>
         <p data-i18n="footer_text">Dein zuverlässiger Partner für Taxi & Limousinen-Service in Innsbruck.</p>
         <p class="footer-vat" data-i18n="vat_inc">* Alle Preise inkl. 10% MwSt.</p>
-        
-        <a href="tel:+436763356300" class="footer-phone">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            +43 676 3356300
-        </a>
-        <p style="margin-top: 8px; font-size: 0.72rem; color: #cbd5e1;">© 2024 Taxi AlpGo. All Rights Reserved.</p>
+
+        <!-- روابط التواصل: الهاتف والإيميل في نفس الحاوية بتصميم أنيق -->
+        <div style="display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap; margin-top:6px;">
+            <!-- رقم الهاتف -->
+            <a href="tel:+436763356300" class="footer-phone" style="margin-top:0;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                +43 676 3356300
+            </a>
+
+            <!-- الإيميل الجديد -->
+            <a href="mailto:taxi_alpgo@yahoo.com" class="footer-phone" style="margin-top:0;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                taxi_alpgo@yahoo.com
+            </a>
+        </div>
+
+        <p style="margin-top: 8px; font-size: 0.72rem; color: #cbd5e1;">© 2026 Taxi AlpGo. All Rights Reserved.</p>
     </footer>
 
     <!-- WhatsApp Floating Button -->
@@ -655,31 +629,71 @@
 
         let currentLang = 'DE';
 
-        // 2. Dropdown Logic
-        function setupDropdowns() {
-            document.querySelectorAll('.custom-dropdown-wrapper').forEach(wrapper => {
+        // 2. Searchable Combobox Logic (بحث ذكي بالفلترة أو كتابة عنوان حر)
+        function setupSearchableDropdowns() {
+            const wrappers = [
+                { wrapper: document.getElementById('pickupWrapper'), input: document.getElementById('pickupInput'), options: document.getElementById('pickupOptions') },
+                { wrapper: document.getElementById('dropoffWrapper'), input: document.getElementById('dropoffInput'), options: document.getElementById('dropoffOptions') }
+            ];
+
+            wrappers.forEach(({ wrapper, input, options }) => {
+                if(!wrapper || !input || !options) return;
+
+                // فتح القائمة عند التركيز على الحقل
+                input.addEventListener('focus', () => {
+                    document.querySelectorAll('.custom-dropdown-wrapper').forEach(dw => dw.classList.remove('active'));
+                    wrapper.classList.add('active');
+                });
+
+                // فلترة الخيارات لحظياً أثناء الكتابة
+                input.addEventListener('input', () => {
+                    const query = input.value.toLowerCase().trim();
+                    wrapper.classList.add('active');
+                    const items = options.querySelectorAll('.custom-option');
+                    
+                    items.forEach(item => {
+                        const match = item.innerText.toLowerCase().includes(query);
+                        item.style.display = match ? 'block' : 'none';
+                    });
+                });
+
+                // اختيار عنصر من القائمة
+                options.querySelectorAll('.custom-option').forEach(option => {
+                    option.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        input.value = option.innerText;
+                        wrapper.classList.remove('active');
+                    });
+                });
+            });
+
+            // القوائم العادية (السيارة وعدد الركاب)
+            document.querySelectorAll('.custom-dropdown-wrapper:not(#pickupWrapper):not(#dropoffWrapper)').forEach(wrapper => {
                 const trigger = wrapper.querySelector('.custom-select-trigger');
                 const options = wrapper.querySelectorAll('.custom-option');
                 const selectedValue = wrapper.querySelector('.selected-value');
 
-                trigger.onclick = (e) => {
-                    e.stopPropagation();
-                    document.querySelectorAll('.custom-dropdown-wrapper').forEach(dw => { if(dw !== wrapper) dw.classList.remove('active'); });
-                    wrapper.classList.toggle('active');
-                };
+                if(trigger) {
+                    trigger.onclick = (e) => {
+                        e.stopPropagation();
+                        document.querySelectorAll('.custom-dropdown-wrapper').forEach(dw => { if(dw !== wrapper) dw.classList.remove('active'); });
+                        wrapper.classList.toggle('active');
+                    };
+                }
 
                 options.forEach(option => {
                     option.onclick = (e) => {
                         e.stopPropagation();
-                        selectedValue.innerText = option.innerText;
-                        selectedValue.title = option.innerText;
-                        selectedValue.style.color = "var(--text-main)";
+                        if(selectedValue) {
+                            selectedValue.innerText = option.innerText;
+                            selectedValue.title = option.innerText;
+                        }
                         wrapper.classList.remove('active');
                     };
                 });
             });
         }
-        setupDropdowns();
+        setupSearchableDropdowns();
 
         document.addEventListener('click', () => {
             document.querySelectorAll('.custom-dropdown-wrapper').forEach(w => w.classList.remove('active'));
@@ -687,11 +701,11 @@
 
         // 3. Quick Route Booking
         function selectRoute(pickupText, dropoffText) {
-            const p = document.getElementById('pickupValue');
-            const d = document.getElementById('dropoffValue');
+            const p = document.getElementById('pickupInput');
+            const d = document.getElementById('dropoffInput');
             if(p && d) {
-                p.innerText = pickupText; p.style.color = "var(--text-main)";
-                d.innerText = dropoffText; d.style.color = "var(--text-main)";
+                p.value = pickupText;
+                d.value = dropoffText;
             }
             const card = document.getElementById('bookingCard');
             if(card) {
@@ -705,84 +719,50 @@
             }
         }
 
-        // 4. دالة المشاركة الذكية عبر Web Share API
-        async function shareCustomItem(type, id, title, desc, extraInfo) {
+        // 4. مشاركة الرابط فقط دون نصوص مكررة لتوليد بطاقة المعاينة
+        async function shareCustomItem(type, id) {
             const shareUrl = `${window.location.origin}/api/share?type=${type}&id=${encodeURIComponent(id)}`;
-            const shareData = {
-                title: `${title} | Taxi AlpGo`,
-                text: `${title} (${extraInfo}) - ${desc}\nJetzt buchen bei Taxi AlpGo:`,
-                url: shareUrl
-            };
 
             if (navigator.share) {
                 try {
-                    await navigator.share(shareData);
+                    await navigator.share({ url: shareUrl });
                 } catch (err) {
-                    console.log('Share canceled');
+                    console.log('Share dismissed');
                 }
             } else {
-                const waText = encodeURIComponent(`${shareData.title}\n${shareData.text}\n${shareData.url}`);
-                window.open(`https://api.whatsapp.com/send?text=${waText}`, '_blank');
+                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareUrl)}`, '_blank');
             }
         }
 
-        // 5. Send Booking Card to WhatsApp
+        // 5. إرسال بيانات الحجز باللغة الألمانية فقط لخدمة العملاء
         function sendBookingToWhatsApp() {
-            const pickup = document.getElementById('pickupValue').innerText;
-            const dropoff = document.getElementById('dropoffValue').innerText;
+            const pickup = document.getElementById('pickupInput').value.trim();
+            const dropoff = document.getElementById('dropoffInput').value.trim();
             const date = document.getElementById('bookingDate').value;
             const time = document.getElementById('bookingTime').value;
             const car = document.getElementById('carValue').innerText;
             const pax = document.getElementById('paxValue').innerText;
 
-            if(pickup.includes("...") || dropoff.includes("...")) {
-                alert(currentLang === 'DE' ? "Bitte wählen Sie Abholort und Zielort!" : "Please select pickup and destination!");
+            if(!pickup || !dropoff) {
+                alert(currentLang === 'DE' ? "Bitte geben Sie Abholort und Zielort ein!" : "Please enter pickup and destination!");
                 return;
             }
 
-            let msg = "";
-            if(currentLang === 'DE') {
-                msg = `🚖 *Neue Buchungsanfrage - Taxi AlpGo*\n\n` +
-                      `📍 *Abholort:* ${pickup}\n` +
-                      `🏁 *Zielort:* ${dropoff}\n` +
-                      `📅 *Datum:* ${date || "Nicht angegeben"}\n` +
-                      `⏰ *Uhrzeit:* ${time || "Nicht angegeben"}\n` +
-                      `🚗 *Fahrzeug:* ${car}\n` +
-                      `👥 *Personen:* ${pax}\n\n` +
-                      `Bitte bestätigen Sie die Verfügbarkeit und den Preis.`;
-            } else if(currentLang === 'EN') {
-                msg = `🚖 *New Booking Request - Taxi AlpGo*\n\n` +
-                      `📍 *Pickup:* ${pickup}\n` +
-                      `🏁 *Destination:* ${dropoff}\n` +
-                      `📅 *Date:* ${date || "Not specified"}\n` +
-                      `⏰ *Time:* ${time || "Not specified"}\n` +
-                      `🚗 *Vehicle:* ${car}\n` +
-                      `👥 *Passengers:* ${pax}\n\n` +
-                      `Please confirm availability and price.`;
-            } else {
-                msg = `🚖 *Nieuwe Boekingsaanvraag - Taxi AlpGo*\n\n` +
-                      `📍 *Ophaallocatie:* ${pickup}\n` +
-                      `🏁 *Bestemming:* ${dropoff}\n` +
-                      `📅 *Datum:* ${date || "Niet opgegeven"}\n` +
-                      `⏰ *Tijd:* ${time || "Niet opgegeven"}\n` +
-                      `🚗 *Voertuig:* ${car}\n` +
-                      `👥 *Passagiers:* ${pax}\n\n` +
-                      `Bevestig alstublieft de beschikbaarheid en prijs.`;
-            }
+            const msg = `🚖 *Neue Buchungsanfrage - Taxi AlpGo*\n\n` +
+                        `📍 *Abholort:* ${pickup}\n` +
+                        `🏁 *Zielort:* ${dropoff}\n` +
+                        `📅 *Datum:* ${date || "Nicht angegeben"}\n` +
+                        `⏰ *Uhrzeit:* ${time || "Nicht angegeben"}\n` +
+                        `🚗 *Fahrzeug:* ${car}\n` +
+                        `👥 *Personen:* ${pax}\n\n` +
+                        `Bitte bestätigen Sie die Verfügbarkeit und den Preis.`;
 
             window.open(`https://wa.me/436763356300?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
-        // 6. Rent Vehicle via WhatsApp
+        // 6. طلب تأجير سيارة بالألمانية فقط
         function rentVehicle(carName) {
-            let msg = "";
-            if (currentLang === 'DE') {
-                msg = `Hallo Taxi AlpGo, ich interessiere mich für die Anmietung des Fahrzeugs: *${carName}*. Bitte um weitere Informationen.`;
-            } else if (currentLang === 'EN') {
-                msg = `Hello Taxi AlpGo, I am interested in renting the vehicle: *${carName}*. Please provide more information.`;
-            } else {
-                msg = `Hallo Taxi AlpGo, ik ben geïnteresseerd in het huren van het voertuig: *${carName}*. Kunt u mij meer informatie sturen?`;
-            }
+            const msg = `Hallo Taxi AlpGo, ich interessiere mich für die Anmietung des Fahrzeugs: *${carName}*. Bitte um weitere Informationen.`;
             window.open(`https://wa.me/436763356300?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
@@ -791,9 +771,11 @@
             DE: {
                 hero_title: "Premium Taxi & Limousinenservice in Innsbruck",
                 hero_sub: "Günstige und zuverlässige Transfers, Flughafenshuttles und Sightseeing-Touren für Ihren perfekten Aufenthalt.",
-                pickup_label: "Abholort", dropoff_label: "Zielort", select_loc: "Ort wählen...",
+                pickup_label: "Abholort", dropoff_label: "Zielort",
                 date_label: "Datum", time_label: "Uhrzeit", car_label: "Fahrzeug", pax_label: "Personen",
                 book_btn: "Jetzt Buchen", quick_book: "Buchen", rent_btn: "Mieten",
+                about_title: "Taxi AlpGo",
+                about_text: "Taxi AlpGo steht für zuverlässige, komfortable und sichere Transfers in Innsbruck und der Alpenregion.",
                 services_title: "Unsere Dienstleistungen",
                 srv_1_title: "City Tours", srv_1_desc: "Erleben Sie die Sehenswürdigkeiten komfortabel.",
                 srv_2_title: "Ski Transfers", srv_2_desc: "St. Anton, Ischgl, Kühtai und mehr.",
@@ -806,9 +788,11 @@
             EN: {
                 hero_title: "Premium Taxi & Limousine Service in Innsbruck",
                 hero_sub: "Affordable and reliable transfers, airport shuttles, and sightseeing tours for your perfect stay.",
-                pickup_label: "Pickup Location", dropoff_label: "Destination", select_loc: "Select location...",
+                pickup_label: "Pickup Location", dropoff_label: "Destination",
                 date_label: "Date", time_label: "Time", car_label: "Vehicle", pax_label: "Passengers",
                 book_btn: "Book Now", quick_book: "Book", rent_btn: "Rent",
+                about_title: "Taxi AlpGo",
+                about_text: "Taxi AlpGo offers reliable, comfortable and safe transfers in Innsbruck and the Alpine region.",
                 services_title: "Our Services",
                 srv_1_title: "City Tours", srv_1_desc: "Experience the sights comfortably.",
                 srv_2_title: "Ski Transfers", srv_2_desc: "Rides to St. Anton, Ischgl, Kühtai and more.",
@@ -821,9 +805,11 @@
             NL: {
                 hero_title: "Premium Taxi & Limousineservice in Innsbruck",
                 hero_sub: "Betaalbare en betrouwbare transfers, luchthavenshuttles en sightseeingtours voor uw perfecte verblijf.",
-                pickup_label: "Ophaallocatie", dropoff_label: "Bestemming", select_loc: "Kies locatie...",
+                pickup_label: "Ophaallocatie", dropoff_label: "Bestemming",
                 date_label: "Datum", time_label: "Tijd", car_label: "Voertuig", pax_label: "Passagiers",
                 book_btn: "Boek Nu", quick_book: "Boek", rent_btn: "Huren",
+                about_title: "Taxi AlpGo",
+                about_text: "Taxi AlpGo biedt betrouwbare, comfortabele en veilige transfers in Innsbruck en de Alpenregio.",
                 services_title: "Onze Diensten",
                 srv_1_title: "City Tours", srv_1_desc: "Ervaar de bezienswaardigheden comfortabel.",
                 srv_2_title: "Ski Transfers", srv_2_desc: "Ritten naar St. Anton, Ischgl, Kühtai en meer.",
@@ -859,10 +845,10 @@
             });
         }
 
-        // 8. Live Realtime Listeners
-        
-        // إعدادات الهوية وخلفية الكوفر
-        db.collection("settings").doc("general").onSnapshot(doc => {
+        // 8. Live Realtime Listeners (بدون كاش قديم ومزامنة حية 100%)
+
+        // إعدادات الهوية والكوفر
+        db.collection("settings").doc("general").onSnapshot({ includeMetadataChanges: false }, doc => {
             if (doc.exists) {
                 const d = doc.data();
                 if (d.siteName) {
@@ -880,8 +866,8 @@
             }
         });
 
-        // أسطول السيارات المباشر + زر المشاركة في أقصى اليسار فوق الصورة
-        db.collection("vehicles").onSnapshot(snapshot => {
+        // أسطول السيارات المباشر
+        db.collection("vehicles").onSnapshot({ includeMetadataChanges: false }, snapshot => {
             const container = document.getElementById('fleetContainer');
             container.innerHTML = "";
             if (snapshot.empty) {
@@ -894,11 +880,11 @@
                 const desc = data[`desc_${currentLang.toLowerCase()}`] || data.desc_de || data.desc || "";
                 const pax = data.pax || 8;
                 const img = data.imageUrl || "https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716414/bl2wzjvwiuocspelj562.png";
-                
+
                 container.innerHTML += `
                     <div class="fleet-card">
                         <!-- زر المشاركة في أقصى اليسار فوق صورة السيارة -->
-                        <button class="card-share-btn" title="Fahrzeug teilen" onclick="shareCustomItem('vehicle', '${doc.id}', '${title}', '${desc}', 'Max. ${pax} Personen')">
+                        <button class="card-share-btn" title="Fahrzeug teilen" onclick="shareCustomItem('vehicle', '${doc.id}')">
                             <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
                         </button>
                         <img src="${img}" alt="${title}" loading="lazy">
@@ -917,8 +903,8 @@
             });
         });
 
-        // الرحلات المباشرة: السعر أقصى اليمين وزر المشاركة أقصى اليسار فوق الصورة
-        db.collection("destinations").onSnapshot(snapshot => {
+        // الرحلات المباشرة
+        db.collection("destinations").onSnapshot({ includeMetadataChanges: false }, snapshot => {
             const container = document.getElementById('destinationsContainer');
             container.innerHTML = "";
             if (snapshot.empty) {
@@ -938,10 +924,9 @@
                 card.className = "dest-card";
                 card.innerHTML = `
                     <!-- زر المشاركة في أقصى اليسار فوق الصورة -->
-                    <button class="card-share-btn" title="Route teilen" onclick="shareCustomItem('dest', '${doc.id}', '${from} ➔ ${to}', '${desc}', '€${price}')">
+                    <button class="card-share-btn" title="Route teilen" onclick="shareCustomItem('dest', '${doc.id}')">
                         <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
                     </button>
-                    <!-- السعر في أقصى اليمين فوق الصورة -->
                     <div class="dest-price">€${price}</div>
 
                     <img src="${img}" alt="${title}" loading="lazy">
@@ -969,7 +954,7 @@
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js')
                     .then(reg => console.log('✅ PWA Active:', reg.scope))
-                    .catch(err => console.log(' PWA Failed:', err));
+                    .catch(err => console.log('❌ PWA Failed:', err));
             });
         }
     </script>
