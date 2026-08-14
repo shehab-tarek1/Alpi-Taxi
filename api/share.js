@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
         return res.end();
     }
 
-    // بيانات مشروع فايربيز Alpi Taxi
+    // بيانات مشروع فايربيز Taxi AlpGo
     const projectId = 'alpi-taxi';
     const collectionName = (type === 'vehicle' || type === 'car') ? 'vehicles' : 'destinations';
     const firestoreUrl = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/${collectionName}/${id}`;
@@ -32,7 +32,7 @@ module.exports = async (req, res) => {
         }
 
         const fields = data.fields || {};
-        let title = 'Alpi Taxi Innsbruck';
+        let title = 'Taxi AlpGo Innsbruck';
         let desc = '';
         let imageUrl = '';
 
@@ -44,7 +44,7 @@ module.exports = async (req, res) => {
             const price = fields.price?.integerValue || fields.price?.doubleValue || '';
             const destDesc = fields.desc_de?.stringValue || fields.desc?.stringValue || 'Premium Transfer & Taxi Service in Innsbruck und den Alpen.';
 
-            title = `🚖 ${from} ➔ ${to} | €${price} | Alpi Taxi`;
+            title = `🚖 ${from} ➔ ${to} | €${price} | Taxi AlpGo`;
             desc = `${destTitle ? destTitle + ' • ' : ''}${destDesc.replace(/[\r\n]+/g, ' ').trim()} • 📞 WhatsApp: +43 676 3356300`;
             imageUrl = fields.imageUrl?.stringValue || 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1200&q=80';
         } else {
@@ -53,7 +53,7 @@ module.exports = async (req, res) => {
             const pax = fields.pax?.integerValue || fields.pax?.doubleValue || 8;
             const carDesc = fields.desc_de?.stringValue || fields.desc?.stringValue || 'Geräumig, sicher und komfortabel für Gruppen und VIP Transfers.';
 
-            title = `🚗 ${carName} (Max. ${pax} Personen) | Alpi Taxi`;
+            title = `🚗 ${carName} (Max. ${pax} Personen) | Taxi AlpGo`;
             desc = `${carDesc.replace(/[\r\n]+/g, ' ').trim()} • Jetzt mieten via WhatsApp: +43 676 3356300`;
             imageUrl = fields.imageUrl?.stringValue || 'https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_1200,q_auto,f_auto/v1786716414/bl2wzjvwiuocspelj562.png';
         }
@@ -93,7 +93,7 @@ module.exports = async (req, res) => {
     <meta property="og:image:secure_url" content="${imageUrl}" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:site_name" content="Alpi Taxi Innsbruck" />
+    <meta property="og:site_name" content="Taxi AlpGo Innsbruck" />
     <meta property="og:url" content="${siteUrl}" />
     
     <meta name="twitter:card" content="summary_large_image" />
