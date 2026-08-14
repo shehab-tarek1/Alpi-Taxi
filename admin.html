@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Alpi Taxi | Admin Control Panel</title>
+    <title>Alpi Taxi | Admin Control</title>
     
     <!-- Firebase SDKs (v8) -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -19,156 +19,145 @@
             --text-main: #0f172a;
             --text-light: #64748b;
             --border-silver: 0.5px solid #c0c0c0;
-            --shadow-silver: 0 2px 10px rgba(192, 192, 192, 0.35);
-            --shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.08);
-            --radius-md: 16px;
+            --shadow-silver: 0 2px 8px rgba(192, 192, 192, 0.35);
+            --radius-md: 14px;
             --radius-sm: 8px;
-            --transition: all 0.25s ease;
+            --transition: all 0.2s ease;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); line-height: 1.5; min-height: 100vh; }
+        body { background-color: var(--bg-color); color: var(--text-main); line-height: 1.4; overflow-x: hidden; width: 100%; }
         img { max-width: 100%; display: block; object-fit: cover; }
         button, input, select, textarea { font-family: inherit; }
 
-        /* Header Responsive Design */
+        /* 1. Header (ثابت وأنيق) */
         .admin-navbar {
             position: sticky; top: 0; z-index: 100;
-            background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
             border-bottom: var(--border-silver); box-shadow: var(--shadow-silver);
-            padding: 0.75rem 1.5rem; display: flex; justify-content: space-between; align-items: center;
+            padding: 0.65rem 1rem; display: flex; justify-content: space-between; align-items: center;
         }
-        .nav-brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.15rem; }
-        .site-logo { width: 36px; height: 36px; border-radius: 50%; object-fit: contain; background: #fff; border: var(--border-silver); padding: 2px; }
+        .nav-brand { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.1rem; }
+        .site-logo { width: 34px; height: 34px; border-radius: 50%; object-fit: contain; background: #fff; border: var(--border-silver); padding: 2px; }
         
-        .nav-actions { display: flex; align-items: center; gap: 10px; }
-        .admin-badge { background: #ecfdf5; color: #059669; border: 0.5px solid #a7f3d0; padding: 4px 10px; border-radius: 50px; font-size: 0.75rem; font-weight: 700; }
-
-        /* Main Container */
-        .main-container { max-width: 1300px; margin: 20px auto; padding: 0 15px; }
+        /* 2. Top Action Buttons (في نفس السطر) */
+        .top-action-bar {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0 16px;
+        }
+        
+        .main-container { max-width: 1200px; margin: 0 auto; padding: 0 12px 30px; }
 
         /* Buttons */
         .btn {
-            background: var(--primary); color: white; border: var(--border-silver); padding: 8px 16px;
+            background: var(--primary); color: white; border: var(--border-silver); padding: 8px 12px;
             border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; transition: var(--transition);
-            display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.85rem;
-            box-shadow: 0 2px 6px rgba(217, 119, 6, 0.2);
+            display: inline-flex; align-items: center; justify-content: center; gap: 5px; font-size: 0.82rem;
+            white-space: nowrap; text-align: center;
         }
-        .btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
-        .btn-danger { background: #ef4444; border-color: #dc2626; box-shadow: 0 2px 6px rgba(239, 68, 68, 0.2); }
+        .btn:hover { background: var(--primary-hover); }
+        .btn-danger { background: #ef4444; border-color: #dc2626; }
         .btn-danger:hover { background: #dc2626; }
-        .btn-edit { background: #0284c7; border-color: #0369a1; box-shadow: 0 2px 6px rgba(2, 132, 199, 0.2); }
+        .btn-edit { background: #0284c7; border-color: #0369a1; }
         .btn-edit:hover { background: #0369a1; }
-        .btn-success { background: #10b981; border-color: #059669; box-shadow: 0 2px 6px rgba(16, 185, 129, 0.2); }
-        .btn-success:hover { background: #059669; }
+        .btn-secondary { background: #64748b; border-color: #475569; }
 
-        /* Stats Bar */
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 20px; }
-        .stat-card {
-            background: var(--surface); padding: 1.2rem; border-radius: var(--radius-md);
-            border: var(--border-silver); box-shadow: var(--shadow-silver); display: flex; justify-content: space-between; align-items: center;
+        /* 3. Horizontal Card Rows Layout */
+        .section-box {
+            background: var(--surface); padding: 14px; border-radius: var(--radius-md);
+            border: var(--border-silver); box-shadow: var(--shadow-silver); margin-bottom: 18px;
         }
-        .stat-card h4 { font-size: 0.85rem; color: var(--text-light); }
-        .stat-card .stat-num { font-size: 1.6rem; font-weight: 800; color: var(--primary); }
+        .section-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
 
-        /* Sections */
-        .dash-card {
-            background: var(--surface); padding: 1.5rem; border-radius: var(--radius-md);
-            border: var(--border-silver); box-shadow: var(--shadow-silver); margin-bottom: 25px;
+        /* Grid: 1 col on mobile, 2 cols on desktop */
+        .cards-layout-grid {
+            display: grid; grid-template-columns: 1fr; gap: 10px;
         }
-        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; flex-wrap: wrap; gap: 10px; }
-        .section-header h2 { font-size: 1.25rem; font-weight: 800; display: flex; align-items: center; gap: 8px; }
-
-        /* Cards Grid Matching Main Site */
-        .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 18px; }
-        
-        .live-preview-card {
-            background: var(--surface); border-radius: var(--radius-md); overflow: hidden;
-            border: var(--border-silver); box-shadow: var(--shadow-silver); display: flex; flex-direction: column;
-            position: relative; transition: var(--transition);
-        }
-        .live-preview-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
-        .live-preview-card img { width: 100%; height: 190px; object-fit: cover; }
-        
-        .card-price-tag {
-            position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.95);
-            padding: 5px 14px; border-radius: 50px; font-weight: 800; color: var(--primary);
-            border: var(--border-silver); box-shadow: 0 2px 8px rgba(0,0,0,0.1); font-size: 0.88rem; backdrop-filter: blur(4px);
-        }
-        
-        .card-body { padding: 1.2rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between; border-top: var(--border-silver); background: var(--surface); }
-        .card-body h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; }
-        .card-desc { font-size: 0.82rem; color: var(--text-light); line-height: 1.4; margin-bottom: 10px; }
-        
-        .route-badge {
-            display: flex; align-items: center; justify-content: space-between; gap: 6px;
-            background: #f8fafc; padding: 6px 10px; border-radius: var(--radius-sm); border: var(--border-silver);
-            font-size: 0.78rem; font-weight: 600; margin-bottom: 12px;
+        @media (min-width: 768px) {
+            .cards-layout-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+            .top-action-bar { max-width: 600px; }
+            .main-container { padding: 0 16px 40px; }
         }
 
-        .card-admin-actions { display: flex; gap: 8px; border-top: 1px solid #f1f5f9; padding-top: 10px; }
-
-        /* Login Card */
-        .auth-container { max-width: 400px; margin: 80px auto; padding: 0 15px; }
-        .auth-card {
-            background: var(--surface); padding: 2.5rem 2rem; border-radius: var(--radius-md);
-            border: var(--border-silver); box-shadow: var(--shadow-silver); text-align: center;
+        /* الشكل المستطيل الأفقي للبطاقة */
+        .admin-card-row {
+            display: flex; align-items: center; justify-content: space-between; gap: 10px;
+            background: var(--surface); border: var(--border-silver); border-radius: var(--radius-sm);
+            padding: 8px 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.03); transition: var(--transition);
+            min-width: 0; width: 100%;
         }
-        .auth-card h2 { margin-bottom: 1.2rem; font-size: 1.4rem; }
+        .admin-card-row:hover { border-color: var(--primary); box-shadow: var(--shadow-silver); }
 
-        .form-group { margin-bottom: 1rem; text-align: left; }
-        .form-group label { display: block; font-size: 0.82rem; font-weight: 700; margin-bottom: 4px; color: var(--text-main); }
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%; padding: 9px 12px; border: var(--border-silver); border-radius: var(--radius-sm);
-            font-size: 0.9rem; outline: none; background: #fff; transition: var(--transition);
+        /* صورة البطاقة في أقصى اليمين/اليسار بدقة 400 */
+        .card-thumb-img {
+            width: 80px; height: 62px; border-radius: 6px; object-fit: cover;
+            flex-shrink: 0; border: var(--border-silver);
         }
-        .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.15); }
 
-        /* Modal Responsive */
-        .modal-overlay {
-            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(6px);
-            display: none; align-items: center; justify-content: center; z-index: 2000; padding: 12px;
+        /* تفاصيل البطاقة في نفس السطر */
+        .card-middle-info {
+            flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center;
         }
-        .modal-overlay.active { display: flex; }
-        
-        .modal-box {
-            background: var(--surface); width: 100%; max-width: 620px; max-height: 92vh; overflow-y: auto;
-            border-radius: var(--radius-md); border: var(--border-silver); box-shadow: var(--shadow-hover);
-            padding: 1.5rem; position: relative;
+        .card-title-text {
+            font-size: 0.88rem; font-weight: 700; color: var(--text-main);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
-        .modal-top { display: flex; justify-content: space-between; align-items: center; border-bottom: var(--border-silver); padding-bottom: 10px; margin-bottom: 1rem; }
-        .modal-close { font-size: 1.5rem; cursor: pointer; border: none; background: transparent; font-weight: bold; }
+        .card-sub-detail {
+            font-size: 0.75rem; color: var(--text-light); margin-top: 2px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .card-price-pill {
+            display: inline-block; color: var(--primary); font-weight: 800; font-size: 0.82rem; margin-top: 2px;
+        }
 
-        /* Image Upload Area */
-        .upload-dropzone {
+        /* أزرار الإجراءات في نفس السطر */
+        .card-actions-group {
+            display: flex; align-items: center; gap: 5px; flex-shrink: 0;
+        }
+        .btn-icon {
+            padding: 6px 9px; font-size: 0.75rem; border-radius: 6px;
+        }
+
+        /* 4. Internal In-Page Editor (الصفحة الداخلية) */
+        .internal-page-view { display: none; }
+        .editor-container {
+            background: var(--surface); border-radius: var(--radius-md);
+            border: var(--border-silver); box-shadow: var(--shadow-silver);
+            padding: 16px; margin-top: 10px;
+        }
+        .editor-top-nav {
+            display: flex; align-items: center; justify-content: space-between;
+            border-bottom: var(--border-silver); padding-bottom: 10px; margin-bottom: 14px;
+        }
+
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 4px; color: var(--text-main); }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 8px 10px; border: var(--border-silver); border-radius: var(--radius-sm);
+            font-size: 0.88rem; outline: none; background: #fff;
+        }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); }
+
+        /* Cloudinary Upload Inside Page */
+        .cloudinary-upload-box {
             border: 1.5px dashed var(--primary); border-radius: var(--radius-sm); background: #fffbeb;
-            padding: 15px; text-align: center; cursor: pointer; margin-top: 6px; position: relative;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 140px;
+            padding: 12px; text-align: center; cursor: pointer; position: relative; margin-top: 4px;
         }
-        .upload-dropzone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-        .preview-img-box { width: 100%; height: 150px; border-radius: 6px; overflow: hidden; display: none; margin-top: 8px; }
-        .preview-img-box img { width: 100%; height: 100%; object-fit: cover; }
-        .uploading-bar { display: none; color: var(--primary); font-weight: bold; font-size: 0.85rem; margin-top: 6px; }
+        .cloudinary-upload-box input[type="file"] { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+        .preview-img-display { width: 100%; height: 140px; border-radius: 6px; object-fit: cover; display: none; margin-top: 8px; border: var(--border-silver); }
 
-        /* Lang Tabs */
-        .lang-tabs { display: flex; gap: 6px; margin: 10px 0; border-bottom: var(--border-silver); padding-bottom: 8px; }
-        .tab-pill {
-            background: #f1f5f9; border: var(--border-silver); padding: 5px 12px; border-radius: 50px;
-            cursor: pointer; font-size: 0.78rem; font-weight: 700;
+        /* Tabs inside In-Page Editor */
+        .lang-tab-bar { display: flex; gap: 5px; margin: 10px 0 12px; border-bottom: var(--border-silver); padding-bottom: 6px; }
+        .tab-btn {
+            background: #f1f5f9; border: var(--border-silver); padding: 4px 10px; border-radius: 50px;
+            cursor: pointer; font-size: 0.75rem; font-weight: 700;
         }
-        .tab-pill.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
 
-        #dashboardContent { display: none; }
-
-        /* Mobile specific enhancements */
-        @media (max-width: 768px) {
-            body { padding: 0; }
-            .admin-navbar { padding: 0.6rem 1rem; }
-            .main-container { margin: 15px auto; padding: 0 10px; }
-            .dash-card { padding: 1.1rem; border-radius: 12px; }
-            .cards-grid { grid-template-columns: 1fr; }
-            .stats-grid { grid-template-columns: 1fr 1fr; }
-            .modal-box { padding: 1.1rem; border-radius: 12px; }
+        /* Login Screen */
+        .login-wrapper { max-width: 380px; margin: 60px auto; padding: 0 12px; }
+        .login-card {
+            background: var(--surface); padding: 2rem 1.5rem; border-radius: var(--radius-md);
+            border: var(--border-silver); box-shadow: var(--shadow-silver); text-align: center;
         }
     </style>
 </head>
@@ -180,230 +169,151 @@
             <img src="https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716325/ecuwdts2f0797fnddg4z.png" alt="Logo" class="site-logo">
             <span>Alpi Control</span>
         </div>
-        <div class="nav-actions">
-            <span class="admin-badge" id="adminStatusBadge" style="display:none;">● Online</span>
-            <button id="logoutBtn" class="btn btn-danger" style="display:none;" onclick="logout()">Abmelden</button>
-        </div>
+        <button id="logoutBtn" class="btn btn-danger" style="display:none; padding:5px 10px; font-size:0.75rem;" onclick="logout()">Abmelden</button>
     </header>
 
-    <!-- Login View -->
-    <div class="auth-container" id="loginView">
-        <div class="auth-card">
-            <h2>Admin Login</h2>
-            <p style="font-size:0.85rem; color:var(--text-light); margin-bottom:1.2rem;">Melden Sie sich an, um Inhalte zu verwalten.</p>
+    <!-- 1. شاشة تسجيل الدخول -->
+    <div class="login-wrapper" id="loginScreen">
+        <div class="login-card">
+            <h2 style="margin-bottom:12px; font-size:1.3rem;">Admin Login</h2>
             <div class="form-group">
                 <label>E-Mail-Adresse</label>
-                <input type="email" id="loginEmail" placeholder="admin@alpitaxi.com" required>
+                <input type="email" id="loginEmail" placeholder="admin@alpitaxi.com">
             </div>
             <div class="form-group">
                 <label>Passwort</label>
-                <input type="password" id="loginPassword" placeholder="••••••••" required>
+                <input type="password" id="loginPassword" placeholder="••••••••">
             </div>
-            <button class="btn" style="width: 100%; margin-top: 8px;" onclick="login()">Anmelden</button>
-            <p id="errorMsg" style="color:#ef4444; font-size:0.82rem; margin-top:10px; font-weight:700;"></p>
+            <button class="btn" style="width:100%; margin-top:6px; padding:10px;" onclick="login()">Anmelden</button>
+            <p id="errorMsg" style="color:#ef4444; font-size:0.8rem; margin-top:10px; font-weight:700;"></p>
         </div>
     </div>
 
-    <!-- Dashboard Content -->
-    <div class="main-container" id="dashboardContent">
+    <!-- 2. الشاشة الرئيسية للوحة التحكم (List View) -->
+    <main class="main-container" id="dashboardListScreen" style="display:none;">
         
-        <!-- Stats & Quick Actions -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div>
-                    <h4>Routen (Destinations)</h4>
-                    <div class="stat-num" id="destCount">0</div>
-                </div>
-                <button class="btn" onclick="openDestModal()">+ Route</button>
-            </div>
-            <div class="stat-card">
-                <div>
-                    <h4>Fahrzeuge (Fleet)</h4>
-                    <div class="stat-num" id="fleetCount">0</div>
-                </div>
-                <button class="btn" onclick="openVehicleModal()">+ Fahrzeug</button>
-            </div>
+        <!-- أزرار الإضافة في نفس السطر مباشرة تحت الهيدر -->
+        <div class="top-action-bar">
+            <button class="btn" onclick="openInternalEditor('vehicle', 'add')">🚗 + Fahrzeug</button>
+            <button class="btn" onclick="openInternalEditor('dest', 'add')">📍 + Neue Route</button>
         </div>
 
-        <!-- Sync Banner -->
-        <div class="dash-card" style="background:#fffbeb; border-color:var(--primary);">
-            <div class="section-header">
-                <div>
-                    <h3 style="color:#92400e; font-size:1.05rem;">Firebase-Synchronisierung</h3>
-                    <p style="font-size:0.82rem; color:#92400e;">Möchten Sie die vordefinierten Demo-Routen und Autos importieren?</p>
-                </div>
-                <button class="btn btn-success" onclick="seedInitialData()">📥 Demo-Daten einspielen</button>
+        <!-- قسم الرحلات والوجهات -->
+        <section class="section-box">
+            <h2 class="section-title">📍 Reiseziele & Routen</h2>
+            <div class="cards-layout-grid" id="destListContainer">
+                <!-- يتم توليد البطاقات الأفقية هنا -->
             </div>
-        </div>
+        </section>
 
-        <!-- Destinations Manager -->
-        <div class="dash-card">
-            <div class="section-header">
-                <h2>📍 Reiseziele & Preise verwalten</h2>
-                <button class="btn" onclick="openDestModal()">+ Neue Route</button>
+        <!-- قسم السيارات والأسطول -->
+        <section class="section-box">
+            <h2 class="section-title">🚗 Fahrzeugflotte</h2>
+            <div class="cards-layout-grid" id="fleetListContainer">
+                <!-- يتم توليد بطاقات السيارات هنا -->
             </div>
-            <div class="cards-grid" id="adminDestGrid"></div>
-        </div>
+        </section>
 
-        <!-- Fleet Manager -->
-        <div class="dash-card">
-            <div class="section-header">
-                <h2>🚗 Fahrzeugflotte verwalten</h2>
-                <button class="btn" onclick="openVehicleModal()">+ Neues Fahrzeug</button>
-            </div>
-            <div class="cards-grid" id="adminFleetGrid"></div>
-        </div>
+    </main>
 
-    </div>
-
-    <!-- Modal: Destination Form -->
-    <div class="modal-overlay" id="destModal">
-        <div class="modal-box">
-            <div class="modal-top">
-                <h3 id="destModalTitle">Route bearbeiten</h3>
-                <button class="modal-close" onclick="closeModals()">&times;</button>
-            </div>
+    <!-- 3. صفحة التعديل والإضافة الداخلية (In-Page Internal View) -->
+    <div class="main-container internal-page-view" id="editorScreen">
+        <div class="editor-container">
             
-            <input type="hidden" id="destDocId">
-            <input type="hidden" id="destImageUrl">
+            <div class="editor-top-nav">
+                <h3 id="editorPageTitle" style="font-size:1.05rem;">Element bearbeiten</h3>
+                <button class="btn btn-secondary" onclick="backToDashboard()">← Zurück (إلغاء)</button>
+            </div>
 
-            <!-- Cloudinary Direct Upload -->
+            <input type="hidden" id="editDocId">
+            <input type="hidden" id="editItemType"> <!-- 'dest' or 'vehicle' -->
+            <input type="hidden" id="uploadedImageUrl">
+
+            <!-- رفع الصور المباشر عبر Cloudinary -->
             <div class="form-group">
-                <label>Routen-Bild (Foto aus Galerie wählen)</label>
-                <div class="upload-dropzone">
-                    <span id="destUploadPrompt">📸 Klicken Sie hier, um ein Foto hochzuladen</span>
-                    <input type="file" accept="image/*" onchange="handleCloudinaryUpload(this, 'dest')">
-                    <div class="uploading-bar" id="destUploadProgress">⏳ Bild wird hochgeladen...</div>
+                <label>Foto (Aus Telefongalerie wählen)</label>
+                <div class="cloudinary-upload-box">
+                    <span id="uploadStatusText">📸 Klicken zum Auswählen</span>
+                    <input type="file" accept="image/*" onchange="uploadToCloudinary(this)">
                 </div>
-                <div class="preview-img-box" id="destPreviewBox">
-                    <img id="destImgPreview">
-                </div>
+                <img id="imagePreviewDisplay" class="preview-img-display">
             </div>
 
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+            <!-- حقول خاصة بالرحلات (تظهر فقط عند تعديل رحلة) -->
+            <div id="destFieldsGroup">
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+                    <div class="form-group">
+                        <label>Abholort (Start)</label>
+                        <input type="text" id="destFromInput" placeholder="z.B. Innsbruck Hbf">
+                    </div>
+                    <div class="form-group">
+                        <label>Zielort (Ende)</label>
+                        <input type="text" id="destToInput" placeholder="z.B. Bozen">
+                    </div>
+                </div>
                 <div class="form-group">
-                    <label>Abholort (Start)</label>
-                    <input type="text" id="destFrom" placeholder="z.B. Innsbruck Hbf" required>
-                </div>
-                <div class="form-group">
-                    <label>Zielort (Ende)</label>
-                    <input type="text" id="destTo" placeholder="z.B. Bozen Flughafen" required>
+                    <label>Preis (€ inkl. MwSt.)</label>
+                    <input type="number" id="destPriceInput" placeholder="290">
                 </div>
             </div>
 
-            <div class="form-group">
-                <label>Preis (€ inkl. MwSt.)</label>
-                <input type="number" id="destPrice" placeholder="290" required>
+            <!-- حقول خاصة بالسيارات (تظهر فقط عند تعديل سيارة) -->
+            <div id="vehicleFieldsGroup" style="display:none;">
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+                    <div class="form-group">
+                        <label>Modellname</label>
+                        <input type="text" id="vehicleNameInput" placeholder="z.B. Mercedes Vito">
+                    </div>
+                    <div class="form-group">
+                        <label>Max. Personen</label>
+                        <input type="number" id="vehiclePaxInput" placeholder="8">
+                    </div>
+                </div>
             </div>
 
-            <!-- Language Tabs -->
-            <label style="font-size:0.8rem; font-weight:700; margin-top:5px; display:block;">Texte & Übersetzungen:</label>
-            <div class="lang-tabs">
-                <div class="tab-pill active" onclick="switchLangTab('dest', 'de')">🇩🇪 Deutsch</div>
-                <div class="tab-pill" onclick="switchLangTab('dest', 'en')">🇬🇧 English</div>
-                <div class="tab-pill" onclick="switchLangTab('dest', 'nl')">🇳🇱 Nederlands</div>
+            <!-- تبويبات اللغات الثلاث -->
+            <label style="font-size:0.8rem; font-weight:700; display:block; margin-top:6px;">Texte & Übersetzungen:</label>
+            <div class="lang-tab-bar">
+                <div class="tab-btn active" onclick="switchLanguageTab('de')">🇩🇪 Deutsch</div>
+                <div class="tab-btn" onclick="switchLanguageTab('en')">🇬🇧 English</div>
+                <div class="tab-btn" onclick="switchLanguageTab('nl')">🇳🇱 Nederlands</div>
             </div>
 
-            <div id="dest_tab_de" class="lang-content-box">
+            <!-- محتوى اللغات -->
+            <div id="lang_de_box">
                 <div class="form-group">
                     <label>Titel (DE)</label>
-                    <input type="text" id="destTitle_de" placeholder="z.B. Flughafen-Transfer">
+                    <input type="text" id="title_de_input" placeholder="Titel auf Deutsch">
                 </div>
                 <div class="form-group">
                     <label>Beschreibung (DE)</label>
-                    <textarea id="destDesc_de" rows="2" placeholder="Direkte und pünktliche Verbindung..."></textarea>
+                    <textarea id="desc_de_input" rows="2" placeholder="Beschreibung auf Deutsch"></textarea>
                 </div>
             </div>
 
-            <div id="dest_tab_en" class="lang-content-box" style="display:none;">
+            <div id="lang_en_box" style="display:none;">
                 <div class="form-group">
                     <label>Title (EN)</label>
-                    <input type="text" id="destTitle_en" placeholder="Airport Transfer">
+                    <input type="text" id="title_en_input" placeholder="Title in English">
                 </div>
                 <div class="form-group">
                     <label>Description (EN)</label>
-                    <textarea id="destDesc_en" rows="2" placeholder="Direct and punctual transfer..."></textarea>
+                    <textarea id="desc_en_input" rows="2" placeholder="Description in English"></textarea>
                 </div>
             </div>
 
-            <div id="dest_tab_nl" class="lang-content-box" style="display:none;">
+            <div id="lang_nl_box" style="display:none;">
                 <div class="form-group">
                     <label>Titel (NL)</label>
-                    <input type="text" id="destTitle_nl" placeholder="Luchthaventransfer">
+                    <input type="text" id="title_nl_input" placeholder="Titel in het Nederlands">
                 </div>
                 <div class="form-group">
                     <label>Beschrijving (NL)</label>
-                    <textarea id="destDesc_nl" rows="2" placeholder="Directe transfer..."></textarea>
+                    <textarea id="desc_nl_input" rows="2" placeholder="Beschrijving in het Nederlands"></textarea>
                 </div>
             </div>
 
-            <button class="btn" style="width:100%; margin-top:10px; padding:11px;" onclick="saveDestination()">💾 Route speichern</button>
-        </div>
-    </div>
-
-    <!-- Modal: Vehicle Form -->
-    <div class="modal-overlay" id="vehicleModal">
-        <div class="modal-box">
-            <div class="modal-top">
-                <h3 id="vehicleModalTitle">Fahrzeug bearbeiten</h3>
-                <button class="modal-close" onclick="closeModals()">&times;</button>
-            </div>
-            
-            <input type="hidden" id="vehicleDocId">
-            <input type="hidden" id="vehicleImageUrl">
-
-            <!-- Cloudinary Direct Upload -->
-            <div class="form-group">
-                <label>Fahrzeug-Foto (Foto aus Galerie wählen)</label>
-                <div class="upload-dropzone">
-                    <span id="vehicleUploadPrompt">📸 Klicken Sie hier, um ein Foto hochzuladen</span>
-                    <input type="file" accept="image/*" onchange="handleCloudinaryUpload(this, 'vehicle')">
-                    <div class="uploading-bar" id="vehicleUploadProgress">⏳ Bild wird hochgeladen...</div>
-                </div>
-                <div class="preview-img-box" id="vehiclePreviewBox">
-                    <img id="vehicleImgPreview">
-                </div>
-            </div>
-
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                <div class="form-group">
-                    <label>Modellbezeichnung</label>
-                    <input type="text" id="vehicleName" placeholder="z.B. Mercedes Vito" required>
-                </div>
-                <div class="form-group">
-                    <label>Max. Personen</label>
-                    <input type="number" id="vehiclePax" placeholder="8" required>
-                </div>
-            </div>
-
-            <div class="lang-tabs">
-                <div class="tab-pill active" onclick="switchLangTab('vehicle', 'de')">🇩🇪 Deutsch</div>
-                <div class="tab-pill" onclick="switchLangTab('vehicle', 'en')">🇬🇧 English</div>
-                <div class="tab-pill" onclick="switchLangTab('vehicle', 'nl')">🇳🇱 Nederlands</div>
-            </div>
-
-            <div id="vehicle_tab_de" class="lang-content-box">
-                <div class="form-group">
-                    <label>Beschreibung (DE)</label>
-                    <textarea id="vehicleDesc_de" rows="2" placeholder="Geräumig und komfortabel für Gruppen."></textarea>
-                </div>
-            </div>
-
-            <div id="vehicle_tab_en" class="lang-content-box" style="display:none;">
-                <div class="form-group">
-                    <label>Description (EN)</label>
-                    <textarea id="vehicleDesc_en" rows="2" placeholder="Spacious and comfortable."></textarea>
-                </div>
-            </div>
-
-            <div id="vehicle_tab_nl" class="lang-content-box" style="display:none;">
-                <div class="form-group">
-                    <label>Beschrijving (NL)</label>
-                    <textarea id="vehicleDesc_nl" rows="2" placeholder="Ruim en comfortabel."></textarea>
-                </div>
-            </div>
-
-            <button class="btn" style="width:100%; margin-top:10px; padding:11px;" onclick="saveVehicle()">💾 Fahrzeug speichern</button>
+            <button class="btn" style="width:100%; margin-top:12px; padding:10px; font-size:0.9rem;" onclick="saveItemData()">💾 Speichern (حفظ البيانات)</button>
         </div>
     </div>
 
@@ -423,26 +333,25 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // 2. Strict Security: Authorized UID
+        // 2. Strict Security: Authorized UID Check
         const ADMIN_UID = "ryO484XxlBf3NpjGugipKMt2ZkM2";
 
         auth.onAuthStateChanged(user => {
             if(user) {
                 if(user.uid === ADMIN_UID) {
-                    document.getElementById('loginView').style.display = "none";
-                    document.getElementById('dashboardContent').style.display = "block";
+                    document.getElementById('loginScreen').style.display = "none";
+                    document.getElementById('dashboardListScreen').style.display = "block";
                     document.getElementById('logoutBtn').style.display = "inline-flex";
-                    document.getElementById('adminStatusBadge').style.display = "inline-block";
-                    initDashboardListeners();
+                    loadAllCards();
                 } else {
                     alert("⛔ Zugriff verweigert: Sie sind nicht berechtigt!");
                     auth.signOut();
                 }
             } else {
-                document.getElementById('loginView').style.display = "block";
-                document.getElementById('dashboardContent').style.display = "none";
+                document.getElementById('loginScreen').style.display = "block";
+                document.getElementById('dashboardListScreen').style.display = "none";
+                document.getElementById('editorScreen').style.display = "none";
                 document.getElementById('logoutBtn').style.display = "none";
-                document.getElementById('adminStatusBadge').style.display = "none";
             }
         });
 
@@ -456,19 +365,154 @@
 
         function logout() { auth.signOut(); }
 
-        // 3. Cloudinary Upload from Phone Gallery
-        async function handleCloudinaryUpload(input, type) {
-            const file = input.files[0];
-            if (!file) return;
+        // 3. Load Cards in Horizontal Rows Layout
+        function loadAllCards() {
+            // Destinations Realtime
+            db.collection("destinations").onSnapshot(snap => {
+                const container = document.getElementById('destListContainer');
+                container.innerHTML = "";
+                if(snap.empty) {
+                    container.innerHTML = `<p style="font-size:0.8rem; color:gray;">Keine Routen vorhanden.</p>`;
+                    return;
+                }
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    // استخدام صورة مصغرة w_400
+                    const imgUrl = d.imageUrl || "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=400&q=80";
+                    
+                    container.innerHTML += `
+                        <div class="admin-card-row">
+                            <img src="${imgUrl}" class="card-thumb-img">
+                            <div class="card-middle-info">
+                                <span class="card-title-text">${d.title_de || d.from + ' ➔ ' + d.to}</span>
+                                <span class="card-sub-detail">${d.from} ➔ ${d.to}</span>
+                                <span class="card-price-pill">€${d.price}</span>
+                            </div>
+                            <div class="card-actions-group">
+                                <button class="btn btn-edit btn-icon" onclick="openInternalEditor('dest', 'edit', '${doc.id}')">✏️</button>
+                                <button class="btn btn-danger btn-icon" onclick="deleteDocument('destinations', '${doc.id}')">🗑️</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
 
-            const progress = document.getElementById(`${type}UploadProgress`);
-            const promptText = document.getElementById(`${type}UploadPrompt`);
-            const previewBox = document.getElementById(`${type}PreviewBox`);
-            const imgPreview = document.getElementById(`${type}ImgPreview`);
-            const urlInput = document.getElementById(`${type}ImageUrl`);
+            // Fleet Realtime
+            db.collection("vehicles").onSnapshot(snap => {
+                const container = document.getElementById('fleetListContainer');
+                container.innerHTML = "";
+                if(snap.empty) {
+                    container.innerHTML = `<p style="font-size:0.8rem; color:gray;">Keine Fahrzeuge vorhanden.</p>`;
+                    return;
+                }
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    const imgUrl = d.imageUrl || "https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716414/bl2wzjvwiuocspelj562.png";
+                    
+                    container.innerHTML += `
+                        <div class="admin-card-row">
+                            <img src="${imgUrl}" class="card-thumb-img">
+                            <div class="card-middle-info">
+                                <span class="card-title-text">${d.name}</span>
+                                <span class="card-sub-detail">Max. ${d.pax} Personen</span>
+                            </div>
+                            <div class="card-actions-group">
+                                <button class="btn btn-edit btn-icon" onclick="openInternalEditor('vehicle', 'edit', '${doc.id}')">✏️</button>
+                                <button class="btn btn-danger btn-icon" onclick="deleteDocument('vehicles', '${doc.id}')">🗑️</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+        }
 
-            progress.style.display = "block";
-            promptText.style.display = "none";
+        // 4. Internal View Switcher & On-Demand Fetching (تحميل تفاصيل العنصر عند الطلب لتخفيف الحمل)
+        function openInternalEditor(type, mode, docId = "") {
+            document.getElementById('dashboardListScreen').style.display = "none";
+            document.getElementById('editorScreen').style.display = "block";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // ضبط الحقول
+            document.getElementById('editDocId').value = docId;
+            document.getElementById('editItemType').value = type;
+            document.getElementById('uploadedImageUrl').value = "";
+            document.getElementById('imagePreviewDisplay').style.display = "none";
+            document.getElementById('uploadStatusText').innerText = "📸 Klicken zum Auswählen";
+
+            // إظهار/إخفاء الحقول حسب النوع
+            if(type === 'dest') {
+                document.getElementById('destFieldsGroup').style.display = "block";
+                document.getElementById('vehicleFieldsGroup').style.display = "none";
+                document.getElementById('editorPageTitle').innerText = mode === 'edit' ? "Route bearbeiten (تعديل رحلة)" : "Neue Route anlegen (إضافة رحلة)";
+            } else {
+                document.getElementById('destFieldsGroup').style.display = "none";
+                document.getElementById('vehicleFieldsGroup').style.display = "block";
+                document.getElementById('editorPageTitle').innerText = mode === 'edit' ? "Fahrzeug bearbeiten (تعديل سيارة)" : "Neues Fahrzeug anlegen (إضافة سيارة)";
+            }
+
+            // تفريغ الحقول أولاً
+            clearEditorInputs();
+
+            // إذا كان تعديل، استدعاء تفاصيل البطاقة تحديداً من فيربس
+            if(mode === 'edit' && docId) {
+                const collection = type === 'dest' ? "destinations" : "vehicles";
+                db.collection(collection).doc(docId).get().then(doc => {
+                    if(!doc.exists) return;
+                    const d = doc.data();
+                    
+                    if(type === 'dest') {
+                        document.getElementById('destFromInput').value = d.from || "";
+                        document.getElementById('destToInput').value = d.to || "";
+                        document.getElementById('destPriceInput').value = d.price || "";
+                    } else {
+                        document.getElementById('vehicleNameInput').value = d.name || "";
+                        document.getElementById('vehiclePaxInput').value = d.pax || 8;
+                    }
+
+                    document.getElementById('title_de_input').value = d.title_de || d.name || "";
+                    document.getElementById('desc_de_input').value = d.desc_de || d.desc || "";
+                    document.getElementById('title_en_input').value = d.title_en || "";
+                    document.getElementById('desc_en_input').value = d.desc_en || "";
+                    document.getElementById('title_nl_input').value = d.title_nl || "";
+                    document.getElementById('desc_nl_input').value = d.desc_nl || "";
+
+                    if(d.imageUrl) {
+                        document.getElementById('uploadedImageUrl').value = d.imageUrl;
+                        const preview = document.getElementById('imagePreviewDisplay');
+                        preview.src = d.imageUrl;
+                        preview.style.display = "block";
+                    }
+                });
+            }
+        }
+
+        function backToDashboard() {
+            document.getElementById('editorScreen').style.display = "none";
+            document.getElementById('dashboardListScreen').style.display = "block";
+        }
+
+        function clearEditorInputs() {
+            document.getElementById('destFromInput').value = "";
+            document.getElementById('destToInput').value = "";
+            document.getElementById('destPriceInput').value = "";
+            document.getElementById('vehicleNameInput').value = "";
+            document.getElementById('vehiclePaxInput').value = "8";
+            document.getElementById('title_de_input').value = "";
+            document.getElementById('desc_de_input').value = "";
+            document.getElementById('title_en_input').value = "";
+            document.getElementById('desc_en_input').value = "";
+            document.getElementById('title_nl_input').value = "";
+            document.getElementById('desc_nl_input').value = "";
+        }
+
+        // 5. Cloudinary Direct Upload
+        async function uploadToCloudinary(fileInput) {
+            const file = fileInput.files[0];
+            if(!file) return;
+
+            const status = document.getElementById('uploadStatusText');
+            const preview = document.getElementById('imagePreviewDisplay');
+            status.innerText = "⏳ Bild wird hochgeladen...";
 
             const formData = new FormData();
             formData.append("file", file);
@@ -480,328 +524,81 @@
                     body: formData
                 });
                 const data = await res.json();
-                
-                if (data.secure_url) {
-                    urlInput.value = data.secure_url;
-                    imgPreview.src = data.secure_url;
-                    previewBox.style.display = "block";
-                    progress.style.display = "none";
-                    promptText.innerText = "✅ Bild erfolgreich hochgeladen (Ändern?)";
-                    promptText.style.display = "block";
+                if(data.secure_url) {
+                    document.getElementById('uploadedImageUrl').value = data.secure_url;
+                    preview.src = data.secure_url;
+                    preview.style.display = "block";
+                    status.innerText = "✅ Bild bereit (Ändern?)";
                 } else {
-                    alert("Upload-Fehler: " + (data.error?.message || "Unbekannt"));
-                    progress.style.display = "none";
-                    promptText.style.display = "block";
+                    alert("Fehler beim Upload!");
+                    status.innerText = "❌ Fehler beim Upload";
                 }
-            } catch (err) {
-                alert("Verbindungsfehler beim Bildupload!");
-                progress.style.display = "none";
-                promptText.style.display = "block";
+            } catch(e) {
+                alert("Verbindungsfehler!");
+                status.innerText = "❌ Verbindungsfehler";
             }
         }
 
-        // 4. Load Data Realtime
-        function initDashboardListeners() {
-            // Destinations
-            db.collection("destinations").onSnapshot(snap => {
-                const grid = document.getElementById('adminDestGrid');
-                document.getElementById('destCount').innerText = snap.size;
-                grid.innerHTML = "";
-                snap.forEach(doc => {
-                    const d = doc.data();
-                    grid.innerHTML += `
-                        <div class="live-preview-card">
-                            <div class="card-price-tag">€${d.price}</div>
-                            <img src="${d.imageUrl || 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=600&q=80'}">
-                            <div class="card-body">
-                                <div>
-                                    <h3>${d.title_de || d.title || d.from + ' ➔ ' + d.to}</h3>
-                                    <p class="card-desc">${d.desc_de || d.desc || ''}</p>
-                                    <div class="route-badge">
-                                        <span>${d.from}</span>
-                                        <span style="color:var(--primary);">➔</span>
-                                        <span style="color:var(--primary); font-weight:bold;">${d.to}</span>
-                                    </div>
-                                </div>
-                                <div class="card-admin-actions">
-                                    <button class="btn btn-edit" style="flex:1;" onclick="editDestination('${doc.id}')">✏️ Bearbeiten</button>
-                                    <button class="btn btn-danger" onclick="deleteDoc('destinations', '${doc.id}')">🗑️</button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-            });
+        // 6. Save & Update Logic
+        function saveItemData() {
+            const type = document.getElementById('editItemType').value;
+            const docId = document.getElementById('editDocId').value;
+            const imageUrl = document.getElementById('uploadedImageUrl').value;
 
-            // Fleet
-            db.collection("vehicles").onSnapshot(snap => {
-                const grid = document.getElementById('adminFleetGrid');
-                document.getElementById('fleetCount').innerText = snap.size;
-                grid.innerHTML = "";
-                snap.forEach(doc => {
-                    const d = doc.data();
-                    grid.innerHTML += `
-                        <div class="live-preview-card">
-                            <img src="${d.imageUrl || 'https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716414/bl2wzjvwiuocspelj562.png'}">
-                            <div class="card-body">
-                                <div>
-                                    <h3>${d.name}</h3>
-                                    <span style="display:inline-block; background:#f1f5f9; padding:2px 10px; border-radius:50px; font-size:0.75rem; font-weight:700; margin-bottom:8px; border:var(--border-silver);">Max. ${d.pax} Personen</span>
-                                    <p class="card-desc">${d.desc_de || d.desc || ''}</p>
-                                </div>
-                                <div class="card-admin-actions">
-                                    <button class="btn btn-edit" style="flex:1;" onclick="editVehicle('${doc.id}')">✏️ Bearbeiten</button>
-                                    <button class="btn btn-danger" onclick="deleteDoc('vehicles', '${doc.id}')">🗑️</button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-            });
+            const title_de = document.getElementById('title_de_input').value.trim();
+            const desc_de = document.getElementById('desc_de_input').value.trim();
+            const title_en = document.getElementById('title_en_input').value.trim() || title_de;
+            const desc_en = document.getElementById('desc_en_input').value.trim() || desc_de;
+            const title_nl = document.getElementById('title_nl_input').value.trim() || title_de;
+            const desc_nl = document.getElementById('desc_nl_input').value.trim() || desc_de;
+
+            if(type === 'dest') {
+                const from = document.getElementById('destFromInput').value.trim();
+                const to = document.getElementById('destToInput').value.trim();
+                const price = parseInt(document.getElementById('destPriceInput').value);
+
+                if(!from || !to || isNaN(price)) {
+                    alert("Bitte Startort, Zielort und Preis ausfüllen!");
+                    return;
+                }
+
+                const data = { from, to, price, imageUrl, title_de: title_de || `${from} ➔ ${to}`, desc_de, title_en, desc_en, title_nl, desc_nl };
+                const req = docId ? db.collection("destinations").doc(docId).update(data) : db.collection("destinations").add(data);
+                req.then(() => backToDashboard());
+            } else {
+                const name = document.getElementById('vehicleNameInput').value.trim();
+                const pax = parseInt(document.getElementById('vehiclePaxInput').value);
+
+                if(!name || isNaN(pax)) {
+                    alert("Bitte Modellname und Passagieranzahl angeben!");
+                    return;
+                }
+
+                const data = { name, pax, imageUrl, desc_de, desc_en, desc_nl };
+                const req = docId ? db.collection("vehicles").doc(docId).update(data) : db.collection("vehicles").add(data);
+                req.then(() => backToDashboard());
+            }
         }
 
-        // 5. Delete Action
-        function deleteDoc(col, id) {
+        // 7. Delete Document
+        function deleteDocument(col, id) {
             if(confirm("Möchten Sie diesen Eintrag wirklich löschen?")) {
                 db.collection(col).doc(id).delete();
             }
         }
 
-        // 6. Modals Management
-        function closeModals() {
-            document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
-        }
-
-        function switchLangTab(type, lang) {
-            document.querySelectorAll(`#${type}Modal .lang-content-box`).forEach(el => el.style.display = "none");
-            document.querySelectorAll(`#${type}Modal .tab-pill`).forEach(el => el.classList.remove('active'));
-            document.getElementById(`${type}_tab_${lang}`).style.display = "block";
+        // 8. Language Tabs Switching inside Editor
+        function switchLanguageTab(lang) {
+            document.querySelectorAll('[id^="lang_"]').forEach(el => el.style.display = "none");
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(`lang_${lang}_box`).style.display = "block";
             event.target.classList.add('active');
-        }
-
-        function openDestModal() {
-            document.getElementById('destDocId').value = "";
-            document.getElementById('destModalTitle').innerText = "Neue Route anlegen";
-            document.getElementById('destFrom').value = "";
-            document.getElementById('destTo').value = "";
-            document.getElementById('destPrice').value = "";
-            document.getElementById('destImageUrl').value = "";
-            document.getElementById('destTitle_de').value = "";
-            document.getElementById('destDesc_de').value = "";
-            document.getElementById('destTitle_en').value = "";
-            document.getElementById('destDesc_en').value = "";
-            document.getElementById('destTitle_nl').value = "";
-            document.getElementById('destDesc_nl').value = "";
-            document.getElementById('destPreviewBox').style.display = "none";
-            document.getElementById('destUploadPrompt').innerText = "📸 Klicken Sie hier, um ein Foto hochzuladen";
-            document.getElementById('destModal').classList.add('active');
-        }
-
-        function openVehicleModal() {
-            document.getElementById('vehicleDocId').value = "";
-            document.getElementById('vehicleModalTitle').innerText = "Neues Fahrzeug anlegen";
-            document.getElementById('vehicleName').value = "";
-            document.getElementById('vehiclePax').value = "8";
-            document.getElementById('vehicleImageUrl').value = "";
-            document.getElementById('vehicleDesc_de').value = "";
-            document.getElementById('vehicleDesc_en').value = "";
-            document.getElementById('vehicleDesc_nl').value = "";
-            document.getElementById('vehiclePreviewBox').style.display = "none";
-            document.getElementById('vehicleUploadPrompt').innerText = "📸 Klicken Sie hier, um ein Foto hochzuladen";
-            document.getElementById('vehicleModal').classList.add('active');
-        }
-
-        function editDestination(id) {
-            db.collection("destinations").doc(id).get().then(doc => {
-                if(!doc.exists) return;
-                const d = doc.data();
-                document.getElementById('destDocId').value = id;
-                document.getElementById('destModalTitle').innerText = "Route bearbeiten";
-                document.getElementById('destFrom').value = d.from || "";
-                document.getElementById('destTo').value = d.to || "";
-                document.getElementById('destPrice').value = d.price || "";
-                document.getElementById('destImageUrl').value = d.imageUrl || "";
-                document.getElementById('destTitle_de').value = d.title_de || d.title || "";
-                document.getElementById('destDesc_de').value = d.desc_de || d.desc || "";
-                document.getElementById('destTitle_en').value = d.title_en || "";
-                document.getElementById('destDesc_en').value = d.desc_en || "";
-                document.getElementById('destTitle_nl').value = d.title_nl || "";
-                document.getElementById('destDesc_nl').value = d.desc_nl || "";
-                
-                if (d.imageUrl) {
-                    document.getElementById('destImgPreview').src = d.imageUrl;
-                    document.getElementById('destPreviewBox').style.display = "block";
-                    document.getElementById('destUploadPrompt').innerText = "✅ Bild geladen (Ändern?)";
-                }
-                document.getElementById('destModal').classList.add('active');
-            });
-        }
-
-        function editVehicle(id) {
-            db.collection("vehicles").doc(id).get().then(doc => {
-                if(!doc.exists) return;
-                const d = doc.data();
-                document.getElementById('vehicleDocId').value = id;
-                document.getElementById('vehicleModalTitle').innerText = "Fahrzeug bearbeiten";
-                document.getElementById('vehicleName').value = d.name || "";
-                document.getElementById('vehiclePax').value = d.pax || 8;
-                document.getElementById('vehicleImageUrl').value = d.imageUrl || "";
-                document.getElementById('vehicleDesc_de').value = d.desc_de || d.desc || "";
-                document.getElementById('vehicleDesc_en').value = d.desc_en || "";
-                document.getElementById('vehicleDesc_nl').value = d.desc_nl || "";
-                
-                if (d.imageUrl) {
-                    document.getElementById('vehicleImgPreview').src = d.imageUrl;
-                    document.getElementById('vehiclePreviewBox').style.display = "block";
-                    document.getElementById('vehicleUploadPrompt').innerText = "✅ Bild geladen (Ändern?)";
-                }
-                document.getElementById('vehicleModal').classList.add('active');
-            });
-        }
-
-        // 7. Save to Firebase
-        function saveDestination() {
-            const id = document.getElementById('destDocId').value;
-            const from = document.getElementById('destFrom').value.trim();
-            const to = document.getElementById('destTo').value.trim();
-            const price = parseInt(document.getElementById('destPrice').value);
-            const imageUrl = document.getElementById('destImageUrl').value;
-            
-            const title_de = document.getElementById('destTitle_de').value.trim() || `${from} ➔ ${to}`;
-            const desc_de = document.getElementById('destDesc_de').value.trim();
-            const title_en = document.getElementById('destTitle_en').value.trim() || title_de;
-            const desc_en = document.getElementById('destDesc_en').value.trim() || desc_de;
-            const title_nl = document.getElementById('destTitle_nl').value.trim() || title_de;
-            const desc_nl = document.getElementById('destDesc_nl').value.trim() || desc_de;
-
-            if(!from || !to || isNaN(price)) {
-                alert("Bitte füllen Sie Startort, Zielort und Preis aus!");
-                return;
-            }
-
-            const data = { from, to, price, imageUrl, title_de, desc_de, title_en, desc_en, title_nl, desc_nl };
-            const promise = id ? db.collection("destinations").doc(id).update(data) : db.collection("destinations").add(data);
-            
-            promise.then(() => closeModals()).catch(err => alert("Fehler: " + err.message));
-        }
-
-        function saveVehicle() {
-            const id = document.getElementById('vehicleDocId').value;
-            const name = document.getElementById('vehicleName').value.trim();
-            const pax = parseInt(document.getElementById('vehiclePax').value);
-            const imageUrl = document.getElementById('vehicleImageUrl').value;
-            
-            const desc_de = document.getElementById('vehicleDesc_de').value.trim();
-            const desc_en = document.getElementById('vehicleDesc_en').value.trim() || desc_de;
-            const desc_nl = document.getElementById('vehicleDesc_nl').value.trim() || desc_de;
-
-            if(!name || isNaN(pax)) {
-                alert("Bitte Modellname und Passagieranzahl angeben!");
-                return;
-            }
-
-            const data = { name, pax, imageUrl, desc_de, desc_en, desc_nl };
-            const promise = id ? db.collection("vehicles").doc(id).update(data) : db.collection("vehicles").add(data);
-            
-            promise.then(() => closeModals()).catch(err => alert("Fehler: " + err.message));
-        }
-
-        // 8. Seed Initial Data
-        function seedInitialData() {
-            if(!confirm("Möchten Sie die vordefinierten Demo-Daten jetzt in Firebase einspielen?")) return;
-
-            const demoCars = [
-                {
-                    name: "Mercedes Vito",
-                    pax: 8,
-                    imageUrl: "https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716414/bl2wzjvwiuocspelj562.png",
-                    desc_de: "Geräumig, sicher und komfortabel für Gruppen.",
-                    desc_en: "Spacious, safe, and comfortable for groups.",
-                    desc_nl: "Ruim, veilig en comfortabel voor groepen."
-                },
-                {
-                    name: "Mercedes V Klasse",
-                    pax: 7,
-                    imageUrl: "https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716372/yuprjfnexjrfqwszemfo.png",
-                    desc_de: "Premium Van für höchste Ansprüche und Beinfreiheit.",
-                    desc_en: "Premium van for highest demands and legroom.",
-                    desc_nl: "Premium bestelwagen voor de hoogste eisen."
-                }
-            ];
-            demoCars.forEach(car => db.collection("vehicles").add(car));
-
-            const demoDest = [
-                {
-                    title_de: "Flughafen- & Bahnhofstransfer",
-                    title_en: "Airport & Station Transfer",
-                    title_nl: "Luchthaven- & Stationstransfer",
-                    desc_de: "Direkte und pünktliche Verbindung über die Alpengrenze hinweg mit bequemem Gepäckservice.",
-                    desc_en: "Direct and punctual cross-border transfer across the Alps with comfortable luggage service.",
-                    desc_nl: "Directe en stipt overschrijdende transfer over de Alpen met comfortabele bagageservice.",
-                    from: "Innsbruck Hauptbahnhof", to: "Bozen Flughafen", price: 290,
-                    imageUrl: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=600&q=80"
-                },
-                {
-                    title_de: "Südtirol Komfort-Transfer",
-                    title_en: "South Tyrol Comfort Transfer",
-                    title_nl: "Zuid-Tirol Comfort Transfer",
-                    desc_de: "Entspannte Fahrt von Zentrum zu Zentrum – perfekt für Urlaubsausflüge oder Geschäftsreisen.",
-                    desc_en: "Relaxed center-to-center ride – ideal for leisure trips or business travel.",
-                    desc_nl: "Ontspannen rit van centrum tot centrum – ideaal voor vakantie of zakenreizen.",
-                    from: "Innsbruck Zentrum", to: "Bozen / Südtirol", price: 285,
-                    imageUrl: "https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=600&q=80"
-                },
-                {
-                    title_de: "Panoramafahrt Meran",
-                    title_en: "Scenic Ride to Merano",
-                    title_nl: "Panoramarit Merano",
-                    desc_de: "Malerische Alpenstrecke über den alpinen Jaufenpass direkt in die Kurstadt Meran.",
-                    desc_en: "Picturesque alpine route via the scenic Jaufen Pass directly to the spa town of Merano.",
-                    desc_nl: "Pitorreske alpenroute via de Jaufenpas rechtstreeks naar het kuuroord Merano.",
-                    from: "Innsbruck Hauptbahnhof", to: "Meran", price: 280,
-                    imageUrl: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80"
-                },
-                {
-                    title_de: "Direktes Ski-Shuttle Kühtai",
-                    title_en: "Direct Ski Shuttle",
-                    title_nl: "Directe Ski Shuttle",
-                    desc_de: "Sicherer Transport für Wintersportler inklusive Skiausrüstung zum hochgelegenen Skigebiet Kühtai.",
-                    desc_en: "Safe transport for winter sports enthusiasts including ski gear to high-altitude Kühtai Resort.",
-                    desc_nl: "Veilig vervoer voor wintersporters inclusief ski-uitrusting naar het skigebied Kühtai.",
-                    from: "Innsbruck Flughafen", to: "Kühtai", price: 105,
-                    imageUrl: "https://images.unsplash.com/photo-1551524559-8af4e6624178?auto=format&fit=crop&w=600&q=80"
-                },
-                {
-                    title_de: "Grenzüberschreitende Fahrt Garmisch",
-                    title_en: "Cross-Border Ride",
-                    title_nl: "Grensoverschrijdende Rit",
-                    desc_de: "Zügiger grenzüberschreitender Transfer zur Zugspitz-Region und nach Garmisch-Partenkirchen.",
-                    desc_en: "Swift cross-border ride to the Zugspitze region and Garmisch-Partenkirchen.",
-                    desc_nl: "Snelle grensoverschrijdende transfer naar de Zugspitze-regio en Garmisch-Partenkirchen.",
-                    from: "Innsbruck Zentrum", to: "Garmisch-Partenkirchen", price: 160,
-                    imageUrl: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=600&q=80"
-                },
-                {
-                    title_de: "Express Flughafen München",
-                    title_en: "Express Airport Transfer",
-                    title_nl: "Express Luchthaventransfer",
-                    desc_de: "Exklusiver Door-to-Door Service zum internationalen Flughafen München ohne Umsteigen.",
-                    desc_en: "Exclusive door-to-door shuttle to Munich International Airport with no hassle.",
-                    desc_nl: "Exclusieve door-to-door service naar de internationale luchthaven van München.",
-                    from: "Innsbruck Zentrum", to: "München Flughafen", price: 450,
-                    imageUrl: "https://images.unsplash.com/photo-1530521954074-e64f6810b32d?auto=format&fit=crop&w=600&q=80"
-                }
-            ];
-            demoDest.forEach(dest => db.collection("destinations").add(dest));
-
-            alert("✅ Alle Demo-Daten wurden erfolgreich importiert!");
         }
 
         // 9. Anti-Inspect
         document.onkeydown = function(e) {
             if (e.keyCode == 123) return false;
             if (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) return false;
-            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
         };
     </script>
 </body>
