@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alpi Taxi | Premium Transfer & Limousinenservice Innsbruck</title>
+    <title>Taxi AlpGo | Premium Transfer & Limousinenservice Innsbruck</title>
     
     <!-- PWA & Mobile Meta -->
     <link rel="manifest" href="/manifest.json">
@@ -320,8 +320,8 @@
     <!-- Header -->
     <header>
         <a href="#" class="logo">
-            <img src="https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716325/ecuwdts2f0797fnddg4z.png" alt="Alpi Taxi Logo" class="site-logo" loading="lazy">
-            <span class="site-name-text">Alpi Taxi</span>
+            <img src="https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716325/ecuwdts2f0797fnddg4z.png" alt="Taxi AlpGo Logo" class="site-logo" loading="lazy">
+            <span class="site-name-text">Taxi AlpGo</span>
         </a>
         <div class="lang-container">
             <button class="lang-btn" id="langToggle">
@@ -548,8 +548,8 @@
     <!-- Footer -->
     <footer>
         <div class="footer-logo">
-            <img src="https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716325/ecuwdts2f0797fnddg4z.png" alt="Alpi Taxi Logo" class="site-logo" loading="lazy">
-            <span class="site-name-text">Alpi Taxi</span>
+            <img src="https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716325/ecuwdts2f0797fnddg4z.png" alt="Taxi AlpGo Logo" class="site-logo" loading="lazy">
+            <span class="site-name-text">Taxi AlpGo</span>
         </div>
         <p data-i18n="footer_text">Dein zuverlässiger Partner für Taxi & Limousinen-Service in Innsbruck.</p>
         <p class="footer-vat" data-i18n="vat_inc">* Alle Preise inkl. 10% MwSt.</p>
@@ -558,7 +558,7 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
             +43 676 3356300
         </a>
-        <p style="margin-top: 8px; font-size: 0.72rem; color: #cbd5e1;">© 2024 Alpi Taxi. All Rights Reserved.</p>
+        <p style="margin-top: 8px; font-size: 0.72rem; color: #cbd5e1;">© 2024 Taxi AlpGo. All Rights Reserved.</p>
     </footer>
 
     <!-- WhatsApp Floating Button -->
@@ -637,8 +637,8 @@
         async function shareCustomItem(type, id, title, desc, extraInfo) {
             const shareUrl = `${window.location.origin}/api/share?type=${type}&id=${encodeURIComponent(id)}`;
             const shareData = {
-                title: `${title} | Alpi Taxi`,
-                text: `${title} (${extraInfo}) - ${desc}\nJetzt buchen bei Alpi Taxi:`,
+                title: `${title} | Taxi AlpGo`,
+                text: `${title} (${extraInfo}) - ${desc}\nJetzt buchen bei Taxi AlpGo:`,
                 url: shareUrl
             };
 
@@ -670,7 +670,7 @@
 
             let msg = "";
             if(currentLang === 'DE') {
-                msg = `🚖 *Neue Buchungsanfrage - Alpi Taxi*\n\n` +
+                msg = `🚖 *Neue Buchungsanfrage - Taxi AlpGo*\n\n` +
                       `📍 *Abholort:* ${pickup}\n` +
                       `🏁 *Zielort:* ${dropoff}\n` +
                       `📅 *Datum:* ${date || "Nicht angegeben"}\n` +
@@ -679,7 +679,7 @@
                       `👥 *Personen:* ${pax}\n\n` +
                       `Bitte bestätigen Sie die Verfügbarkeit und den Preis.`;
             } else if(currentLang === 'EN') {
-                msg = `🚖 *New Booking Request - Alpi Taxi*\n\n` +
+                msg = `🚖 *New Booking Request - Taxi AlpGo*\n\n` +
                       `📍 *Pickup:* ${pickup}\n` +
                       `🏁 *Destination:* ${dropoff}\n` +
                       `📅 *Date:* ${date || "Not specified"}\n` +
@@ -688,7 +688,7 @@
                       `👥 *Passengers:* ${pax}\n\n` +
                       `Please confirm availability and price.`;
             } else {
-                msg = `🚖 *Nieuwe Boekingsaanvraag - Alpi Taxi*\n\n` +
+                msg = `🚖 *Nieuwe Boekingsaanvraag - Taxi AlpGo*\n\n` +
                       `📍 *Ophaallocatie:* ${pickup}\n` +
                       `🏁 *Bestemming:* ${dropoff}\n` +
                       `📅 *Datum:* ${date || "Niet opgegeven"}\n` +
@@ -705,11 +705,11 @@
         function rentVehicle(carName) {
             let msg = "";
             if (currentLang === 'DE') {
-                msg = `Hallo Alpi Taxi, ich interessiere mich für die Anmietung des Fahrzeugs: *${carName}*. Bitte um weitere Informationen.`;
+                msg = `Hallo Taxi AlpGo, ich interessiere mich für die Anmietung des Fahrzeugs: *${carName}*. Bitte um weitere Informationen.`;
             } else if (currentLang === 'EN') {
-                msg = `Hello Alpi Taxi, I am interested in renting the vehicle: *${carName}*. Please provide more information.`;
+                msg = `Hello Taxi AlpGo, I am interested in renting the vehicle: *${carName}*. Please provide more information.`;
             } else {
-                msg = `Hallo Alpi Taxi, ik ben geïnteresseerd in het huren van het voertuig: *${carName}*. Kunt u mij meer informatie sturen?`;
+                msg = `Hallo Taxi AlpGo, ik ben geïnteresseerd in het huren van het voertuig: *${carName}*. Kunt u mij meer informatie sturen?`;
             }
             window.open(`https://wa.me/436763356300?text=${encodeURIComponent(msg)}`, '_blank');
         }
