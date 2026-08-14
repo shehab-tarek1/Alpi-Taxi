@@ -20,6 +20,7 @@
             --text-light: #64748b;
             --border-silver: 0.5px solid #c0c0c0;
             --shadow-silver: 0 2px 8px rgba(192, 192, 192, 0.35);
+            --shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.08);
             --radius-md: 14px;
             --radius-sm: 8px;
             --transition: all 0.2s ease;
@@ -30,7 +31,7 @@
         img { max-width: 100%; display: block; object-fit: cover; }
         button, input, select, textarea { font-family: inherit; }
 
-        /* 1. Header (ثابت وأنيق) */
+        /* Header */
         .admin-navbar {
             position: sticky; top: 0; z-index: 100;
             background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
@@ -40,12 +41,12 @@
         .nav-brand { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.1rem; }
         .site-logo { width: 34px; height: 34px; border-radius: 50%; object-fit: contain; background: #fff; border: var(--border-silver); padding: 2px; }
         
-        /* 2. Top Action Buttons (في نفس السطر) */
+        .main-container { max-width: 1200px; margin: 0 auto; padding: 0 12px 30px; }
+
+        /* Top Actions in One Row */
         .top-action-bar {
             display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0 16px;
         }
-        
-        .main-container { max-width: 1200px; margin: 0 auto; padding: 0 12px 30px; }
 
         /* Buttons */
         .btn {
@@ -61,24 +62,21 @@
         .btn-edit:hover { background: #0369a1; }
         .btn-secondary { background: #64748b; border-color: #475569; }
 
-        /* 3. Horizontal Card Rows Layout */
+        /* Horizontal Strip Cards */
         .section-box {
             background: var(--surface); padding: 14px; border-radius: var(--radius-md);
             border: var(--border-silver); box-shadow: var(--shadow-silver); margin-bottom: 18px;
         }
         .section-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
 
-        /* Grid: 1 col on mobile, 2 cols on desktop */
-        .cards-layout-grid {
-            display: grid; grid-template-columns: 1fr; gap: 10px;
-        }
+        /* 1 col on mobile, 2 cols on desktop */
+        .cards-layout-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
         @media (min-width: 768px) {
             .cards-layout-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
             .top-action-bar { max-width: 600px; }
             .main-container { padding: 0 16px 40px; }
         }
 
-        /* الشكل المستطيل الأفقي للبطاقة */
         .admin-card-row {
             display: flex; align-items: center; justify-content: space-between; gap: 10px;
             background: var(--surface); border: var(--border-silver); border-radius: var(--radius-sm);
@@ -87,13 +85,11 @@
         }
         .admin-card-row:hover { border-color: var(--primary); box-shadow: var(--shadow-silver); }
 
-        /* صورة البطاقة في أقصى اليمين/اليسار بدقة 400 */
         .card-thumb-img {
             width: 80px; height: 62px; border-radius: 6px; object-fit: cover;
             flex-shrink: 0; border: var(--border-silver);
         }
 
-        /* تفاصيل البطاقة في نفس السطر */
         .card-middle-info {
             flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center;
         }
@@ -109,15 +105,10 @@
             display: inline-block; color: var(--primary); font-weight: 800; font-size: 0.82rem; margin-top: 2px;
         }
 
-        /* أزرار الإجراءات في نفس السطر */
-        .card-actions-group {
-            display: flex; align-items: center; gap: 5px; flex-shrink: 0;
-        }
-        .btn-icon {
-            padding: 6px 9px; font-size: 0.75rem; border-radius: 6px;
-        }
+        .card-actions-group { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
+        .btn-icon { padding: 6px 9px; font-size: 0.75rem; border-radius: 6px; }
 
-        /* 4. Internal In-Page Editor (الصفحة الداخلية) */
+        /* In-Page Internal Editor */
         .internal-page-view { display: none; }
         .editor-container {
             background: var(--surface); border-radius: var(--radius-md);
@@ -132,12 +123,17 @@
         .form-group { margin-bottom: 12px; }
         .form-group label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 4px; color: var(--text-main); }
         .form-group input, .form-group textarea {
-            width: 100%; padding: 8px 10px; border: var(--border-silver); border-radius: var(--radius-sm);
+            width: 100%; padding: 9px 10px; border: var(--border-silver); border-radius: var(--radius-sm);
             font-size: 0.88rem; outline: none; background: #fff;
         }
         .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); }
 
-        /* Cloudinary Upload Inside Page */
+        .auto-translate-badge {
+            display: inline-flex; align-items: center; gap: 4px; background: #eff6ff; color: #2563eb;
+            border: 0.5px solid #bfdbfe; padding: 3px 8px; border-radius: 50px; font-size: 0.72rem; font-weight: 700; margin-bottom: 10px;
+        }
+
+        /* Cloudinary Dropzone */
         .cloudinary-upload-box {
             border: 1.5px dashed var(--primary); border-radius: var(--radius-sm); background: #fffbeb;
             padding: 12px; text-align: center; cursor: pointer; position: relative; margin-top: 4px;
@@ -145,15 +141,7 @@
         .cloudinary-upload-box input[type="file"] { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
         .preview-img-display { width: 100%; height: 140px; border-radius: 6px; object-fit: cover; display: none; margin-top: 8px; border: var(--border-silver); }
 
-        /* Tabs inside In-Page Editor */
-        .lang-tab-bar { display: flex; gap: 5px; margin: 10px 0 12px; border-bottom: var(--border-silver); padding-bottom: 6px; }
-        .tab-btn {
-            background: #f1f5f9; border: var(--border-silver); padding: 4px 10px; border-radius: 50px;
-            cursor: pointer; font-size: 0.75rem; font-weight: 700;
-        }
-        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
-
-        /* Login Screen */
+        /* Login */
         .login-wrapper { max-width: 380px; margin: 60px auto; padding: 0 12px; }
         .login-card {
             background: var(--surface); padding: 2rem 1.5rem; border-radius: var(--radius-md);
@@ -192,44 +180,45 @@
     <!-- 2. الشاشة الرئيسية للوحة التحكم (List View) -->
     <main class="main-container" id="dashboardListScreen" style="display:none;">
         
-        <!-- أزرار الإضافة في نفس السطر مباشرة تحت الهيدر -->
+        <!-- أزرار الإضافة في سطر واحد -->
         <div class="top-action-bar">
             <button class="btn" onclick="openInternalEditor('vehicle', 'add')">🚗 + Fahrzeug</button>
             <button class="btn" onclick="openInternalEditor('dest', 'add')">📍 + Neue Route</button>
         </div>
 
-        <!-- قسم الرحلات والوجهات -->
+        <!-- قسم الرحلات -->
         <section class="section-box">
             <h2 class="section-title">📍 Reiseziele & Routen</h2>
-            <div class="cards-layout-grid" id="destListContainer">
-                <!-- يتم توليد البطاقات الأفقية هنا -->
-            </div>
+            <div class="cards-layout-grid" id="destListContainer"></div>
         </section>
 
-        <!-- قسم السيارات والأسطول -->
+        <!-- قسم السيارات -->
         <section class="section-box">
             <h2 class="section-title">🚗 Fahrzeugflotte</h2>
-            <div class="cards-layout-grid" id="fleetListContainer">
-                <!-- يتم توليد بطاقات السيارات هنا -->
-            </div>
+            <div class="cards-layout-grid" id="fleetListContainer"></div>
         </section>
 
     </main>
 
-    <!-- 3. صفحة التعديل والإضافة الداخلية (In-Page Internal View) -->
+    <!-- 3. صفحة التعديل والإضافة الداخلية (بالألماني فقط مع ترجمة تلقائية) -->
     <div class="main-container internal-page-view" id="editorScreen">
         <div class="editor-container">
             
             <div class="editor-top-nav">
                 <h3 id="editorPageTitle" style="font-size:1.05rem;">Element bearbeiten</h3>
-                <button class="btn btn-secondary" onclick="backToDashboard()">← Zurück (إلغاء)</button>
+                <button class="btn btn-secondary" onclick="backToDashboard()">← Zurück</button>
+            </div>
+
+            <!-- إشعار المترجم الذكي -->
+            <div class="auto-translate-badge">
+                <span>🌐 Auto-Translate:</span> Texte werden beim Speichern automatisch ins Englische & Niederländische übersetzt.
             </div>
 
             <input type="hidden" id="editDocId">
-            <input type="hidden" id="editItemType"> <!-- 'dest' or 'vehicle' -->
+            <input type="hidden" id="editItemType">
             <input type="hidden" id="uploadedImageUrl">
 
-            <!-- رفع الصور المباشر عبر Cloudinary -->
+            <!-- رفع الصور Cloudinary -->
             <div class="form-group">
                 <label>Foto (Aus Telefongalerie wählen)</label>
                 <div class="cloudinary-upload-box">
@@ -239,7 +228,7 @@
                 <img id="imagePreviewDisplay" class="preview-img-display">
             </div>
 
-            <!-- حقول خاصة بالرحلات (تظهر فقط عند تعديل رحلة) -->
+            <!-- حقول الرحلات -->
             <div id="destFieldsGroup">
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
                     <div class="form-group">
@@ -248,16 +237,24 @@
                     </div>
                     <div class="form-group">
                         <label>Zielort (Ende)</label>
-                        <input type="text" id="destToInput" placeholder="z.B. Bozen">
+                        <input type="text" id="destToInput" placeholder="z.B. Bozen Flughafen">
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Preis (€ inkl. MwSt.)</label>
                     <input type="number" id="destPriceInput" placeholder="290">
                 </div>
+                <div class="form-group">
+                    <label>Titel der Reise (Deutsch)</label>
+                    <input type="text" id="destTitleInput" placeholder="z.B. Flughafen- & Bahnhofstransfer">
+                </div>
+                <div class="form-group">
+                    <label>Beschreibung (Deutsch)</label>
+                    <textarea id="destDescInput" rows="2" placeholder="Direkte und pünktliche Verbindung über die Alpengrenze..."></textarea>
+                </div>
             </div>
 
-            <!-- حقول خاصة بالسيارات (تظهر فقط عند تعديل سيارة) -->
+            <!-- حقول السيارات -->
             <div id="vehicleFieldsGroup" style="display:none;">
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
                     <div class="form-group">
@@ -269,51 +266,13 @@
                         <input type="number" id="vehiclePaxInput" placeholder="8">
                     </div>
                 </div>
-            </div>
-
-            <!-- تبويبات اللغات الثلاث -->
-            <label style="font-size:0.8rem; font-weight:700; display:block; margin-top:6px;">Texte & Übersetzungen:</label>
-            <div class="lang-tab-bar">
-                <div class="tab-btn active" onclick="switchLanguageTab('de')">🇩🇪 Deutsch</div>
-                <div class="tab-btn" onclick="switchLanguageTab('en')">🇬🇧 English</div>
-                <div class="tab-btn" onclick="switchLanguageTab('nl')">🇳🇱 Nederlands</div>
-            </div>
-
-            <!-- محتوى اللغات -->
-            <div id="lang_de_box">
                 <div class="form-group">
-                    <label>Titel (DE)</label>
-                    <input type="text" id="title_de_input" placeholder="Titel auf Deutsch">
-                </div>
-                <div class="form-group">
-                    <label>Beschreibung (DE)</label>
-                    <textarea id="desc_de_input" rows="2" placeholder="Beschreibung auf Deutsch"></textarea>
+                    <label>Beschreibung (Deutsch)</label>
+                    <textarea id="vehicleDescInput" rows="2" placeholder="Geräumig, sicher und komfortabel für Gruppen."></textarea>
                 </div>
             </div>
 
-            <div id="lang_en_box" style="display:none;">
-                <div class="form-group">
-                    <label>Title (EN)</label>
-                    <input type="text" id="title_en_input" placeholder="Title in English">
-                </div>
-                <div class="form-group">
-                    <label>Description (EN)</label>
-                    <textarea id="desc_en_input" rows="2" placeholder="Description in English"></textarea>
-                </div>
-            </div>
-
-            <div id="lang_nl_box" style="display:none;">
-                <div class="form-group">
-                    <label>Titel (NL)</label>
-                    <input type="text" id="title_nl_input" placeholder="Titel in het Nederlands">
-                </div>
-                <div class="form-group">
-                    <label>Beschrijving (NL)</label>
-                    <textarea id="desc_nl_input" rows="2" placeholder="Beschrijving in het Nederlands"></textarea>
-                </div>
-            </div>
-
-            <button class="btn" style="width:100%; margin-top:12px; padding:10px; font-size:0.9rem;" onclick="saveItemData()">💾 Speichern (حفظ البيانات)</button>
+            <button id="saveSubmitBtn" class="btn" style="width:100%; margin-top:10px; padding:11px; font-size:0.9rem;" onclick="saveItemWithAutoTranslate()">💾 Speichern & Übersetzen</button>
         </div>
     </div>
 
@@ -333,7 +292,7 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // 2. Strict Security: Authorized UID Check
+        // 2. Strict Security UID Check
         const ADMIN_UID = "ryO484XxlBf3NpjGugipKMt2ZkM2";
 
         auth.onAuthStateChanged(user => {
@@ -344,7 +303,7 @@
                     document.getElementById('logoutBtn').style.display = "inline-flex";
                     loadAllCards();
                 } else {
-                    alert("⛔ Zugriff verweigert: Sie sind nicht berechtigt!");
+                    alert("⛔ Zugriff verweigert!");
                     auth.signOut();
                 }
             } else {
@@ -365,9 +324,22 @@
 
         function logout() { auth.signOut(); }
 
-        // 3. Load Cards in Horizontal Rows Layout
+        // 3. محرك الترجمة الفورية المجاني والسحابي
+        async function translateText(text, targetLang) {
+            if(!text || text.trim() === '') return '';
+            try {
+                const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=de&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                return data[0].map(item => item[0]).join('');
+            } catch (err) {
+                return text; // في حالة عدم وجود شبكة يرجع النص الألماني
+            }
+        }
+
+        // 4. Load Cards
         function loadAllCards() {
-            // Destinations Realtime
+            // Destinations
             db.collection("destinations").onSnapshot(snap => {
                 const container = document.getElementById('destListContainer');
                 container.innerHTML = "";
@@ -377,9 +349,7 @@
                 }
                 snap.forEach(doc => {
                     const d = doc.data();
-                    // استخدام صورة مصغرة w_400
                     const imgUrl = d.imageUrl || "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=400&q=80";
-                    
                     container.innerHTML += `
                         <div class="admin-card-row">
                             <img src="${imgUrl}" class="card-thumb-img">
@@ -397,7 +367,7 @@
                 });
             });
 
-            // Fleet Realtime
+            // Fleet
             db.collection("vehicles").onSnapshot(snap => {
                 const container = document.getElementById('fleetListContainer');
                 container.innerHTML = "";
@@ -408,7 +378,6 @@
                 snap.forEach(doc => {
                     const d = doc.data();
                     const imgUrl = d.imageUrl || "https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716414/bl2wzjvwiuocspelj562.png";
-                    
                     container.innerHTML += `
                         <div class="admin-card-row">
                             <img src="${imgUrl}" class="card-thumb-img">
@@ -426,55 +395,46 @@
             });
         }
 
-        // 4. Internal View Switcher & On-Demand Fetching (تحميل تفاصيل العنصر عند الطلب لتخفيف الحمل)
+        // 5. Internal Page Switcher & On-Demand Fetching
         function openInternalEditor(type, mode, docId = "") {
             document.getElementById('dashboardListScreen').style.display = "none";
             document.getElementById('editorScreen').style.display = "block";
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            // ضبط الحقول
             document.getElementById('editDocId').value = docId;
             document.getElementById('editItemType').value = type;
             document.getElementById('uploadedImageUrl').value = "";
             document.getElementById('imagePreviewDisplay').style.display = "none";
             document.getElementById('uploadStatusText').innerText = "📸 Klicken zum Auswählen";
 
-            // إظهار/إخفاء الحقول حسب النوع
+            clearInputs();
+
             if(type === 'dest') {
                 document.getElementById('destFieldsGroup').style.display = "block";
                 document.getElementById('vehicleFieldsGroup').style.display = "none";
-                document.getElementById('editorPageTitle').innerText = mode === 'edit' ? "Route bearbeiten (تعديل رحلة)" : "Neue Route anlegen (إضافة رحلة)";
+                document.getElementById('editorPageTitle').innerText = mode === 'edit' ? "Route bearbeiten" : "Neue Route anlegen";
             } else {
                 document.getElementById('destFieldsGroup').style.display = "none";
                 document.getElementById('vehicleFieldsGroup').style.display = "block";
-                document.getElementById('editorPageTitle').innerText = mode === 'edit' ? "Fahrzeug bearbeiten (تعديل سيارة)" : "Neues Fahrzeug anlegen (إضافة سيارة)";
+                document.getElementById('editorPageTitle').innerText = mode === 'edit' ? "Fahrzeug bearbeiten" : "Neues Fahrzeug anlegen";
             }
 
-            // تفريغ الحقول أولاً
-            clearEditorInputs();
-
-            // إذا كان تعديل، استدعاء تفاصيل البطاقة تحديداً من فيربس
             if(mode === 'edit' && docId) {
-                const collection = type === 'dest' ? "destinations" : "vehicles";
-                db.collection(collection).doc(docId).get().then(doc => {
+                const col = type === 'dest' ? "destinations" : "vehicles";
+                db.collection(col).doc(docId).get().then(doc => {
                     if(!doc.exists) return;
                     const d = doc.data();
-                    
                     if(type === 'dest') {
                         document.getElementById('destFromInput').value = d.from || "";
                         document.getElementById('destToInput').value = d.to || "";
                         document.getElementById('destPriceInput').value = d.price || "";
+                        document.getElementById('destTitleInput').value = d.title_de || "";
+                        document.getElementById('destDescInput').value = d.desc_de || "";
                     } else {
                         document.getElementById('vehicleNameInput').value = d.name || "";
                         document.getElementById('vehiclePaxInput').value = d.pax || 8;
+                        document.getElementById('vehicleDescInput').value = d.desc_de || "";
                     }
-
-                    document.getElementById('title_de_input').value = d.title_de || d.name || "";
-                    document.getElementById('desc_de_input').value = d.desc_de || d.desc || "";
-                    document.getElementById('title_en_input').value = d.title_en || "";
-                    document.getElementById('desc_en_input').value = d.desc_en || "";
-                    document.getElementById('title_nl_input').value = d.title_nl || "";
-                    document.getElementById('desc_nl_input').value = d.desc_nl || "";
 
                     if(d.imageUrl) {
                         document.getElementById('uploadedImageUrl').value = d.imageUrl;
@@ -491,21 +451,18 @@
             document.getElementById('dashboardListScreen').style.display = "block";
         }
 
-        function clearEditorInputs() {
+        function clearInputs() {
             document.getElementById('destFromInput').value = "";
             document.getElementById('destToInput').value = "";
             document.getElementById('destPriceInput').value = "";
+            document.getElementById('destTitleInput').value = "";
+            document.getElementById('destDescInput').value = "";
             document.getElementById('vehicleNameInput').value = "";
             document.getElementById('vehiclePaxInput').value = "8";
-            document.getElementById('title_de_input').value = "";
-            document.getElementById('desc_de_input').value = "";
-            document.getElementById('title_en_input').value = "";
-            document.getElementById('desc_en_input').value = "";
-            document.getElementById('title_nl_input').value = "";
-            document.getElementById('desc_nl_input').value = "";
+            document.getElementById('vehicleDescInput').value = "";
         }
 
-        // 5. Cloudinary Direct Upload
+        // 6. Cloudinary Direct Upload
         async function uploadToCloudinary(fileInput) {
             const file = fileInput.files[0];
             if(!file) return;
@@ -530,8 +487,8 @@
                     preview.style.display = "block";
                     status.innerText = "✅ Bild bereit (Ändern?)";
                 } else {
-                    alert("Fehler beim Upload!");
-                    status.innerText = "❌ Fehler beim Upload";
+                    alert("Upload-Fehler!");
+                    status.innerText = "❌ Fehler";
                 }
             } catch(e) {
                 alert("Verbindungsfehler!");
@@ -539,60 +496,79 @@
             }
         }
 
-        // 6. Save & Update Logic
-        function saveItemData() {
+        // 7. Save Item + Auto Translate to EN & NL
+        async function saveItemWithAutoTranslate() {
+            const btn = document.getElementById('saveSubmitBtn');
             const type = document.getElementById('editItemType').value;
             const docId = document.getElementById('editDocId').value;
             const imageUrl = document.getElementById('uploadedImageUrl').value;
 
-            const title_de = document.getElementById('title_de_input').value.trim();
-            const desc_de = document.getElementById('desc_de_input').value.trim();
-            const title_en = document.getElementById('title_en_input').value.trim() || title_de;
-            const desc_en = document.getElementById('desc_en_input').value.trim() || desc_de;
-            const title_nl = document.getElementById('title_nl_input').value.trim() || title_de;
-            const desc_nl = document.getElementById('desc_nl_input').value.trim() || desc_de;
+            btn.innerText = "⏳ Wird übersetzt & gespeichert...";
+            btn.disabled = true;
 
-            if(type === 'dest') {
-                const from = document.getElementById('destFromInput').value.trim();
-                const to = document.getElementById('destToInput').value.trim();
-                const price = parseInt(document.getElementById('destPriceInput').value);
+            try {
+                if(type === 'dest') {
+                    const from = document.getElementById('destFromInput').value.trim();
+                    const to = document.getElementById('destToInput').value.trim();
+                    const price = parseInt(document.getElementById('destPriceInput').value);
+                    const title_de = document.getElementById('destTitleInput').value.trim() || `${from} ➔ ${to}`;
+                    const desc_de = document.getElementById('destDescInput').value.trim();
 
-                if(!from || !to || isNaN(price)) {
-                    alert("Bitte Startort, Zielort und Preis ausfüllen!");
-                    return;
+                    if(!from || !to || isNaN(price)) {
+                        alert("Bitte Startort, Zielort und Preis ausfüllen!");
+                        btn.innerText = "💾 Speichern & Übersetzen";
+                        btn.disabled = false;
+                        return;
+                    }
+
+                    // ترجمة تلقائية فورية للإنجليزية والهولندية
+                    const [title_en, title_nl, desc_en, desc_nl] = await Promise.all([
+                        translateText(title_de, 'en'),
+                        translateText(title_de, 'nl'),
+                        translateText(desc_de, 'en'),
+                        translateText(desc_de, 'nl')
+                    ]);
+
+                    const data = { from, to, price, imageUrl, title_de, desc_de, title_en, desc_en, title_nl, desc_nl };
+                    const req = docId ? db.collection("destinations").doc(docId).update(data) : db.collection("destinations").add(data);
+                    await req;
+                } else {
+                    const name = document.getElementById('vehicleNameInput').value.trim();
+                    const pax = parseInt(document.getElementById('vehiclePaxInput').value);
+                    const desc_de = document.getElementById('vehicleDescInput').value.trim();
+
+                    if(!name || isNaN(pax)) {
+                        alert("Bitte Modellname und Passagieranzahl angeben!");
+                        btn.innerText = "💾 Speichern & Übersetzen";
+                        btn.disabled = false;
+                        return;
+                    }
+
+                    // ترجمة وصف السيارة تلقائياً
+                    const [desc_en, desc_nl] = await Promise.all([
+                        translateText(desc_de, 'en'),
+                        translateText(desc_de, 'nl')
+                    ]);
+
+                    const data = { name, pax, imageUrl, desc_de, desc_en, desc_nl };
+                    const req = docId ? db.collection("vehicles").doc(docId).update(data) : db.collection("vehicles").add(data);
+                    await req;
                 }
 
-                const data = { from, to, price, imageUrl, title_de: title_de || `${from} ➔ ${to}`, desc_de, title_en, desc_en, title_nl, desc_nl };
-                const req = docId ? db.collection("destinations").doc(docId).update(data) : db.collection("destinations").add(data);
-                req.then(() => backToDashboard());
-            } else {
-                const name = document.getElementById('vehicleNameInput').value.trim();
-                const pax = parseInt(document.getElementById('vehiclePaxInput').value);
-
-                if(!name || isNaN(pax)) {
-                    alert("Bitte Modellname und Passagieranzahl angeben!");
-                    return;
-                }
-
-                const data = { name, pax, imageUrl, desc_de, desc_en, desc_nl };
-                const req = docId ? db.collection("vehicles").doc(docId).update(data) : db.collection("vehicles").add(data);
-                req.then(() => backToDashboard());
+                backToDashboard();
+            } catch(err) {
+                alert("Fehler beim Speichern: " + err.message);
+            } finally {
+                btn.innerText = "💾 Speichern & Übersetzen";
+                btn.disabled = false;
             }
         }
 
-        // 7. Delete Document
+        // 8. Delete Document
         function deleteDocument(col, id) {
             if(confirm("Möchten Sie diesen Eintrag wirklich löschen?")) {
                 db.collection(col).doc(id).delete();
             }
-        }
-
-        // 8. Language Tabs Switching inside Editor
-        function switchLanguageTab(lang) {
-            document.querySelectorAll('[id^="lang_"]').forEach(el => el.style.display = "none");
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(`lang_${lang}_box`).style.display = "block";
-            event.target.classList.add('active');
         }
 
         // 9. Anti-Inspect
