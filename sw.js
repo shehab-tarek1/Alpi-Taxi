@@ -1,10 +1,12 @@
-const CACHE_NAME = 'taxi-alpgo-v1.0.2';
+// 1. تم تحديث الإصدار لإجبار المتصفح على جلب ملف التيلويند الجديد
+const CACHE_NAME = 'taxi-alpgo-v1.0.3';
 
-// 1. الملفات الأساسية المسبقة التخزين
+// 2. تم إضافة ملف tailwind.min.css هنا ليعمل أوفلاين
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
+  '/tailwind.min.css',
   'https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716325/ecuwdts2f0797fnddg4z.png',
   'https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716414/bl2wzjvwiuocspelj562.png',
   'https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716372/yuprjfnexjrfqwszemfo.png',
@@ -25,7 +27,7 @@ self.addEventListener('install', (event) => {
 });
 
 // ======================================================
-// ACTIVATE: تنظيف أي كاش قديم لتجنب تعليق البيانات القديمة
+// ACTIVATE: تنظيف الكاش القديم
 // ======================================================
 self.addEventListener('activate', (event) => {
   event.waitUntil(
@@ -43,19 +45,18 @@ self.addEventListener('activate', (event) => {
 });
 
 // ======================================================
-// FETCH: توجيه ذكي وسريع بدون أي بطء
+// FETCH: توجيه ذكي وسريع (Zero-Lag)
 // ======================================================
 self.addEventListener('fetch', (event) => {
   const { request } = event;
 
-  // التعامل فقط مع طلبات GET والروابط المدعومة
   if (request.method !== 'GET' || !request.url.startsWith('http')) {
     return;
   }
 
   const url = new URL(request.url);
 
-  // 1. استثناء Firebase و Firestore و APIs تماماً (لتجنب تعليق البيانات القديمة)
+  // استثناء طلبات Firebase و APIs المباشرة
   if (
     url.hostname.includes('firestore.googleapis.com') ||
     url.hostname.includes('firebaseio.com') ||
@@ -66,7 +67,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 2. الصور (Cloudinary / Unsplash / Pexels): كاش سريع جداً (Cache-First + Background Refresh)
+  // كاش الصور السريع
   const isImage = 
     request.destination === 'image' || 
     url.hostname.includes('cloudinary.com') || 
@@ -77,16 +78,14 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
       caches.match(request).then((cachedResponse) => {
         if (cachedResponse) {
-          // جلب النسخة المحدثة في الخلفية بدون تعطيل المستخدم
           fetch(request).then((networkResponse) => {
             if (networkResponse && networkResponse.ok) {
               caches.open(CACHE_NAME).then((cache) => cache.put(request, networkResponse));
             }
           }).catch(() => {});
-          return cachedResponse; // إرجاع الصورة فوراً في 0 ثانية
+          return cachedResponse;
         }
 
-        // إذا لم تكن في الكاش يتم جلبها وحفظها
         return fetch(request).then((networkResponse) => {
           if (networkResponse && networkResponse.ok) {
             const clone = networkResponse.clone();
@@ -99,7 +98,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 3. صفحات الـ HTML: (Network-First لضمان رؤية أحدث التعديلات فوراً مع دعم الأوفلاين)
+  // صفحات HTML
   if (request.mode === 'navigate' || request.destination === 'document' || request.headers.get('accept')?.includes('text/html')) {
     event.respondWith(
       fetch(request)
@@ -119,7 +118,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 4. باقي الملفات الثابتة (CSS, JS, Fonts)
+  // الملفات الثابتة بما فيها tailwind.min.css
   event.respondWith(
     caches.match(request).then((cachedResponse) => {
       return cachedResponse || fetch(request).then((networkResponse) => {
@@ -133,7 +132,6 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
-// استقبال رسالة التحديث الفوري
 self.addEventListener('message', (event) => {
   if (event.data === 'SKIP_WAITING') {
     self.skipWaiting();
