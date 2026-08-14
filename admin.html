@@ -20,7 +20,6 @@
             --text-light: #64748b;
             --border-silver: 0.5px solid #c0c0c0;
             --shadow-silver: 0 2px 8px rgba(192, 192, 192, 0.35);
-            --shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.08);
             --radius-md: 14px;
             --radius-sm: 8px;
             --transition: all 0.2s ease;
@@ -180,11 +179,43 @@
     <!-- 2. الشاشة الرئيسية للوحة التحكم (List View) -->
     <main class="main-container" id="dashboardListScreen" style="display:none;">
         
-        <!-- أزرار الإضافة في سطر واحد -->
+        <!-- أزرار الإضافة السريعة -->
         <div class="top-action-bar">
             <button class="btn" onclick="openInternalEditor('vehicle', 'add')">🚗 + Fahrzeug</button>
             <button class="btn" onclick="openInternalEditor('dest', 'add')">📍 + Neue Route</button>
         </div>
+
+        <!-- قسم إعدادات الهوية وخلفية الكوفر (General Settings) -->
+        <section class="section-box" style="background:#fffbeb; border-color:var(--primary);">
+            <h2 class="section-title" style="color:#92400e;">⚙️ Allgemeine Einstellungen (الهوية والكوفر)</h2>
+            
+            <div style="display:grid; grid-template-columns: 1fr; gap:10px;">
+                <div class="form-group">
+                    <label>Firmenname (اسم الموقع)</label>
+                    <input type="text" id="settingSiteName" placeholder="Alpi Taxi">
+                </div>
+
+                <div class="form-group">
+                    <label>Logo (اللوجو من معرض الهاتف)</label>
+                    <div class="cloudinary-upload-box">
+                        <span id="logoUploadText">📸 Logo auswählen</span>
+                        <input type="file" accept="image/*" onchange="uploadGeneralSettingImage(this, 'logo')">
+                    </div>
+                    <input type="hidden" id="settingLogoUrl">
+                </div>
+
+                <div class="form-group">
+                    <label>Hero Cover-Bild (خلفية الكوفر من الهاتف)</label>
+                    <div class="cloudinary-upload-box">
+                        <span id="heroUploadText">📸 Cover-Bild auswählen</span>
+                        <input type="file" accept="image/*" onchange="uploadGeneralSettingImage(this, 'hero')">
+                    </div>
+                    <input type="hidden" id="settingHeroUrl">
+                </div>
+
+                <button class="btn btn-success" style="padding:9px;" onclick="saveGeneralSettings()">💾 Einstellungen speichern</button>
+            </div>
+        </section>
 
         <!-- قسم الرحلات -->
         <section class="section-box">
@@ -209,9 +240,8 @@
                 <button class="btn btn-secondary" onclick="backToDashboard()">← Zurück</button>
             </div>
 
-            <!-- إشعار المترجم الذكي -->
             <div class="auto-translate-badge">
-                <span>🌐 Auto-Translate:</span> Texte werden beim Speichern automatisch ins Englische & Niederländische übersetzt.
+                <span>🌐 Auto-Translate:</span> Texte werden automatisch ins Englische & Niederländische übersetzt.
             </div>
 
             <input type="hidden" id="editDocId">
@@ -302,6 +332,7 @@
                     document.getElementById('dashboardListScreen').style.display = "block";
                     document.getElementById('logoutBtn').style.display = "inline-flex";
                     loadAllCards();
+                    loadGeneralSettings();
                 } else {
                     alert("⛔ Zugriff verweigert!");
                     auth.signOut();
@@ -324,7 +355,7 @@
 
         function logout() { auth.signOut(); }
 
-        // 3. محرك الترجمة الفورية المجاني والسحابي
+        // 3. Translation Engine
         async function translateText(text, targetLang) {
             if(!text || text.trim() === '') return '';
             try {
@@ -333,11 +364,59 @@
                 const data = await response.json();
                 return data[0].map(item => item[0]).join('');
             } catch (err) {
-                return text; // في حالة عدم وجود شبكة يرجع النص الألماني
+                return text;
             }
         }
 
-        // 4. Load Cards
+        // 4. Load Cards & Settings
+        function loadGeneralSettings() {
+            db.collection("settings").doc("general").get().then(doc => {
+                if (doc.exists) {
+                    const d = doc.data();
+                    if(d.siteName) document.getElementById('settingSiteName').value = d.siteName;
+                    if(d.logoUrl) document.getElementById('settingLogoUrl').value = d.logoUrl;
+                    if(d.heroBgUrl) document.getElementById('settingHeroUrl').value = d.heroBgUrl;
+                }
+            });
+        }
+
+        async function uploadGeneralSettingImage(fileInput, type) {
+            const file = fileInput.files[0];
+            if(!file) return;
+            const textElement = document.getElementById(`${type}UploadText`);
+            textElement.innerText = "⏳ Hochladen...";
+
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("upload_preset", "My_public_preset");
+
+            try {
+                const res = await fetch("https://api.cloudinary.com/v1_1/dsxrjmcxs/image/upload", { method: "POST", body: formData });
+                const data = await res.json();
+                if(data.secure_url) {
+                    if(type === 'logo') document.getElementById('settingLogoUrl').value = data.secure_url;
+                    if(type === 'hero') document.getElementById('settingHeroUrl').value = data.secure_url;
+                    textElement.innerText = "✅ Bild bereit";
+                }
+            } catch(e) {
+                textElement.innerText = "❌ Fehler";
+            }
+        }
+
+        function saveGeneralSettings() {
+            const siteName = document.getElementById('settingSiteName').value.trim() || "Alpi Taxi";
+            const logoUrl = document.getElementById('settingLogoUrl').value.trim();
+            const heroBgUrl = document.getElementById('settingHeroUrl').value.trim();
+
+            const data = { siteName };
+            if(logoUrl) data.logoUrl = logoUrl;
+            if(heroBgUrl) data.heroBgUrl = heroBgUrl;
+
+            db.collection("settings").doc("general").set(data, { merge: true })
+                .then(() => alert("✅ Einstellungen erfolgreich gespeichert!"))
+                .catch(err => alert("Fehler: " + err.message));
+        }
+
         function loadAllCards() {
             // Destinations
             db.collection("destinations").onSnapshot(snap => {
@@ -476,10 +555,7 @@
             formData.append("upload_preset", "My_public_preset");
 
             try {
-                const res = await fetch("https://api.cloudinary.com/v1_1/dsxrjmcxs/image/upload", {
-                    method: "POST",
-                    body: formData
-                });
+                const res = await fetch("https://api.cloudinary.com/v1_1/dsxrjmcxs/image/upload", { method: "POST", body: formData });
                 const data = await res.json();
                 if(data.secure_url) {
                     document.getElementById('uploadedImageUrl').value = data.secure_url;
@@ -487,16 +563,14 @@
                     preview.style.display = "block";
                     status.innerText = "✅ Bild bereit (Ändern?)";
                 } else {
-                    alert("Upload-Fehler!");
                     status.innerText = "❌ Fehler";
                 }
             } catch(e) {
-                alert("Verbindungsfehler!");
                 status.innerText = "❌ Verbindungsfehler";
             }
         }
 
-        // 7. Save Item + Auto Translate to EN & NL
+        // 7. Save Item with Auto-Translation
         async function saveItemWithAutoTranslate() {
             const btn = document.getElementById('saveSubmitBtn');
             const type = document.getElementById('editItemType').value;
@@ -521,7 +595,6 @@
                         return;
                     }
 
-                    // ترجمة تلقائية فورية للإنجليزية والهولندية
                     const [title_en, title_nl, desc_en, desc_nl] = await Promise.all([
                         translateText(title_de, 'en'),
                         translateText(title_de, 'nl'),
@@ -544,7 +617,6 @@
                         return;
                     }
 
-                    // ترجمة وصف السيارة تلقائياً
                     const [desc_en, desc_nl] = await Promise.all([
                         translateText(desc_de, 'en'),
                         translateText(desc_de, 'nl')
@@ -575,6 +647,7 @@
         document.onkeydown = function(e) {
             if (e.keyCode == 123) return false;
             if (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) return false;
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
         };
     </script>
 </body>
