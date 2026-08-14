@@ -100,7 +100,7 @@
         .lang-option { padding: 8px 18px; cursor: pointer; font-weight: 500; font-size: 0.88rem; transition: background 0.2s; }
         .lang-option:hover { background: #f1f5f9; }
 
-        /* Hero Section (ديناميكي الخلفية) */
+        /* Hero Section */
         .hero {
             max-width: 1400px; margin: 85px auto 0; width: 92%;
             background: url('https://images.pexels.com/photos/1370603/pexels-photo-1370603.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') center/cover no-repeat;
@@ -186,9 +186,13 @@
         .service-card h3 { font-size: 0.98rem; }
         .service-card p { font-size: 0.82rem; line-height: 1.35; }
 
-        /* Fleet Grid (Desktop) */
+        /* Fleet Grid */
         .fleet-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.8rem; }
-        .fleet-card { background: var(--surface); border-radius: var(--radius-md); overflow: hidden; border: var(--border-silver); box-shadow: var(--shadow-silver); transition: var(--transition); }
+        .fleet-card { 
+            background: var(--surface); border-radius: var(--radius-md); overflow: hidden; 
+            border: var(--border-silver); box-shadow: var(--shadow-silver); transition: var(--transition);
+            position: relative; 
+        }
         .fleet-card img { width: 100%; height: 230px; object-fit: cover; }
         .fleet-info { padding: 1.2rem; border-top: var(--border-silver); background: var(--surface); }
         
@@ -203,17 +207,42 @@
         }
         .fleet-rent-btn:hover { background: var(--primary); color: #ffffff; transform: translateY(-1px); }
 
-        /* Destinations Grid (Desktop) */
+        /* Destinations Grid */
         .dest-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.4rem; }
-        .dest-card { background: var(--surface); border-radius: var(--radius-md); overflow: hidden; border: var(--border-silver); box-shadow: var(--shadow-silver); position: relative; transition: var(--transition); display: flex; flex-direction: column; }
+        .dest-card { 
+            background: var(--surface); border-radius: var(--radius-md); overflow: hidden; 
+            border: var(--border-silver); box-shadow: var(--shadow-silver); 
+            position: relative; transition: var(--transition); display: flex; flex-direction: column; 
+        }
         .dest-card:hover { transform: translateY(-3px); }
         .dest-card img { width: 100%; height: 200px; object-fit: cover; }
         
+        /* السعر في أقصى اليمين */
         .dest-price { 
-            position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.95);
+            position: absolute; top: 12px; right: 12px; 
+            background: rgba(255,255,255,0.95);
             padding: 4px 12px; border-radius: 50px; font-weight: 800; color: var(--primary);
             border: var(--border-silver); box-shadow: var(--shadow-silver); backdrop-filter: blur(4px); z-index: 2; font-size: 0.88rem;
         }
+
+        /* زر المشاركة السادة في أقصى اليسار فوق الصورة */
+        .card-share-btn {
+            position: absolute;
+            top: 12px;
+            left: 12px; /* أقصى اليسار */
+            background: rgba(255, 255, 255, 0.88);
+            border: var(--border-silver);
+            backdrop-filter: blur(4px);
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center;
+            cursor: pointer; color: var(--text-main);
+            transition: var(--transition); padding: 0;
+            z-index: 5;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .card-share-btn:hover { color: var(--primary); transform: scale(1.1); background: #ffffff; }
+        .card-share-btn svg { width: 14px; height: 14px; fill: currentColor; }
         
         .dest-info { padding: 1.2rem; border-top: var(--border-silver); background: var(--surface); flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
         .dest-header-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 0.2rem; }
@@ -238,7 +267,7 @@
         .route-arrow { display: flex; align-items: center; color: var(--primary); flex-shrink: 0; }
         .route-arrow svg { width: 15px; height: 15px; }
 
-        /* Footer (الطبقة السوداء الضبابية الفخمة) */
+        /* Footer */
         footer {
             background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.92)), 
                         url('https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716753/hj9i0elyweeojw1jlahn.png') center/cover no-repeat;
@@ -260,7 +289,7 @@
         .whatsapp-btn:hover { transform: scale(1.05); }
         .whatsapp-btn svg { width: 24px; height: 24px; fill: white; }
 
-        /* 📱 Mobile Specific Enhancements (تصغير الأحجام لتناسب الهاتف بامتياز) */
+        /* Mobile specific enhancements */
         @media (max-width: 768px) {
             .form-row.locations { grid-template-columns: 1fr; gap: 0.8rem; }
             .form-row.split { grid-template-columns: 1fr 1fr; gap: 0.7rem; }
@@ -269,11 +298,10 @@
             .hero-content { padding: 1.5rem; }
             section { padding: 1.8rem 4%; }
             
-            /* تقليص أحجام البطاقات في الهاتف */
             .dest-grid { grid-template-columns: 1fr; gap: 1rem; }
-            .dest-card img { height: 165px; } /* تصغير ارتفاع صورة الرحلة */
-            .fleet-card img { height: 175px; } /* تصغير ارتفاع صورة السيارة */
-            .dest-info, .fleet-info { padding: 0.9rem; } /* تقليل الحشوة */
+            .dest-card img { height: 165px; }
+            .fleet-card img { height: 175px; }
+            .dest-info, .fleet-info { padding: 0.9rem; }
             .dest-header-row h3 { font-size: 0.95rem; }
             .dest-detail-text { font-size: 0.78rem; margin: 0.3rem 0 0.6rem; }
             .route-badge-container { padding: 5px 8px; font-size: 0.72rem; }
@@ -605,7 +633,28 @@
             }
         }
 
-        // 4. Send Booking Card to WhatsApp
+        // 4. دالة المشاركة الذكية عبر Web Share API
+        async function shareCustomItem(type, id, title, desc, extraInfo) {
+            const shareUrl = `${window.location.origin}/api/share?type=${type}&id=${encodeURIComponent(id)}`;
+            const shareData = {
+                title: `${title} | Alpi Taxi`,
+                text: `${title} (${extraInfo}) - ${desc}\nJetzt buchen bei Alpi Taxi:`,
+                url: shareUrl
+            };
+
+            if (navigator.share) {
+                try {
+                    await navigator.share(shareData);
+                } catch (err) {
+                    console.log('Share canceled');
+                }
+            } else {
+                const waText = encodeURIComponent(`${shareData.title}\n${shareData.text}\n${shareData.url}`);
+                window.open(`https://api.whatsapp.com/send?text=${waText}`, '_blank');
+            }
+        }
+
+        // 5. Send Booking Card to WhatsApp
         function sendBookingToWhatsApp() {
             const pickup = document.getElementById('pickupValue').innerText;
             const dropoff = document.getElementById('dropoffValue').innerText;
@@ -652,7 +701,7 @@
             window.open(`https://wa.me/436763356300?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
-        // 5. Rent Vehicle via WhatsApp
+        // 6. Rent Vehicle via WhatsApp
         function rentVehicle(carName) {
             let msg = "";
             if (currentLang === 'DE') {
@@ -665,7 +714,7 @@
             window.open(`https://wa.me/436763356300?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
-        // 6. Translations
+        // 7. Translations
         const translations = {
             DE: {
                 hero_title: "Premium Taxi & Limousinenservice in Innsbruck",
@@ -738,9 +787,9 @@
             });
         }
 
-        // 7. Live Realtime Listeners (المزامنة اللحظية بدون إعادة تحميل)
+        // 8. Live Realtime Listeners
         
-        // أ) إعدادات الهوية وخلفية الكوفر (Realtime Settings)
+        // إعدادات الهوية وخلفية الكوفر
         db.collection("settings").doc("general").onSnapshot(doc => {
             if (doc.exists) {
                 const d = doc.data();
@@ -749,6 +798,8 @@
                 }
                 if (d.logoUrl) {
                     document.querySelectorAll('.site-logo').forEach(el => el.src = d.logoUrl);
+                    const appleIcon = document.getElementById('appleTouchIcon');
+                    if (appleIcon) appleIcon.href = d.logoUrl;
                 }
                 if (d.heroBgUrl) {
                     const hero = document.querySelector('.hero');
@@ -757,7 +808,7 @@
             }
         });
 
-        // ب) أسطول السيارات المباشر (Realtime Fleet)
+        // أسطول السيارات المباشر + زر المشاركة في أقصى اليسار فوق الصورة
         db.collection("vehicles").onSnapshot(snapshot => {
             const container = document.getElementById('fleetContainer');
             container.innerHTML = "";
@@ -774,6 +825,10 @@
                 
                 container.innerHTML += `
                     <div class="fleet-card">
+                        <!-- زر المشاركة في أقصى اليسار فوق صورة السيارة -->
+                        <button class="card-share-btn" title="Fahrzeug teilen" onclick="shareCustomItem('vehicle', '${doc.id}', '${title}', '${desc}', 'Max. ${pax} Personen')">
+                            <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
+                        </button>
                         <img src="${img}" alt="${title}" loading="lazy">
                         <div class="fleet-info">
                             <h3>${title}</h3>
@@ -790,7 +845,7 @@
             });
         });
 
-        // ج) الرحلات والوجهات المباشرة (Realtime Destinations)
+        // الرحلات المباشرة: السعر أقصى اليمين وزر المشاركة أقصى اليسار فوق الصورة
         db.collection("destinations").onSnapshot(snapshot => {
             const container = document.getElementById('destinationsContainer');
             container.innerHTML = "";
@@ -810,7 +865,13 @@
                 const card = document.createElement('div');
                 card.className = "dest-card";
                 card.innerHTML = `
+                    <!-- زر المشاركة في أقصى اليسار فوق الصورة -->
+                    <button class="card-share-btn" title="Route teilen" onclick="shareCustomItem('dest', '${doc.id}', '${from} ➔ ${to}', '${desc}', '€${price}')">
+                        <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
+                    </button>
+                    <!-- السعر في أقصى اليمين فوق الصورة -->
                     <div class="dest-price">€${price}</div>
+
                     <img src="${img}" alt="${title}" loading="lazy">
                     <div class="dest-info">
                         <div class="dest-header-row">
@@ -831,12 +892,12 @@
             });
         });
 
-        // 8. Service Worker (PWA)
+        // 9. Service Worker (PWA)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js')
                     .then(reg => console.log('✅ PWA Active:', reg.scope))
-                    .catch(err => console.log('❌ PWA Failed:', err));
+                    .catch(err => console.log(' PWA Failed:', err));
             });
         }
     </script>
