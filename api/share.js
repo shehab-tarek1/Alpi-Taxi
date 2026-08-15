@@ -1,7 +1,7 @@
 module.exports = async (req, res) => {
     const { type, id } = req.query;
 
-    // إعلام الكاش أن الاستجابة تختلف حسب نوع الزائر (بوت تواصل اجتماعي أو مستخدم عادي)
+    // إعلام الكاش أن الاستجابة تختلف حسب نوع الزائر (بوت تواصل اجتماعي أو مستخدم عادي) وحسب اللغة
     res.setHeader('Vary', 'User-Agent');
 
     if (!id || !type) {
@@ -9,14 +9,42 @@ module.exports = async (req, res) => {
         return res.end();
     }
 
+    // تطبيع اللغة القادمة من رابط المشاركة (افتراضي: الألمانية)
+    const SUPPORTED_LANGS = ['de', 'en', 'nl'];
+    let lang = (req.query.lang || 'de').toLowerCase();
+    if (!SUPPORTED_LANGS.includes(lang)) lang = 'de';
+
     const userAgent = (req.headers['user-agent'] || '').toLowerCase();
     const isBot = /bot|facebook|whatsapp|telegram|viber|skype|twitter|discord|linkedin|slack|pinterest|applebot/i.test(userAgent);
 
-    // توجيه الزوار الحقيقيين فوراً للموقع الرئيسي مع فتح العنصر
+    // توجيه الزوار الحقيقيين فوراً للموقع الرئيسي مع فتح العنصر، مع الحفاظ على لغته المختارة
     if (!isBot) {
-        res.writeHead(302, { 'Location': `/?${type}=${encodeURIComponent(id)}`, 'Cache-Control': 'no-store' });
+        res.writeHead(302, { 'Location': `/?${type}=${encodeURIComponent(id)}&lang=${lang}`, 'Cache-Control': 'no-store' });
         return res.end();
     }
+
+    // نصوص ثابتة مترجمة لبطاقة المعاينة (Open Graph) بحسب اللغة
+    const UI_TEXT = {
+        de: {
+            whatsapp: '📞 WhatsApp:', rentVia: 'Jetzt mieten via WhatsApp:',
+            destFallback: 'Premium Transfer & Taxi Service in Innsbruck und den Alpen.',
+            vehicleFallback: 'Geräumig, sicher und komfortabel für Gruppen und VIP Transfers.',
+            paxLabel: 'Personen'
+        },
+        en: {
+            whatsapp: '📞 WhatsApp:', rentVia: 'Rent now via WhatsApp:',
+            destFallback: 'Premium transfer & taxi service in Innsbruck and the Alps.',
+            vehicleFallback: 'Spacious, safe and comfortable for groups and VIP transfers.',
+            paxLabel: 'Passengers'
+        },
+        nl: {
+            whatsapp: '📞 WhatsApp:', rentVia: 'Nu huren via WhatsApp:',
+            destFallback: 'Premium transfer- & taxiservice in Innsbruck en de Alpen.',
+            vehicleFallback: 'Ruim, veilig en comfortabel voor groepen en VIP-transfers.',
+            paxLabel: 'Passagiers'
+        }
+    };
+    const t = UI_TEXT[lang];
 
     // بيانات مشروع فايربيز Taxi AlpGo
     const projectId = 'alpi-taxi';
@@ -36,25 +64,31 @@ module.exports = async (req, res) => {
         let desc = '';
         let imageUrl = '';
 
+        // تسلسل الأولوية: الحقل بلغة الرابط -> الحقل الألماني -> الحقل العام بدون لاحقة
+        const localizedField = (fieldPrefix) =>
+            fields[`${fieldPrefix}_${lang}`]?.stringValue ||
+            fields[`${fieldPrefix}_de`]?.stringValue ||
+            fields[fieldPrefix]?.stringValue || '';
+
         if (collectionName === 'destinations') {
             // 📍 بيانات الرحلة
-            const destTitle = fields.title_de?.stringValue || fields.title?.stringValue || '';
+            const destTitle = localizedField('title');
             const from = fields.from?.stringValue || 'Innsbruck';
             const to = fields.to?.stringValue || '';
             const price = fields.price?.integerValue || fields.price?.doubleValue || '';
-            const destDesc = fields.desc_de?.stringValue || fields.desc?.stringValue || 'Premium Transfer & Taxi Service in Innsbruck und den Alpen.';
+            const destDesc = localizedField('desc') || t.destFallback;
 
             title = `🚖 ${from} ➔ ${to} | €${price} | Taxi AlpGo`;
-            desc = `${destTitle ? destTitle + ' • ' : ''}${destDesc.replace(/[\r\n]+/g, ' ').trim()} • 📞 WhatsApp: +43 676 3356300`;
+            desc = `${destTitle ? destTitle + ' • ' : ''}${destDesc.replace(/[\r\n]+/g, ' ').trim()} • ${t.whatsapp} +43 676 3356300`;
             imageUrl = fields.imageUrl?.stringValue || 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1200&q=80';
         } else {
             // 🚗 بيانات السيارة
             const carName = fields.name?.stringValue || 'Mercedes';
             const pax = fields.pax?.integerValue || fields.pax?.doubleValue || 8;
-            const carDesc = fields.desc_de?.stringValue || fields.desc?.stringValue || 'Geräumig, sicher und komfortabel für Gruppen und VIP Transfers.';
+            const carDesc = localizedField('desc') || t.vehicleFallback;
 
-            title = `🚗 ${carName} (Max. ${pax} Personen) | Taxi AlpGo`;
-            desc = `${carDesc.replace(/[\r\n]+/g, ' ').trim()} • Jetzt mieten via WhatsApp: +43 676 3356300`;
+            title = `🚗 ${carName} (Max. ${pax} ${t.paxLabel}) | Taxi AlpGo`;
+            desc = `${carDesc.replace(/[\r\n]+/g, ' ').trim()} • ${t.rentVia} +43 676 3356300`;
             imageUrl = fields.imageUrl?.stringValue || 'https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_1200,q_auto,f_auto/v1786716414/bl2wzjvwiuocspelj562.png';
         }
 
@@ -67,7 +101,9 @@ module.exports = async (req, res) => {
             imageUrl = `${parts[0]}/upload/c_fill,w_1200,h_630,g_auto,q_auto,f_auto/${rawEnd}`;
         }
 
-        const siteUrl = `https://${req.headers.host}/api/share?type=${type}&id=${encodeURIComponent(id)}`;
+        const siteUrl = `https://${req.headers.host}/api/share?type=${type}&id=${encodeURIComponent(id)}&lang=${lang}`;
+        const htmlLang = lang === 'de' ? 'de' : (lang === 'nl' ? 'nl' : 'en');
+        const ogLocale = lang === 'de' ? 'de_DE' : (lang === 'nl' ? 'nl_NL' : 'en_US');
 
         // حماية النصوص لمنع كسر أكواد HTML
         const escapeHTML = (str) => String(str)
@@ -81,7 +117,7 @@ module.exports = async (req, res) => {
         const safeDesc = escapeHTML(desc);
 
         const botHtml = `<!DOCTYPE html>
-<html lang="de">
+<html lang="${htmlLang}">
 <head>
     <meta charset="UTF-8">
     <title>${safeTitle}</title>
@@ -95,6 +131,7 @@ module.exports = async (req, res) => {
     <meta property="og:image:height" content="630" />
     <meta property="og:site_name" content="Taxi AlpGo Innsbruck" />
     <meta property="og:url" content="${siteUrl}" />
+    <meta property="og:locale" content="${ogLocale}" />
     
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${safeTitle}" />
@@ -103,7 +140,7 @@ module.exports = async (req, res) => {
 </head>
 <body>
     <script>
-        window.location.href = "/?${type}=${encodeURIComponent(id)}";
+        window.location.href = "/?${type}=${encodeURIComponent(id)}&lang=${lang}";
     </script>
 </body>
 </html>`;
