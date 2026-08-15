@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Taxi AlpGo | Admin Control</title>
-    
+
     <!-- Firebase SDKs (v8) -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
@@ -36,13 +36,13 @@
         /* Header */
         .admin-navbar {
             position: sticky; top: 0; z-index: 100;
-            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
             border-bottom: var(--border-silver); box-shadow: var(--shadow-silver);
             padding: 0.65rem 1rem; display: flex; justify-content: space-between; align-items: center;
         }
         .nav-brand { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.1rem; }
         .site-logo { width: 34px; height: 34px; border-radius: 50%; object-fit: contain; background: #fff; border: var(--border-silver); padding: 2px; }
-        
+
         .main-container { max-width: 1200px; margin: 0 auto; padding: 0 12px 30px; }
 
         /* Top Actions in One Row */
@@ -58,6 +58,7 @@
             white-space: nowrap; text-align: center;
         }
         .btn:hover { background: var(--primary-hover); }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
         .btn-danger { background: #ef4444; border-color: #dc2626; }
         .btn-danger:hover { background: #dc2626; }
         .btn-edit { background: #0284c7; border-color: #0369a1; }
@@ -135,6 +136,12 @@
             border: 0.5px solid #bfdbfe; padding: 3px 8px; border-radius: 50px; font-size: 0.72rem; font-weight: 700; margin-bottom: 10px;
         }
 
+        .translate-status-line {
+            font-size: 0.75rem; font-weight: 700; margin-top: 8px; padding: 6px 9px; border-radius: 6px; display: none;
+        }
+        .translate-status-line.warn { display: block; background: #fef3c7; color: #92400e; border: 0.5px solid #fcd34d; }
+        .translate-status-line.error { display: block; background: #fee2e2; color: #b91c1c; border: 0.5px solid #fca5a5; }
+
         /* Cloudinary Dropzone */
         .cloudinary-upload-box {
             border: 1.5px dashed var(--primary); border-radius: var(--radius-sm); background: #fffbeb;
@@ -181,7 +188,7 @@
 
     <!-- 2. الشاشة الرئيسية للوحة التحكم (List View) -->
     <main class="main-container" id="dashboardListScreen" style="display:none;">
-        
+
         <!-- أزرار الإضافة في سطر واحد -->
         <div class="top-action-bar">
             <button class="btn" onclick="openInternalEditor('vehicle', 'add')">🚗 + Fahrzeug</button>
@@ -205,7 +212,7 @@
     <!-- 3. صفحة التعديل والإضافة الداخلية (بالألماني فقط مع ترجمة تلقائية) -->
     <div class="main-container internal-page-view" id="editorScreen">
         <div class="editor-container">
-            
+
             <div class="editor-top-nav">
                 <h3 id="editorPageTitle" style="font-size:1.05rem;">Element bearbeiten</h3>
                 <button class="btn btn-secondary" onclick="backToDashboard()">← Zurück</button>
@@ -215,6 +222,7 @@
             <div class="auto-translate-badge">
                 <span>🌐 Auto-Translate:</span> Texte werden beim Speichern automatisch ins Englische & Niederländische übersetzt.
             </div>
+            <div id="translateStatusLine" class="translate-status-line"></div>
 
             <input type="hidden" id="editDocId">
             <input type="hidden" id="editItemType">
@@ -294,7 +302,7 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // 2. Strict Security UID Check
+        // 2. Strict Security UID Check (واجهة فقط — الحماية الحقيقية لازم تكون في Firestore Security Rules)
         const ADMIN_UID = "ryO484XxlBf3NpjGugipKMt2ZkM2";
 
         auth.onAuthStateChanged(user => {
@@ -326,17 +334,55 @@
 
         function logout() { auth.signOut(); }
 
-        // 3. محرك الترجمة الفورية المجاني والسحابي
+        // 2.b حماية أساسية من كسر HTML عند عرض بيانات جاية من فيربس داخل الأدمن
+        function escapeHTML(str) {
+            return String(str ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // 3. محرك الترجمة مع مزوّد احتياطي + إعادة محاولة + كشف الفشل الحقيقي (بدون رجوع صامت للألماني)
+        async function translateViaGoogle(text, targetLang) {
+            const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=de&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('Google endpoint HTTP ' + response.status);
+            const data = await response.json();
+            const result = data[0].map(item => item[0]).join('');
+            if (!result || !result.trim()) throw new Error('Leere Antwort von Google');
+            return result;
+        }
+
+        async function translateViaMyMemory(text, targetLang) {
+            const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=de|${targetLang}`;
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('MyMemory HTTP ' + response.status);
+            const data = await response.json();
+            const result = data?.responseData?.translatedText;
+            if (!result || !result.trim()) throw new Error('Leere Antwort von MyMemory');
+            return result;
+        }
+
+        // يرجع { text, ok } — ok=false يعني الترجمة فشلت فعلياً وتم استخدام النص الألماني كحل أخير
         async function translateText(text, targetLang) {
-            if(!text || text.trim() === '') return '';
-            try {
-                const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=de&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
-                const response = await fetch(url);
-                const data = await response.json();
-                return data[0].map(item => item[0]).join('');
-            } catch (err) {
-                return text; // في حالة عدم وجود شبكة يرجع النص الألماني
+            if (!text || text.trim() === '') return { text: '', ok: true };
+
+            const providers = [translateViaGoogle, translateViaMyMemory];
+            for (const provider of providers) {
+                for (let attempt = 1; attempt <= 2; attempt++) {
+                    try {
+                        const result = await provider(text, targetLang);
+                        return { text: result, ok: true };
+                    } catch (err) {
+                        if (attempt === 2) break; // جرب المزوّد التاني
+                        await new Promise(r => setTimeout(r, 400));
+                    }
+                }
             }
+            // كل المزوّدين فشلوا فعلاً — نرجع الألماني بس نعلّم إنها فشلت
+            return { text, ok: false };
         }
 
         // 4. Load Cards
@@ -352,13 +398,17 @@
                 snap.forEach(doc => {
                     const d = doc.data();
                     const imgUrl = d.imageUrl || "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=400&q=80";
+                    const titleText = escapeHTML(d.title_de || (d.from + ' ➔ ' + d.to));
+                    const fromText = escapeHTML(d.from);
+                    const toText = escapeHTML(d.to);
+                    const priceText = escapeHTML(d.price);
                     container.innerHTML += `
                         <div class="admin-card-row">
-                            <img src="${imgUrl}" class="card-thumb-img">
+                            <img src="${escapeHTML(imgUrl)}" class="card-thumb-img">
                             <div class="card-middle-info">
-                                <span class="card-title-text">${d.title_de || d.from + ' ➔ ' + d.to}</span>
-                                <span class="card-sub-detail">${d.from} ➔ ${d.to}</span>
-                                <span class="card-price-pill">€${d.price}</span>
+                                <span class="card-title-text">${titleText}</span>
+                                <span class="card-sub-detail">${fromText} ➔ ${toText}</span>
+                                <span class="card-price-pill">€${priceText}</span>
                             </div>
                             <div class="card-actions-group">
                                 <button class="btn btn-edit btn-icon" onclick="openInternalEditor('dest', 'edit', '${doc.id}')">✏️</button>
@@ -380,12 +430,14 @@
                 snap.forEach(doc => {
                     const d = doc.data();
                     const imgUrl = d.imageUrl || "https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716414/bl2wzjvwiuocspelj562.png";
+                    const nameText = escapeHTML(d.name);
+                    const paxText = escapeHTML(d.pax);
                     container.innerHTML += `
                         <div class="admin-card-row">
-                            <img src="${imgUrl}" class="card-thumb-img">
+                            <img src="${escapeHTML(imgUrl)}" class="card-thumb-img">
                             <div class="card-middle-info">
-                                <span class="card-title-text">${d.name}</span>
-                                <span class="card-sub-detail">Max. ${d.pax} Personen</span>
+                                <span class="card-title-text">${nameText}</span>
+                                <span class="card-sub-detail">Max. ${paxText} Personen</span>
                             </div>
                             <div class="card-actions-group">
                                 <button class="btn btn-edit btn-icon" onclick="openInternalEditor('vehicle', 'edit', '${doc.id}')">✏️</button>
@@ -408,6 +460,10 @@
             document.getElementById('uploadedImageUrl').value = "";
             document.getElementById('imagePreviewDisplay').style.display = "none";
             document.getElementById('uploadStatusText').innerText = "📸 Klicken zum Auswählen";
+
+            const statusLine = document.getElementById('translateStatusLine');
+            statusLine.className = "translate-status-line";
+            statusLine.innerText = "";
 
             clearInputs();
 
@@ -498,13 +554,16 @@
             }
         }
 
-        // 7. Save Item + Auto Translate to EN & NL
+        // 7. Save Item + Auto Translate to EN & NL (مع تأكيد صريح لو الترجمة فشلت فعلاً)
         async function saveItemWithAutoTranslate() {
             const btn = document.getElementById('saveSubmitBtn');
+            const statusLine = document.getElementById('translateStatusLine');
             const type = document.getElementById('editItemType').value;
             const docId = document.getElementById('editDocId').value;
             const imageUrl = document.getElementById('uploadedImageUrl').value;
 
+            statusLine.className = "translate-status-line";
+            statusLine.innerText = "";
             btn.innerText = "⏳ Wird übersetzt & gespeichert...";
             btn.disabled = true;
 
@@ -523,15 +582,35 @@
                         return;
                     }
 
-                    // ترجمة تلقائية فورية للإنجليزية والهولندية
-                    const [title_en, title_nl, desc_en, desc_nl] = await Promise.all([
+                    const [rTitleEn, rTitleNl, rDescEn, rDescNl] = await Promise.all([
                         translateText(title_de, 'en'),
                         translateText(title_de, 'nl'),
                         translateText(desc_de, 'en'),
                         translateText(desc_de, 'nl')
                     ]);
 
-                    const data = { from, to, price, imageUrl, title_de, desc_de, title_en, desc_en, title_nl, desc_nl };
+                    const failedLabels = [];
+                    if(!rTitleEn.ok) failedLabels.push('Titel → EN');
+                    if(!rTitleNl.ok) failedLabels.push('Titel → NL');
+                    if(!rDescEn.ok) failedLabels.push('Beschreibung → EN');
+                    if(!rDescNl.ok) failedLabels.push('Beschreibung → NL');
+
+                    if(failedLabels.length > 0) {
+                        statusLine.className = "translate-status-line error";
+                        statusLine.innerText = `❌ Übersetzung fehlgeschlagen für: ${failedLabels.join(', ')}. Deutscher Text wurde vorübergehend übernommen.`;
+                        const proceed = confirm(`Übersetzung fehlgeschlagen für: ${failedLabels.join(', ')}.\n\nTrotzdem mit deutschem Text speichern? (Sie können es später erneut versuchen, indem Sie auf Speichern klicken)`);
+                        if(!proceed) {
+                            btn.innerText = "💾 Speichern & Übersetzen";
+                            btn.disabled = false;
+                            return;
+                        }
+                    }
+
+                    const data = {
+                        from, to, price, imageUrl, title_de, desc_de,
+                        title_en: rTitleEn.text, desc_en: rDescEn.text,
+                        title_nl: rTitleNl.text, desc_nl: rDescNl.text
+                    };
                     const req = docId ? db.collection("destinations").doc(docId).update(data) : db.collection("destinations").add(data);
                     await req;
                 } else {
@@ -546,13 +625,27 @@
                         return;
                     }
 
-                    // ترجمة وصف السيارة تلقائياً
-                    const [desc_en, desc_nl] = await Promise.all([
+                    const [rDescEn, rDescNl] = await Promise.all([
                         translateText(desc_de, 'en'),
                         translateText(desc_de, 'nl')
                     ]);
 
-                    const data = { name, pax, imageUrl, desc_de, desc_en, desc_nl };
+                    const failedLabels = [];
+                    if(!rDescEn.ok) failedLabels.push('Beschreibung → EN');
+                    if(!rDescNl.ok) failedLabels.push('Beschreibung → NL');
+
+                    if(failedLabels.length > 0) {
+                        statusLine.className = "translate-status-line error";
+                        statusLine.innerText = `❌ Übersetzung fehlgeschlagen für: ${failedLabels.join(', ')}. Deutscher Text wurde vorübergehend übernommen.`;
+                        const proceed = confirm(`Übersetzung fehlgeschlagen für: ${failedLabels.join(', ')}.\n\nTrotzdem mit deutschem Text speichern?`);
+                        if(!proceed) {
+                            btn.innerText = "💾 Speichern & Übersetzen";
+                            btn.disabled = false;
+                            return;
+                        }
+                    }
+
+                    const data = { name, pax, imageUrl, desc_de, desc_en: rDescEn.text, desc_nl: rDescNl.text };
                     const req = docId ? db.collection("vehicles").doc(docId).update(data) : db.collection("vehicles").add(data);
                     await req;
                 }
@@ -573,11 +666,11 @@
             }
         }
 
-        // 9. Anti-Inspect
+        // 9. Anti-Inspect (واجهة فقط، ما بيوفرش حماية حقيقية — الحماية الفعلية من Firestore Rules)
         document.onkeydown = function(e) {
             if (e.keyCode == 123) return false;
             if (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) return false;
         };
     </script>
 </body>
-</html> 
+</html>
