@@ -72,6 +72,7 @@
             box-shadow: 0 1px 4px rgba(217, 119, 6, 0.3);
         }
 
+        .fleet-desc-text { text-align: center; margin-top: -1.4rem; margin-bottom: 1.5rem; }
         h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.35rem; }
         p { font-size: 0.92rem; color: var(--text-light); }
 
@@ -229,9 +230,10 @@
         .fleet-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
         .fleet-card { 
             background: var(--surface); border-radius: var(--radius-md); overflow: hidden; 
-            border: var(--border-silver); box-shadow: var(--shadow-silver); transition: var(--transition);
-            position: relative; 
+            border: var(--border-silver); box-shadow: var(--shadow-silver); transition: transform 0.25s ease;
+            position: relative; content-visibility: auto; contain-intrinsic-size: 0 380px;
         }
+        .fleet-card.highlight-pulse { animation: destPulse 1.6s ease; }
         .fleet-card img { width: 100%; height: 210px; object-fit: cover; }
         .fleet-info { padding: 1.1rem; border-top: var(--border-silver); background: var(--surface); }
 
@@ -251,25 +253,30 @@
         .dest-card { 
             background: var(--surface); border-radius: var(--radius-md); overflow: hidden; 
             border: var(--border-silver); box-shadow: var(--shadow-silver); 
-            position: relative; transition: var(--transition); display: flex; flex-direction: column; 
+            position: relative; transition: transform 0.25s ease; display: flex; flex-direction: column; 
+            content-visibility: auto; contain-intrinsic-size: 0 380px;
         }
         .dest-card:hover { transform: translateY(-3px); }
+        .dest-card.highlight-pulse { animation: destPulse 1.6s ease; }
+        @keyframes destPulse {
+            0% { box-shadow: 0 0 0 3px var(--primary), var(--shadow-silver); }
+            100% { box-shadow: var(--shadow-silver); }
+        }
         .dest-card img { width: 100%; height: 190px; object-fit: cover; }
 
         .dest-price { 
             position: absolute; top: 10px; right: 10px; 
-            background: rgba(255,255,255,0.95);
+            background: rgba(255,255,255,0.98);
             padding: 4px 10px; border-radius: 50px; font-weight: 800; color: var(--primary);
-            border: var(--border-silver); box-shadow: var(--shadow-silver); backdrop-filter: blur(4px); z-index: 2; font-size: 0.85rem;
+            border: var(--border-silver); box-shadow: var(--shadow-silver); z-index: 2; font-size: 0.85rem;
         }
 
         .card-share-btn {
             position: absolute;
             top: 10px;
             left: 10px;
-            background: rgba(255, 255, 255, 0.88);
+            background: rgba(255, 255, 255, 0.95);
             border: var(--border-silver);
-            backdrop-filter: blur(4px);
             width: 28px; height: 28px;
             border-radius: 50%;
             display: inline-flex; align-items: center; justify-content: center;
@@ -573,6 +580,7 @@
     <!-- Fleet Section (Live Realtime Firestore) -->
     <section>
         <h2 data-i18n="fleet_title">Unsere Flotte</h2>
+        <p class="fleet-desc-text" data-i18n="fleet_desc">Geräumig, sicher und komfortabel für Gruppen.</p>
         <div class="fleet-grid" id="fleetContainer"></div>
     </section>
 
@@ -631,6 +639,30 @@
         // ذاكرة تخزين لحظية للبيانات القادمة من فيربس لترجمتها فوراً عند تغيير اللغة
         let cachedVehiclesDocs = [];
         let cachedDestinationsDocs = [];
+
+        // 1.b قراءة رابط المشاركة العميق (deep link) — ?dest=ID أو ?vehicle=ID و lang اختياري
+        const deepLinkParams = new URLSearchParams(window.location.search);
+        const deepLinkTarget = { type: null, id: null };
+        if (deepLinkParams.has('dest')) { deepLinkTarget.type = 'dest'; deepLinkTarget.id = deepLinkParams.get('dest'); }
+        else if (deepLinkParams.has('vehicle')) { deepLinkTarget.type = 'vehicle'; deepLinkTarget.id = deepLinkParams.get('vehicle'); }
+        const deepLinkLang = (deepLinkParams.get('lang') || '').toUpperCase();
+        if (['DE', 'EN', 'NL'].includes(deepLinkLang)) currentLang = deepLinkLang;
+        let deepLinkHandled = false;
+
+        function tryScrollToDeepLinkTarget() {
+            if (deepLinkHandled || !deepLinkTarget.id) return;
+            const selector = deepLinkTarget.type === 'dest'
+                ? `.dest-card[data-id="${CSS.escape(deepLinkTarget.id)}"]`
+                : `.fleet-card[data-id="${CSS.escape(deepLinkTarget.id)}"]`;
+            const el = document.querySelector(selector);
+            if (!el) return; // لسه البيانات ما وصلتش، هيتحاول تاني بعد التحديث الجاي
+            deepLinkHandled = true;
+            setTimeout(() => {
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                el.classList.add('highlight-pulse');
+                setTimeout(() => el.classList.remove('highlight-pulse'), 1700);
+            }, 300);
+        }
 
         // 2. Searchable Combobox Logic
         function setupSearchableDropdowns() {
@@ -721,7 +753,7 @@
 
         // 4. دالة المشاركة الذكية للرابط
         async function shareCustomItem(type, id) {
-            const shareUrl = `${window.location.origin}/api/share?type=${type}&id=${encodeURIComponent(id)}`;
+            const shareUrl = `${window.location.origin}/api/share?type=${type}&id=${encodeURIComponent(id)}&lang=${currentLang.toLowerCase()}`;
 
             if (navigator.share) {
                 try {
@@ -887,6 +919,14 @@
             };
         });
 
+        // مزامنة زر اللغة مع لغة رابط المشاركة (لو الزائر جاي من لينك مشاركة بلغة غير الألمانية)
+        if (currentLang !== 'DE') {
+            currentLangSpan.innerText = currentLang;
+            const optToSwap = document.querySelector(`.lang-option[data-lang="${currentLang}"]`);
+            if (optToSwap) { optToSwap.setAttribute('data-lang', 'DE'); optToSwap.innerText = 'DE'; }
+            applyTranslations(currentLang);
+        }
+
         // 🌟 دالة تطبيق الترجمة اللحظية الشاملة لجميع أجزاء الموقع
         function applyTranslations(lang) {
             // 1. ترجمة جميع النصوص وعناوين المجموعات ذات data-i18n
@@ -925,7 +965,7 @@
                 const img = data.imageUrl || "https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_400,q_auto,f_auto/v1786716414/bl2wzjvwiuocspelj562.png";
 
                 container.innerHTML += `
-                    <div class="fleet-card">
+                    <div class="fleet-card" data-id="${id}">
                         <button class="card-share-btn" title="Fahrzeug teilen" onclick="shareCustomItem('vehicle', '${id}')">
                             <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
                         </button>
@@ -943,6 +983,7 @@
                     </div>
                 `;
             });
+            tryScrollToDeepLinkTarget();
         }
 
         function renderDestinations() {
@@ -963,6 +1004,7 @@
 
                 const card = document.createElement('div');
                 card.className = "dest-card";
+                card.dataset.id = id;
                 card.innerHTML = `
                     <button class="card-share-btn" title="Route teilen" onclick="shareCustomItem('dest', '${id}')">
                         <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
@@ -987,6 +1029,7 @@
                 `;
                 container.appendChild(card);
             });
+            tryScrollToDeepLinkTarget();
         }
 
         // 9. الاستماع المباشر لقاعدة البيانات مع تحديث الذاكرة ورسم البطاقات
