@@ -3,7 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Taxi AlpGo | Premium Transfer & Limousinenservice Innsbruck</title>
+    <title>Taxi AlpGo | Taxi & Transfer Innsbruck ↔ München, Deutschland & Alpen</title>
+    <meta name="description" content="Zuverlässiger Taxi- & Limousinenservice ab Innsbruck: Transfers nach München, Frankfurt, Berlin und in die gesamte Alpenregion. Flughafentransfer, Ski-Transfer & Chauffeur-Service. Jetzt buchen!">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <link rel="canonical" href="https://taxi-alpgo.vercel.app/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Taxi AlpGo | Taxi & Transfer Innsbruck ↔ München, Deutschland & Alpen">
+    <meta property="og:description" content="Zuverlässiger Taxi- & Limousinenservice ab Innsbruck: Transfers nach München, Frankfurt, Berlin und in die gesamte Alpenregion.">
+    <meta property="og:image" content="https://res.cloudinary.com/dsxrjmcxs/image/upload/c_fill,w_1200,h_630,g_auto,q_auto,f_auto/v1786738438/lpvcfoqx38rsydftoeht.jpg">
+    <meta property="og:url" content="https://taxi-alpgo.vercel.app/">
+    <meta property="og:site_name" content="Taxi AlpGo Innsbruck">
+    <meta property="og:locale" content="de_DE">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta property="og:locale:alternate" content="nl_NL">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="alternate" hreflang="de" href="https://taxi-alpgo.vercel.app/?lang=de">
+    <link rel="alternate" hreflang="en" href="https://taxi-alpgo.vercel.app/?lang=en">
+    <link rel="alternate" hreflang="nl" href="https://taxi-alpgo.vercel.app/?lang=nl">
+    <link rel="alternate" hreflang="x-default" href="https://taxi-alpgo.vercel.app/">
 
     <!-- PWA & Mobile Meta -->
     <link rel="manifest" href="/manifest.json">
@@ -14,6 +33,29 @@
 
     <!-- Tailwind CSS Local -->
     <link rel="stylesheet" href="./tailwind.min.css">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TaxiService",
+      "name": "Taxi AlpGo",
+      "image": "https://res.cloudinary.com/dsxrjmcxs/image/upload/v1786716325/ecuwdts2f0797fnddg4z.png",
+      "telephone": "+43-676-3356300",
+      "email": "taxi_alpgo@yahoo.com",
+      "url": "https://taxi-alpgo.vercel.app/",
+      "priceRange": "€€",
+      "areaServed": [
+        { "@type": "City", "name": "Innsbruck" },
+        { "@type": "Country", "name": "Deutschland" },
+        { "@type": "Country", "name": "Österreich" }
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Innsbruck",
+        "addressCountry": "AT"
+      }
+    }
+    </script>
 
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -37,6 +79,8 @@
             --radius-lg: 24px;
             --transition: all 0.25s ease;
         }
+
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
         html { scroll-behavior: smooth; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
@@ -382,7 +426,9 @@
     </header>
 
     <!-- Hero Section -->
-    <div class="hero"></div>
+    <div class="hero">
+        <h1 class="sr-only">Taxi AlpGo – Taxi & Transferservice Innsbruck, Deutschland & Alpenregion</h1>
+    </div>
 
     <!-- Booking Card -->
     <div class="booking-card" id="bookingCard">
