@@ -30,7 +30,7 @@
     <meta name="theme-color" content="#d97706">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" id="appleTouchIcon" href="/icon192x192.png">
+    <link rel="apple-touch-icon" id="appleTouchIcon" href="https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_192,q_auto,f_auto/v1786716325/ecuwdts2f0797fnddg4z.png">
 
     <!-- Tailwind CSS Local -->
     <link rel="stylesheet" href="./tailwind.min.css">
@@ -1272,6 +1272,65 @@
 
         // 8. دوال رسم بطاقات Firebase باللغة النشطة فوراً من الذاكرة
 
+        // ديناميكيًا: توليد بيانات Schema (Product/Offer) لكل الرحلات والسيارات الحالية
+        // عشان تدي جوجل معلومة واضحة إن كل رحلة/سيارة عنصر مستقل بسعر وصورة ووصف
+        function updateItemsSchema() {
+            const items = [];
+
+            (cachedDestinationsDocs || []).forEach(({ id, data }) => {
+                const title = data.title_de || data.title || `${data.from || ''} - ${data.to || ''}`;
+                const desc = data.desc_de || data.desc || '';
+                const price = data.price || 100;
+                const img = data.imageUrl || '';
+                items.push({
+                    "@type": "Product",
+                    "name": title,
+                    "description": desc,
+                    "image": img,
+                    "url": `https://taxi-alpgo.vercel.app/?dest=${id}`,
+                    "offers": {
+                        "@type": "Offer",
+                        "price": price,
+                        "priceCurrency": "EUR",
+                        "availability": "https://schema.org/InStock",
+                        "url": `https://taxi-alpgo.vercel.app/?dest=${id}`
+                    }
+                });
+            });
+
+            (cachedVehiclesDocs || []).forEach(({ id, data }) => {
+                const title = data.name || 'Fahrzeug';
+                const desc = data.desc_de || data.desc || '';
+                const img = data.imageUrl || '';
+                items.push({
+                    "@type": "Product",
+                    "name": title,
+                    "description": desc,
+                    "image": img,
+                    "url": `https://taxi-alpgo.vercel.app/?vehicle=${id}`
+                });
+            });
+
+            const schemaObj = {
+                "@context": "https://schema.org",
+                "@type": "ItemList",
+                "itemListElement": items.map((item, idx) => ({
+                    "@type": "ListItem",
+                    "position": idx + 1,
+                    "item": item
+                }))
+            };
+
+            let el = document.getElementById('dynamicItemsSchema');
+            if (!el) {
+                el = document.createElement('script');
+                el.type = 'application/ld+json';
+                el.id = 'dynamicItemsSchema';
+                document.head.appendChild(el);
+            }
+            el.textContent = JSON.stringify(schemaObj);
+        }
+
         function renderVehicles() {
             const container = document.getElementById('fleetContainer');
             container.innerHTML = "";
@@ -1307,6 +1366,7 @@
                     </div>
                 `;
             });
+            updateItemsSchema();
             tryScrollToDeepLinkTarget();
         }
 
@@ -1357,6 +1417,7 @@
                 `;
                 container.appendChild(card);
             });
+            updateItemsSchema();
             tryScrollToDeepLinkTarget();
         }
 
