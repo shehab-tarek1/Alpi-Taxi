@@ -4,7 +4,8 @@
   "trailingSlash": false,
   "rewrites": [
     { "source": "/admin", "destination": "/admin.html" },
-    { "source": "/share", "destination": "/api/share" }
+    { "source": "/share", "destination": "/api/share" },
+    { "source": "/sitemap.xml", "destination": "/api/sitemap" }
   ],
   "headers": [
     {
