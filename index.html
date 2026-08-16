@@ -834,12 +834,22 @@
                 input.addEventListener('input', () => {
                     const query = input.value.toLowerCase().trim();
                     wrapper.classList.add('active');
-                    const items = options.querySelectorAll('.custom-option');
-                    
-                    items.forEach(item => {
-                        const match = item.innerText.toLowerCase().includes(query);
-                        item.style.display = match ? 'block' : 'none';
+
+                    // فلترة الأماكن + إخفاء عنوان أي مجموعة مفيهاش ولا نتيجة مطابقة
+                    let currentGroupHeader = null;
+                    let currentGroupHasMatch = false;
+                    Array.from(options.children).forEach(el => {
+                        if (el.classList.contains('custom-optgroup')) {
+                            if (currentGroupHeader) currentGroupHeader.style.display = currentGroupHasMatch ? 'block' : 'none';
+                            currentGroupHeader = el;
+                            currentGroupHasMatch = false;
+                        } else if (el.classList.contains('custom-option')) {
+                            const match = el.innerText.toLowerCase().includes(query);
+                            el.style.display = match ? 'block' : 'none';
+                            if (match) currentGroupHasMatch = true;
+                        }
                     });
+                    if (currentGroupHeader) currentGroupHeader.style.display = currentGroupHasMatch ? 'block' : 'none';
                 });
 
                 options.querySelectorAll('.custom-option').forEach(option => {
