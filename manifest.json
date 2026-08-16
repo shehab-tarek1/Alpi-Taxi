@@ -12,13 +12,13 @@
   "categories": ["travel", "transportation", "business"],
   "icons": [
     {
-      "src": "https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_192,q_auto,f_auto/v1786716325/ecuwdts2f0797fnddg4z.png",
+      "src": "/icon192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "https://res.cloudinary.com/dsxrjmcxs/image/upload/c_limit,w_512,q_auto,f_auto/v1786716325/ecuwdts2f0797fnddg4z.png",
+      "src": "/icon512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
